@@ -2,4 +2,4 @@
 
 This is my first attempt a blogging, and I intend to use it as an outlet.  Standby while I try some things.
 
-Commit counter: 2
+Commit counter: 3
