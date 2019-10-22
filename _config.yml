@@ -1,3 +1,4 @@
 theme: jekyll-theme-cayman
 title: "Blogging as an Outlet"
-tagline: "This is will be a work in progress, much like myself."
+description: "A work in progress, this page and myself."
+baseurl: "/blog" # the subpath of your site, e.g. "/blog"
