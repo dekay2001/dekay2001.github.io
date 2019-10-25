@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: blog
 title:  "My Second Post!"
 ---
 # A different layout?
