@@ -6,7 +6,8 @@
     <img src="{{ 'logo.png' | asset_url }}" alt="The Soap Store" class="css--class1 css--class2" id="logo">
     -->
         <!-- <img id="blog-main-pic" src="/assets/images/main.jpg"alt="Sunset over the pacific eastern most point in europe"> -->
-        <img id="blog-main-pic" src="{{ 'main.jpg' | asset_url }}"alt="Sunset over the pacific eastern most point in europe">
+        <!-- <img id="blog-main-pic" src="{{ 'main.jpg' | asset_url }}"alt="Sunset over the pacific eastern most point in europe"> -->
+        ![Sunset Over the Pacific](/assets/images/main.jpg){:class="img-responsive"}
     </div>
     <!-- Middle -->
     <div id="middle" >
