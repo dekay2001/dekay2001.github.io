@@ -1,6 +1,7 @@
 <main id="home_content" class="content">
     <!-- Left -->
     <div id="left">
+        <img id="blog-main-pic" src="/assets/images/main.jpg"alt="Sunset over the pacific, eastern most point in europe">
     </div>
     <!-- Middle -->
     <div id="middle" >
