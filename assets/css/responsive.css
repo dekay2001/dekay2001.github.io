@@ -1,0 +1,10 @@
+/*Smallest display for wide menu with 4 items across*/
+@media only screen and (min-width:451px) {
+    header, nav, footer{
+      width:98%;
+    }
+    nav a{
+      display:inline-block;
+    }
+  }
+  
