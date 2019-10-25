@@ -1,0 +1,50 @@
+@import url(http://weloveiconfonts.com/api/?family=brandico);
+@import url(https://fonts.googleapis.com/css?family=Oxygen);
+@import url(https://fonts.googleapis.com/css?family=Cinzel);
+/* zocial */
+[class*="brandico-"]:before {
+  font-family: 'brandico', sans-serif;
+}
+
+/*Phone sized styling*/
+/*Prevent objects from overflowing container*/
+img, embed, object, video{
+    max-width: 100%;
+    max-height: 100%;
+}
+/*older browser support*/
+header, section, footer, aside, nav, article, figure, figcaption, main {
+    display:block;
+}
+a {
+    color:  #999999;
+}
+body {
+    text-align: center;
+    color: #282828;
+    background-color: LightGray;
+    font-family: 'Oxegyn', arial, verdana, sans-serif;
+    max-width: 1000px;
+    margin:auto;
+}
+
+h1, h2, h3, h4, h5{
+    font-family: 'Cinzel', arial, verdana, sans-serif;
+}
+
+/*Header stuff*/
+nav a{
+    display:block;
+    padding: .75em;
+}
+nav{
+    background-color: #282828;
+    padding: 5px 5px;
+    border-radius: 8px;
+}
+.navbarlink {
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Oxegyn', arial, verdana, sans-serif;
+}
+
