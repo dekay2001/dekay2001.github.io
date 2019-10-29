@@ -1,3 +1,5 @@
+---
+---
 <!doctype html>
 <html lang="en">
   <head>
@@ -21,8 +23,10 @@
     <nav class="navbar_div">
         <!-- <a class="current" href="/">Home</a> 
         <a class="navbarlink" href="/blog/">Blog</a> -->
-        {% for item in site.data.navigation.pages %}
-          <a href="{{ item.url }}" class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}</a>
+        {% for item in site.data.navigation.docs %}
+          <a href="{{ item.url }}" 
+            class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
+          </a>
         {% endfor %}
     </nav>
     <main id="home_content" class="content">
