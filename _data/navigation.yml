@@ -1,0 +1,8 @@
+navs_list_title: Navigation List
+docs:
+
+- title: Home
+  url: /
+
+- title: Blog
+  url: /blog/

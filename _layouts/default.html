@@ -19,8 +19,11 @@
         <h1 class="title_text">Thinking Clearly</h1>
     </header>
     <nav class="navbar_div">
-        <a class="current" href="/">Home</a> 
-        <a class="navbarlink" href="/blog/">Blog</a>
+        <!-- <a class="current" href="/">Home</a> 
+        <a class="navbarlink" href="/blog/">Blog</a> -->
+        {% for item in site.data.navigation.pages %}
+          <a href="{{ item.url }}" class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}</a>
+        {% endfor %}
     </nav>
     <main id="home_content" class="content">
         <!-- Left -->
