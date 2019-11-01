@@ -24,23 +24,14 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -20%);
+    transform: translate(-50%, -60%);
   }
 }
 
 @media only screen and (min-width: 960px){
-  /* Text on top of image */
-  /* main #div-main-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  } */
   main #div-main-pic{
-    width:20%;
-    order:0;
-    margin-left: 0px;
-    margin-right: 0px;
+    max-width: 960px;
+    max-height: 640px;
   }
 }
 
