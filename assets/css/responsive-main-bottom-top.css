@@ -1,0 +1,43 @@
+/*Smallest display for wide menu with 4 items across*/
+@media only screen and (min-width:451px) {
+  header, nav, footer{
+    width:100%;
+  }
+  nav a{
+    display:inline-block;
+  }
+  main{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  main #div-main-text{
+    width: 40%;
+    min-width: 200px;
+  }
+  #img-responsive{
+    height:auto;
+    width: auto;
+    max-width: 240px;
+    max-height: 160px;
+  }
+}
+
+@media only screen and (min-width: 960px){
+  /* Text on top of image */
+  main #div-main-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  main #div-main-pic{
+    width:20%;
+    order:0;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+/*Higher than 570px*/
+/* @media screen and (min-height: 800px) and (min-width: 960px) {
+} */

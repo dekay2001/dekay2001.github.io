@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title:  "My first Post!"
 ---
 # Here goes nothing

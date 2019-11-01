@@ -5,7 +5,7 @@
   <head>
     <title>{{ page.title }}</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-main-bottom-top.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-main-left-middle-right.css">
 
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
@@ -28,16 +28,19 @@
         {% endfor %}
     </nav>
     <main id="home_content" class="content">
-        <!-- bottom -->
-        <div id="div-main-pic">
+        <!-- Left -->
+        <div id="left">
           <img id="blog-main-pic" src="/assets/images/main.jpg"alt="Sunset over the pacific; The eastern most point in europe">
         </div>
-        <!-- top -->
-        <div id="div-main-text" >
+        <!-- Middle -->
+        <div id="middle" >
           <h1>{{ page.title }}</h1>
           <section>
           {{ content }}
           </section>
+        </div>
+        <!--Right -->
+        <div id="right">
         </div>
     </main>
     <footer>

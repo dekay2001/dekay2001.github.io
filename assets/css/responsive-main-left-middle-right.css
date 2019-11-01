@@ -43,7 +43,6 @@
   }
 }
 
-/*Higher than 570px*/
 @media screen and (min-height: 800px) and (min-width: 960px) {
   main #middle{
       width: 100%;
