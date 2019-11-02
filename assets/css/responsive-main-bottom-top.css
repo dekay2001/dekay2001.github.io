@@ -28,10 +28,11 @@
   }
 }
 
+
 @media only screen and (min-width: 960px){
   main #div-main-pic{
-    max-width: 960px;
-    max-height: 640px;
+    max-width: 2500px;  
+    max-height: 1667px;
   }
 }
 
