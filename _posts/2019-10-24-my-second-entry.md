@@ -1,7 +1,6 @@
 ---
 layout: post
-title:  "My Second Post!"
+title:  "My Second Post! Not really."
 ---
-# A different layout?
-
-**Hi all**, Lets see if I can change the layout
+I will be deleting this post.  I only needed this so I could see how my list of posts look.
+Sorry!
