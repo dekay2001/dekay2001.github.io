@@ -52,3 +52,7 @@ main div{
     width: 100%;
     margin: auto;
 }
+
+main .postlink {
+    color:  #282828;
+}
