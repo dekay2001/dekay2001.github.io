@@ -45,7 +45,7 @@
 
 @media screen and (min-height: 800px) and (min-width: 960px) {
   main #middle{
-      width: 100%;
+      width: 60%;
       min-width: 200px;
       order:0;
   }
