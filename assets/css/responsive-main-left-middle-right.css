@@ -7,7 +7,7 @@
     display:inline-block;
   }
   main{
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
   }
   main #middle{
