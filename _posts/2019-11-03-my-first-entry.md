@@ -1,6 +1,8 @@
 ---
 layout: post
 title:  "Hello All"
+categories: [personal]
+tags: [tech, personal]
 ---
 For a long time I have been thinking about starting a blog.  I didn't just want to start writing a blog.  I wanted to create the blogging platform itself and eventually start adding content.  So here it is!  I apologize for any surprises and shortcomings of the styling and layout of the site.    
  
