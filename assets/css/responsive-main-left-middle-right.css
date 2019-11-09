@@ -23,9 +23,6 @@
 }
 
 @media only screen and (min-width: 960px){
-  main {
-    max-width: 860px;
-  }
   main #middle{
       width:55%;
       order:1;
@@ -47,9 +44,6 @@
 }
 
 @media screen and (min-height: 800px) and (min-width: 960px) {
-  main {
-    max-width: 1000px;
-  }
   main #middle{
       width: 60%;
       min-width: 200px;

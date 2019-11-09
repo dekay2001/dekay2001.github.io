@@ -63,6 +63,11 @@ main div{
     margin: auto;
 }
 
+main #div-main-pic {
+    max-width: 2500px;  
+    max-height: 1667px;
+}
+
 main .postlink {
     color:  #282828;
 }
