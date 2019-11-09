@@ -24,7 +24,6 @@ body {
     color: #282828;
     background-color: LightGray;
     font-family: 'Oxegyn', arial, verdana, sans-serif;
-    /* max-width: 1000px; */
     margin:auto;
 }
 
@@ -47,6 +46,14 @@ nav{
 }
 
 /*Main middle content*/
+main {
+    background: #282828;
+}
+
+main #main-container {
+    max-width: 1000px;    
+}
+
 main div{
     text-align: center;
     width: 100%;
