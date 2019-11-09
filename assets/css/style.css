@@ -16,13 +16,20 @@ img, embed, object, video{
 header, section, footer, aside, nav, article, figure, figcaption, main {
     display:block;
 }
+
 a {
     color:  #999999;
 }
+
+header {
+    background-color: LightGray;
+    color: #282828;
+}
+
 body {
     text-align: center;
-    color: #282828;
-    background-color: LightGray;
+    color: LightGray;
+    background-color: #282828;
     font-family: 'Oxegyn', arial, verdana, sans-serif;
     margin:auto;
 }
@@ -47,11 +54,7 @@ nav{
 
 /*Main middle content*/
 main {
-    background: #282828;
-}
-
-main #main-container {
-    max-width: 1000px;    
+    max-width: 1000px;
 }
 
 main div{
