@@ -6,7 +6,7 @@
   nav a{
     display:inline-block;
   }
-  main{
+  main {
     text-align: center;
     position: relative;
     display: block;
@@ -34,13 +34,13 @@
 
 @media only screen and (min-width: 960px){
   main {
-    max-width: 860px;
+    max-width: 1000px;
   }
 }
 
 /*Higher than 570px*/
 @media screen and (min-height: 800px) and (min-width: 960px) {
   main {
-    max-width: 1000px;
+    max-width: 2500px;
   }
 }
