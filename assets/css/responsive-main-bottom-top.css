@@ -9,6 +9,9 @@
   main{
     text-align: center;
     position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
   main #div-main-text{
     width: 40%;
