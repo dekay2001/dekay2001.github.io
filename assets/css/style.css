@@ -24,7 +24,7 @@ body {
     color: #282828;
     background-color: LightGray;
     font-family: 'Oxegyn', arial, verdana, sans-serif;
-    max-width: 1000px;
+    /* max-width: 1000px; */
     margin:auto;
 }
 
