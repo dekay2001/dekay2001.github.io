@@ -13,17 +13,14 @@
     margin-left: auto;
     margin-right: auto;
   }
-  main #div-main-text{
-    width: 40%;
-    min-width: 200px;
-  }
-  #img-responsive{
-    height:auto;
-    width: auto;
-    max-width: 240px;
-    max-height: 160px;
+  main #div-main-pic {
+    max-width: 1600px;  
+    max-height: 500px;
+    overflow: hidden;
   }
   main #div-main-text {
+    width: 40%;
+    min-width: 200px;
     position: absolute;
     top: 50%;
     left: 50%;

@@ -63,12 +63,6 @@ main div{
     margin: auto;
 }
 
-main #div-main-pic {
-    max-width: 1600px;  
-    max-height: 500px;
-    overflow: hidden;
-}
-
 ul {
     list-style-type: none;
 }
