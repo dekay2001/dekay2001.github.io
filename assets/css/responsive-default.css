@@ -25,9 +25,7 @@
     width: 20%;
     min-width: 200px;
     position: absolute;
-    top: 11%;
-    /* left: 50%; */
-    transform: translate(0%, -60%);
+    top: 0px;
     background: black;
     opacity: .5;
     text-align: left;
