@@ -1,3 +1,6 @@
+---
+content_class: "post-list"
+---
 <ul>
     {% for post in site.posts %}
         <li>
