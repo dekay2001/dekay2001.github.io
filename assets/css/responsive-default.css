@@ -21,7 +21,7 @@
   main #div-main-text {
     max-width: 1600px;  
     max-height: 500px;
-    overflow: scroll;
+    overflow: auto;
     width: 20%;
     min-width: 200px;
     position: absolute;
