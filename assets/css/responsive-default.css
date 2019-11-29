@@ -19,12 +19,18 @@
     overflow: hidden;
   }
   main #div-main-text {
-    width: 40%;
+    max-width: 1600px;  
+    max-height: 500px;
+    overflow: scroll;
+    width: 20%;
     min-width: 200px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -60%);
+    top: 11%;
+    /* left: 50%; */
+    transform: translate(0%, -60%);
+    background: black;
+    opacity: .5;
+    text-align: left;
   }
   /* trying to center background pic*/
   #default-background-pic {
