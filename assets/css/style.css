@@ -22,11 +22,11 @@ a {
 }
 
 a:hover {
-    font-weight: bold;
+    color: goldenrod
 }
   
 a:active {
-    color: goldenrod;
+    color: darkgoldenrod;
     
 }
   
