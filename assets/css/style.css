@@ -21,6 +21,19 @@ a {
     color:  #999999;
 }
 
+a:hover {
+    font-weight: bold;
+}
+  
+a:active {
+    color: goldenrod;
+    
+}
+  
+a:visited {
+    color: darkslategray;
+}
+
 header {
     background-color: LightGray;
     color: #282828;
