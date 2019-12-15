@@ -66,6 +66,10 @@ h1, h2, h3, h4, h5{
     font-family: 'Cinzel', arial, verdana, sans-serif;
 }
 
+ul {
+    list-style-type: none;
+}
+
 /*Header stuff*/
 nav a{
     display:block;
