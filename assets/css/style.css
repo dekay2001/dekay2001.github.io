@@ -61,7 +61,7 @@ body {
     font-family: 'Oxegyn', arial, verdana, sans-serif;
     margin:auto;background: linear-gradient(45deg, #282828, darkred, black );
     background-size: 400% 400%;
-    animation: gradientBG 5s ease infinite;
+    animation: gradientBG 30s ease infinite;
 }
 
 @keyframes gradientBG {
