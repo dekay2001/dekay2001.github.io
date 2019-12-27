@@ -45,8 +45,8 @@
   }
   /* trying to center background pic*/
   #default-background-pic {
-    object-fit: none;
-    object-position: 50% 115%;
+    object-fit: cover;
+    object-position: 50% 50%;
   }
 }
 
