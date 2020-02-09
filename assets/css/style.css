@@ -84,6 +84,10 @@ ul {
     list-style-type: none;
 }
 
+li {
+    margin-bottom: 1em;
+}
+
 /*Header stuff*/
 nav a{
     display:block;
