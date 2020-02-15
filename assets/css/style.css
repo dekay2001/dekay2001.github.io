@@ -108,11 +108,11 @@ main {
 }
 
 main div{
-    text-align: center;
+    /* text-align: center; */
     width: 100%;
     margin: auto;
 }
 
-main div .language-python {
+.language-python {
     text-align: left;
 }
