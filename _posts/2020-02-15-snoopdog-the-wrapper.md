@@ -27,8 +27,7 @@ def snoopdog(func):
 ### Snoop Dogg the Rapper
 For those who don't know Snoop Dogg, he is one of the most recognizable and well known rappers who got started in rap in the 90's.  A lot of his music was and still remains controversial.  He is an O.G. from way back, and I've always been a big fan.  I've seen him perform live on 4 occasions at this point.  This story is NOT about him, but I must give credit where credit is due.  Without Snoop Dogg the rapper, snoopdog the wrapper would never exist.
  
-Here is a video from a concert I attended last summer at the Bank of New Hampshire Pavilion
- 
+Here is a video from a concert I attended last summer at the 
 [Bank of New Hampshire Pavilian](https://www.banknhpavilion.com/ "Bank of New Hampshire Pavilion")
 <iframe width="420" height="315" autoplay="false" src="/assets/videos/2019-snoop-dogg-concert.mp4" frameborder="0" allowfullscreen></iframe>
  
