@@ -25,7 +25,7 @@
         {% include mainpic.html %}
         <!-- top -->
         <div class="post-list">
-
+            <h2>Posts</h2>
             <!-- This loops through the paginated posts -->
             <ul>
                 {% for post in paginator.posts %}
@@ -35,19 +35,13 @@
             <!-- Pagination links -->
             <div class="pagination">
                 {% if paginator.previous_page %}
-                <a href="{{ paginator.previous_page_path }}" class="previous">
-                    ←
-                </a>
-                {% else %}
-                <span class="previous">←</span>
+                <a href="{{ paginator.previous_page_path }}" class="previous">←</a>
                 {% endif %}
                 <span class="page_number ">
                     Page: {{ paginator.page }} of {{ paginator.total_pages }}
                 </span>
                 {% if paginator.next_page %}
                 <a href="{{ paginator.next_page_path }}" class="next">→</a>
-                {% else %}
-                <span class="next ">→</span>
                 {% endif %}
             </div>
         </div>

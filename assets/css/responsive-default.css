@@ -4,10 +4,6 @@
     width:100%;
   }
 
-  ul {
-    list-style-type: disc;
-  }
-
   nav a{
     display:inline-block;
   }
@@ -33,7 +29,6 @@
     top: 0px;
     background: black;
     opacity: .5;
-    text-align: left;
   }
   main .main-text {
     width: 40%;
