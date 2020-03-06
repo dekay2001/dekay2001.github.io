@@ -30,6 +30,9 @@
     background: black;
     opacity: .5;
   }
+  .pagination {
+    text-decoration: none;
+  }
   main .main-text {
     width: 40%;
     min-width: 200px;
