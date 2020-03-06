@@ -19,7 +19,8 @@
 </head>
 
 <body>
-  <header>
+  {% include navheader.html %}
+  <!-- <header>
     <h1 class="title_text">{{ page.title }}</h1>
   </header>
   <nav class="navbar_div">
@@ -28,7 +29,7 @@
       class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
     </a>
     {% endfor %}
-  </nav>
+  </nav> -->
   <main id="home_content" class="content">
     <!-- Left -->
     <div id="left">
@@ -50,13 +51,6 @@
     <div id="right">
     </div>
   </main>
-  <!-- <footer>
-        <i>
-          <span>
-            <p class="author_signature">Site created by Dan K.</p>
-          </span>
-        </i>
-    </footer> -->
   {% include footer.html %}
 </body>
 

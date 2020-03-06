@@ -19,7 +19,8 @@
 </head>
 
 <body>
-    <header>
+    {% include navheader.html %}
+    <!-- <header>
         <h1 class="title_text">Think Clearly</h1>
     </header>
     <nav class="navbar_div">
@@ -28,10 +29,11 @@
             class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
         </a>
         {% endfor %}
-    </nav>
+    </nav> -->
     <main id="home_content" class="content">
         <!-- bottom -->
-        <div id="div-main-pic">
+        {% include mainpic.html %}
+        <!-- <div id="div-main-pic">
             <picture>
                 <source media="(min-width: 960px)" srcset="/assets/images/main-high-def-2500-781.jpg 1x">
                 <img id="default-background-pic" class="child" src="/assets/images/main-16-9-compressed.jpg"
@@ -39,7 +41,7 @@
                     title="Portugal Sunset">
                 <i>Photo by: <a href="http://monicajustesen.com/" target="_blank">Monica Justesen</a></i>
             </picture>
-        </div>
+        </div> -->
         <!-- top -->
         <div class="post-list">
 
@@ -67,17 +69,8 @@
                 <span class="next ">→</span>
                 {% endif %}
             </div>
-
-
         </div>
     </main>
-    <!-- <footer>
-        <i>
-            <span>
-                <p class="author_signature">Site created by Dan K.</p>
-            </span>
-        </i>
-    </footer> -->
     {% include footer.html %}
 </body>
 
