@@ -26,24 +26,25 @@
         <!-- top -->
         <div class="post-list">
             <h2>Posts</h2>
+            <!-- Pagination links -->
+            <div class="pagination">
+                {% if paginator.previous_page %}
+                <a href="{{ paginator.previous_page_path }}" class="pagination-link">←</a>
+                {% endif %}
+                <span class="page_number ">
+                    Page: {{ paginator.page }} of {{ paginator.total_pages }}
+                </span>
+                {% if paginator.next_page %}
+                <a href="{{ paginator.next_page_path }}" class="pagination-link">→</a>
+                {% endif %}
+            </div>
             <!-- This loops through the paginated posts -->
             <ul>
                 {% for post in paginator.posts %}
                 <li><a class="postlink" href="{{ post.url }}">{{ post.title }}</a></li>
                 {% endfor %}
             </ul>
-            <!-- Pagination links -->
-            <div class="pagination">
-                {% if paginator.previous_page %}
-                <a href="{{ paginator.previous_page_path }}" class="previous">←</a>
-                {% endif %}
-                <span class="page_number ">
-                    Page: {{ paginator.page }} of {{ paginator.total_pages }}
-                </span>
-                {% if paginator.next_page %}
-                <a href="{{ paginator.next_page_path }}" class="next">→</a>
-                {% endif %}
-            </div>
+
         </div>
     </main>
     {% include footer.html %}

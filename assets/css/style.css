@@ -59,7 +59,8 @@ body {
     color: LightGray;
     background-color: #282828;
     font-family: 'Oxegyn', arial, verdana, sans-serif;
-    margin:auto;background: linear-gradient(45deg, #282828, black, goldenrod);
+    margin:auto;
+    background: linear-gradient(45deg, #282828, black, goldenrod);
     background-size: 400% 400%;
     animation: gradientBG 30s ease infinite;
 }

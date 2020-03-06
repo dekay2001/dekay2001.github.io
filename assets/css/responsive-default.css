@@ -30,7 +30,7 @@
     background: black;
     opacity: .5;
   }
-  .pagination {
+  a .pagination-link {
     text-decoration: none;
   }
   main .main-text {
