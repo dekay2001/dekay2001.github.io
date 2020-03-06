@@ -103,6 +103,10 @@ nav{
     font-family: 'Oxegyn', arial, verdana, sans-serif;
 }
 
+.pagination-link {
+    text-decoration: none;
+}
+
 /*Main middle content*/
 main {
     max-width: 2500px;
