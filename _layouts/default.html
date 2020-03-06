@@ -20,28 +20,9 @@
 
 <body>
     {% include navheader.html %}
-    <!-- <header>
-        <h1 class="title_text">Think Clearly</h1>
-    </header>
-    <nav class="navbar_div">
-        {% for item in site.data.navigation.docs %}
-        <a href="{{ item.url }}"
-            class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
-        </a>
-        {% endfor %}
-    </nav> -->
     <main id="home_content" class="content">
         <!-- bottom -->
         {% include mainpic.html %}
-        <!-- <div id="div-main-pic">
-            <picture>
-                <source media="(min-width: 960px)" srcset="/assets/images/main-high-def-2500-781.jpg 1x">
-                <img id="default-background-pic" class="child" src="/assets/images/main-16-9-compressed.jpg"
-                    alt="Sunset over the pacific; The eastern most point in Portugal.  Taken during Wild Vibes yoga retreat that I attended."
-                    title="Portugal Sunset">
-                <i>Photo by: <a href="http://monicajustesen.com/" target="_blank">Monica Justesen</a></i>
-            </picture>
-        </div> -->
         <!-- top -->
         <div class="{{ page.content_class }}">
             <h1>{{ page.title }}</h1>
