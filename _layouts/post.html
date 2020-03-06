@@ -2,59 +2,62 @@
 ---
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>{{ page.title }}</title>
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-post.css">
 
-    <!--[if lt IE 9]>
+<head>
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/responsive-post.css">
+
+  <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
     <![endif]-->
-    <meta charset="UTF-8">
-    <meta name="description" content="Blog">
-    <meta name="keywords" content="Blog">
-    <meta name="author" content="Dan Kimball">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <header>
-        <h1 class="title_text">{{ page.title }}</h1>
-    </header>
-    <nav class="navbar_div">
-        {% for item in site.data.navigation.docs %}
-          <a href="{{ item.url }}" 
-            class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
-          </a>
-        {% endfor %}
-    </nav>
-    <main id="home_content" class="content">
-        <!-- Left -->
-        <div id="left">
-          <picture>
-            <source
-              media="(min-width: 960px)"
-              srcset="/assets/images/main-16-9-compressed.jpg 1x">
-            <img id="blog-main-pic" src="/assets/images/main-high-def-16-9-compressed.jpg"alt="Sunset over the pacific; The eastern most point in Portugal.  Taken during Wild Vibes yoga retreat that I attended." title="Portugal Sunset">
-            <i>Photo by: <a href="http://monicajustesen.com/" target="_blank">Monica Justesen</a></i>
-          </picture>
-        </div>
-        <!-- Middle -->
-        <div id="middle" >
-          <section>
-          {{ content }}
-          </section>
-        </div>
-        <!--Right -->
-        <div id="right">
-        </div>
-    </main>
-    <footer>
+  <meta charset="UTF-8">
+  <meta name="description" content="Blog">
+  <meta name="keywords" content="Blog">
+  <meta name="author" content="Dan Kimball">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <header>
+    <h1 class="title_text">{{ page.title }}</h1>
+  </header>
+  <nav class="navbar_div">
+    {% for item in site.data.navigation.docs %}
+    <a href="{{ item.url }}"
+      class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
+    </a>
+    {% endfor %}
+  </nav>
+  <main id="home_content" class="content">
+    <!-- Left -->
+    <div id="left">
+      <picture>
+        <source media="(min-width: 960px)" srcset="/assets/images/main-16-9-compressed.jpg 1x">
+        <img id="blog-main-pic" src="/assets/images/main-high-def-16-9-compressed.jpg"
+          alt="Sunset over the pacific; The eastern most point in Portugal.  Taken during Wild Vibes yoga retreat that I attended."
+          title="Portugal Sunset">
+        <i>Photo by: <a href="http://monicajustesen.com/" target="_blank">Monica Justesen</a></i>
+      </picture>
+    </div>
+    <!-- Middle -->
+    <div id="middle">
+      <section>
+        {{ content }}
+      </section>
+    </div>
+    <!--Right -->
+    <div id="right">
+    </div>
+  </main>
+  <!-- <footer>
         <i>
           <span>
             <p class="author_signature">Site created by Dan K.</p>
           </span>
         </i>
-    </footer>
-  </body>
+    </footer> -->
+  {% include footer.html %}
+</body>
+
 </html>
-  
