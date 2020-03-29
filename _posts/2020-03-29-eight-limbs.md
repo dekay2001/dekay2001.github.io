@@ -35,7 +35,8 @@ The eight limbs are a set of guidelines for how to live a disciplined and purpos
 5. Pratyahara: withdrawal of senses
 6. Dharana: concentration, fixing of the mind
 7. Dhyana: meditation, contemplation, reflection
-8. Samadhi: profound meditation, putting it all together ```
+8. Samadhi: profound meditation, putting it all together 
+```
  
 To give credit where credit is due, I feel I must mention that all the information listed so far about the eight limbs of yoga come from *The Yoga Sūtras of Patañjali*.   These are a collection of 196 Sanskrit sutras (aphorisms) on the theory and practice of yoga.
  
