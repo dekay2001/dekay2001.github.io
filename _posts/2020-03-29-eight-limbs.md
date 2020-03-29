@@ -17,6 +17,7 @@ This initial post will be a summary of the eight limbs as I learned them from th
 ### The Limbs, and (sub)Limbs
 The eight limbs are a set of guidelines for how to live a disciplined and purposeful life.  They are sequenced in a way that starts focussed on the outward and work its way inward.
  
+``` 
 1. Yamas: self restraint, vows of abstention, control
   - Ahimsa: Non-violence
   - Satya: Truthfulness, Honesty
@@ -34,7 +35,7 @@ The eight limbs are a set of guidelines for how to live a disciplined and purpos
 5. Pratyahara: withdrawal of senses
 6. Dharana: concentration, fixing of the mind
 7. Dhyana: meditation, contemplation, reflection
-8. Samadhi: profound meditation, putting it all together
+8. Samadhi: profound meditation, putting it all together ```
  
 To give credit where credit is due, I feel I must mention that all the information listed so far about the eight limbs of yoga come from *The Yoga Sūtras of Patañjali*.   These are a collection of 196 Sanskrit sutras (aphorisms) on the theory and practice of yoga.
  
