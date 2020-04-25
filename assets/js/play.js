@@ -62,7 +62,7 @@ class DisplayablePlayer {
     }
 }
 
-function main() {
+async function main() {
     const elementId = "dynamicdiv";
     const displayer = new NameAsTextDisplayer(elementId);
     const displayableProvider = new DisplayableProvider();
@@ -72,4 +72,4 @@ function main() {
     await player.play(secondsInterval);
 }
 
-main();
+await main();
