@@ -1,4 +1,4 @@
-const myDataCollection = {
+const itemData = {
     items: [
         {
             id: "1",
@@ -14,13 +14,13 @@ const myDataCollection = {
 
 class DisplayableCollection {
     constructor() {
-        this.data = myDataCollection;
+        this.data = itemData;
         this.nextIndex = 0;
     }
 
     nextDisplayable() {
         this.nextIndex++;
-        if (this.nextIndex <= this.myDataCollection.items.length) {
+        if (this.nextIndex <= this.data.items.length) {
             return new Displayable(this.data.items[this.nextIndex - 1]);
         }
         return null;
