@@ -63,7 +63,7 @@ function main() {
     const displayableProvider = new DisplayableProvider();
     const displayables = displayableProvider.getDisplayables();
     const secondsInterval = 5;
-    const player = DisplayablePlayer(displayables, displayer);
+    const player = new DisplayablePlayer(displayables, displayer);
     player.play(secondsInterval);
 }
 
