@@ -51,7 +51,10 @@ class DisplayablePlayer {
     }
 
     play(seconds) {
-        let timerId = setTimeout(this.displayNext, seconds * 1000, seconds)
+        let self = this;
+        let timerId = setTimeout(() => {
+            this.displayNext(seconds);
+        }, seconds * 1000, seconds);
     }
 
     displayNext(seconds) {
