@@ -49,11 +49,16 @@ class DisplayablePlayer {
         this.displayer = displayer;
     }
 
-    play(seconds) {
+    async play(seconds) {
         this.displayables.forEach(displayable => {
-            console.log(`Displaying ${displayable}`);
-            setTimeout(() => { this.displayer.display(displayable); }, seconds * 1000);
+            await this.display(displayable, seconds)
         });
+    }
+
+    async display(displayable, seconds) {
+        console.log(`Displaying ${displayable}`);
+        this.displayer.display(displayable);
+        await new Promise(resolve => setTimeout(resolve, seconds * 1000));
     }
 }
 
