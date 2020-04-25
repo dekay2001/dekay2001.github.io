@@ -50,9 +50,9 @@ class DisplayablePlayer {
     }
 
     async play(seconds) {
-        this.displayables.forEach(displayable => {
-            await this.display(displayable, seconds)
-        });
+        for (const displayable of this.displayables) {
+            await this.display(displayable, seconds);
+        }
     }
 
     async display(displayable, seconds) {
