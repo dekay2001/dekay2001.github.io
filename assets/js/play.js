@@ -18,8 +18,9 @@ class DisplayableProvider {
     }
 
     getDisplayables() {
-        const displayables = this.data.items.forEach(item => {
-            return new Displayable(item);
+        const displayables = [];
+        this.data.items.forEach(item => {
+            displayables.push(new Displayable(item));
         });
         return displayables;
     }
@@ -41,6 +42,19 @@ class Displayable {
     }
 }
 
+class DisplayablePlayer {
+    constructor(displayables, displayer) {
+        this.displayables = displayables;
+        this.displayer = displayer;
+    }
+
+    play(seconds) {
+        this.displayables.forEach(displayable => {
+            console.log(`Displaying ${displayable}`);
+            setTimeout(() => { this.displayer.display(displayable); }, seconds * 1000);
+        });
+    }
+}
 
 function main() {
     const elementId = "dynamicdiv";
@@ -48,10 +62,9 @@ function main() {
     const displayer = new NameAsTextDisplayer(displayInElement);
     const displayableProvider = new DisplayableProvider();
     const displayables = displayableProvider.getDisplayables();
-    displayables.forEach(displayable => {
-        console.log(`Displaying ${displayable}`);
-        displayer.display(displayable);
-    });
+    const secondsInterval = 5;
+    const player = DisplayablePlayer(displayables, displayer);
+    player.play(secondsInterval);
 }
 
 main();
