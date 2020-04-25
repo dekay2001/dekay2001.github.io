@@ -51,7 +51,6 @@ class DisplayablePlayer {
     }
 
     play(seconds) {
-        let self = this;
         let timerId = setTimeout(() => {
             this.displayNext(seconds);
         }, seconds * 1000, seconds);
@@ -67,7 +66,9 @@ class DisplayablePlayer {
     display(displayable, seconds) {
         console.log(`Displaying ${displayable}`);
         this.displayer.display(displayable);
-        let timerId = setTimeout(this.displayNext, seconds * 1000);
+        let timerId = setTimeout(() => {
+            this.displayNext(seconds);
+        }, seconds * 1000, seconds);
     }
 }
 
