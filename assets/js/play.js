@@ -47,8 +47,11 @@ function main() {
     const displayInElement = document.getElementById(elementId);
     const displayer = new NameAsTextDisplayer(displayInElement);
     const displayableProvider = new DisplayableProvider();
-    const displayable = displayableProvider.getDisplayables();
-    displayer.display(displayable);
+    const displayables = displayableProvider.getDisplayables();
+    displayables.forEach(displayable => {
+        console.log(`Displaying ${displayable}`);
+        displayer.display(displayable);
+    });
 }
 
 main();
