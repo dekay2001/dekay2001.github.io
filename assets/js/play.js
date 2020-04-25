@@ -27,12 +27,13 @@ class DisplayableProvider {
 }
 
 class NameAsTextDisplayer {
-    constructor(element) {
-        this.element = element;
+    constructor(elementId) {
+        this.elementId = elementId;
     }
 
     display(displayable) {
-        this.element.innerText = displayable.content.name;
+        const displayInElement = document.getElementById(this.elementId)
+        displayInElement.innerText = displayable.content.name;
     }
 }
 
@@ -58,8 +59,7 @@ class DisplayablePlayer {
 
 function main() {
     const elementId = "dynamicdiv";
-    const displayInElement = document.getElementById(elementId);
-    const displayer = new NameAsTextDisplayer(displayInElement);
+    const displayer = new NameAsTextDisplayer(elementId);
     const displayableProvider = new DisplayableProvider();
     const displayables = displayableProvider.getDisplayables();
     const secondsInterval = 5;
