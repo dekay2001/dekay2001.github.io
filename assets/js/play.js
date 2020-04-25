@@ -12,17 +12,18 @@ const myDataCollection = {
 };
 
 
-class DisplayableProvider {
+class DisplayableCollection {
     constructor() {
         this.data = myDataCollection;
+        this.nextIndex = 0;
     }
 
-    getDisplayables() {
-        const displayables = [];
-        this.data.items.forEach(item => {
-            displayables.push(new Displayable(item));
-        });
-        return displayables;
+    nextDisplayable() {
+        this.nextIndex++;
+        if (this.nextIndex <= this.myDataCollection.items.length) {
+            return new Displayable(this.data.items[this.nextIndex - 1]);
+        }
+        return null;
     }
 }
 
@@ -44,32 +45,36 @@ class Displayable {
 }
 
 class DisplayablePlayer {
-    constructor(displayables, displayer) {
-        this.displayables = displayables;
+    constructor(displayableCollection, displayer) {
+        this.displayableCollection = displayableCollection;
         this.displayer = displayer;
     }
 
-    async play(seconds) {
-        for (const displayable of this.displayables) {
-            await this.display(displayable, seconds);
+    play(seconds) {
+        let timerId = setTimeout(this.displayNext, seconds * 1000, seconds)
+    }
+
+    displayNext(seconds) {
+        const nextDisplayable = this.displayableCollection.nextDisplayable();
+        if (nextDisplayable !== null) {
+            this.display(nextDisplayable, seconds);
         }
     }
 
-    async display(displayable, seconds) {
+    display(displayable, seconds) {
         console.log(`Displaying ${displayable}`);
         this.displayer.display(displayable);
-        await new Promise(resolve => setTimeout(resolve, seconds * 1000));
+        let timerId = setTimeout(this.displayNext, seconds * 1000);
     }
 }
 
-async function main() {
+function main() {
     const elementId = "dynamicdiv";
     const displayer = new NameAsTextDisplayer(elementId);
-    const displayableProvider = new DisplayableProvider();
-    const displayables = displayableProvider.getDisplayables();
+    const displayableCollection = new DisplayableCollection();
     const secondsInterval = 5;
-    const player = new DisplayablePlayer(displayables, displayer);
-    await player.play(secondsInterval);
+    const player = new DisplayablePlayer(displayableCollection, displayer);
+    player.play(secondsInterval);
 }
 
-await main();
+main();
