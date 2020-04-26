@@ -10,7 +10,7 @@ class ResourceCollection {
         let fetchedData = null;
         const xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = () => {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.status == 200) {
                 fetchedData = JSON.parse(this.responseText);
                 console.log(`Fetched data: ${fetchedData}`);
             } else {
