@@ -73,7 +73,7 @@ class DisplayablePlayer {
 export async function playSequence(secondsInterval, inElementId, resourceCollection) {
     const displayer = new NameAsTextDisplayer(inElementId);
     await resourceCollection.fetchAll();
-    const displayableCollection = new DisplayableCollection(displayableData.data);
+    const displayableCollection = new DisplayableCollection(resourceCollection.data);
     const player = new DisplayablePlayer(displayableCollection, displayer);
     player.play(secondsInterval);
 }
