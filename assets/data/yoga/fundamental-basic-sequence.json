@@ -17,31 +17,31 @@
             "name": "Parivritta Trikonasana"
         },
         {
-            "id": "1",
+            "id": "5",
             "name": "Utthita Parsvakonasana"
         },
         {
-            "id": "5",
+            "id": "6",
             "name": "Parivritta Parsvakonasana"
         },
         {
-            "id": "6",
-            "name": "Prasariata Padottanasana"
-        },
-        {
             "id": "7",
-            "name": "Prasariata Padottanasana"
+            "name": "Prasariata Padottanasana A"
         },
         {
             "id": "8",
-            "name": "Prasariata Padottanasana"
+            "name": "Prasariata Padottanasana B"
         },
         {
             "id": "9",
-            "name": "Prasariata Padottanasana"
+            "name": "Prasariata Padottanasana C"
         },
         {
             "id": "10",
+            "name": "Prasariata Padottanasana D"
+        },
+        {
+            "id": "11",
             "name": "Parsvottanasa"
         }
     ]

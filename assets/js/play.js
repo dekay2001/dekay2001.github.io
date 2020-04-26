@@ -30,7 +30,6 @@ function main() {
     const displayInDivId = "dynamicdiv";
     const resourceUrl = "../assets/data/yoga/fundamental-basic-sequence.json"
     const resourceCollection = new ResourceCollection(resourceUrl);
-    resourceCollection.fetch();
     console.log("Calling playSequence");
     playSequence(secondsInterval, displayInDivId, resourceCollection);
 }
