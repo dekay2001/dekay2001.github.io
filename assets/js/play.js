@@ -14,7 +14,8 @@ class ResourceCollection {
                 console.log(`Fetched data: ${fetchedData}`);
                 fetchedData = JSON.parse(this.responseText);
             } else {
-                console.log(`Error fetching data. Status: ${this.status} ${this.responseText}`);
+                console.log("Error fetching data.");
+                console.log(this);
             }
         }
         xmlhttp.open("GET", this.resourceUrl, true);
@@ -28,7 +29,8 @@ function main() {
     const displayInDivId = "dynamicdiv";
     const resourceUrl = "../assets/data/yoga/fundamental-basic-sequence.json"
     const resourceCollection = new ResourceCollection(resourceUrl);
-    await resourceCollection.fetch();
+    resourceCollection.fetch();
+    console.log("Calling playSequence");
     playSequence(secondsInterval, displayInDivId, resourceCollection);
 }
 
