@@ -14,10 +14,10 @@ class ResourceCollection {
                 console.log(`Fetched data: ${fetchedData}`);
                 fetchedData = JSON.parse(this.responseText);
             } else {
-                console.log(`Error fetching data. {}`)
+                console.log(`Error fetching data. Status: ${this.status} ${this.responseText}`);
             }
         }
-        xmlhttp.open("GET", this.resourceUrl, false);
+        xmlhttp.open("GET", this.resourceUrl, true);
         xmlhttp.send();
         this.data = fetchedData;
     }
