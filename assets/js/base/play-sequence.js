@@ -1,17 +1,3 @@
-const itemData = {
-    items: [
-        {
-            id: "1",
-            name: "name1"
-        },
-        {
-            id: "2",
-            name: "name2"
-        }
-    ]
-};
-
-
 class DisplayableCollection {
     constructor(displayableData) {
         this.data = displayableData;
@@ -64,7 +50,7 @@ class DisplayablePlayer {
     }
 
     display(displayable, seconds) {
-        console.log(`Displaying ${displayable}`);
+        console.log(`Displaying ${displayable.name}`);
         this.displayer.display(displayable);
         this.play(seconds);
     }
