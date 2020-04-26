@@ -7,20 +7,14 @@ class ResourceCollection {
     }
 
     async fetch() {
-        let fetchedData = null;
+
         const xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = () => {
-            if (this.status == 200) {
-                console.log(`Fetched data: ${fetchedData}`);
-                fetchedData = JSON.parse(this.responseText);
-            } else {
-                console.log("Error fetching data.");
-                console.log(this);
-            }
+            this.data = JSON.parse(this.responseText);
+            console.log(`Fetched data ${this.data}`);
         }
         xmlhttp.open("GET", this.resourceUrl, true);
         xmlhttp.send();
-        this.data = fetchedData;
     }
 }
 
