@@ -6,7 +6,7 @@ class ResourceCollection {
         this.data = null;
     }
 
-    fetch() {
+    async fetch() {
         let fetchedData = null;
         const xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = () => {
@@ -28,7 +28,7 @@ function main() {
     const displayInDivId = "dynamicdiv";
     const resourceUrl = "../assets/data/yoga/fundamental-basic-sequence.json"
     const resourceCollection = new ResourceCollection(resourceUrl);
-    resourceCollection.fetch();
+    await resourceCollection.fetch();
     playSequence(secondsInterval, displayInDivId, resourceCollection);
 }
 
