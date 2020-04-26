@@ -1,0 +1,48 @@
+{
+    "items": [
+        {
+            "id": "1",
+            "name": "Padangusthasa"
+        },
+        {
+            "id": "2",
+            "name": "PadaHastasa"
+        },
+        {
+            "id": "3",
+            "name": "Utthita Trikonasa"
+        },
+        {
+            "id": "4",
+            "name": "Parivritta Trikonasa"
+        },
+        {
+            "id": "1",
+            "name": "Utthita Parsvakonasa"
+        },
+        {
+            "id": "5",
+            "name": "Parivritta Parsvakonasa"
+        },
+        {
+            "id": "6",
+            "name": "Prasariata Padottanasana"
+        },
+        {
+            "id": "7",
+            "name": "Prasariata Padottanasana"
+        },
+        {
+            "id": "8",
+            "name": "Prasariata Padottanasana"
+        },
+        {
+            "id": "9",
+            "name": "Prasariata Padottanasana"
+        },
+        {
+            "id": "10",
+            "name": "Parsvottanasa"
+        }
+    ]
+}
