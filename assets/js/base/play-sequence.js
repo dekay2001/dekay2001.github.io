@@ -13,8 +13,8 @@ const itemData = {
 
 
 class DisplayableCollection {
-    constructor() {
-        this.data = itemData;
+    constructor(displayableData) {
+        this.data = displayableData;
         this.nextIndex = 0;
     }
 
@@ -70,9 +70,10 @@ class DisplayablePlayer {
     }
 }
 
-export function playSequence(secondsInterval, inElementId) {
+export function playSequence(secondsInterval, inElementId, resourceCollection) {
     const displayer = new NameAsTextDisplayer(inElementId);
-    const displayableCollection = new DisplayableCollection();
+    const resourceData = resourceCollection.data;
+    const displayableCollection = new DisplayableCollection(resourceData);
     const player = new DisplayablePlayer(displayableCollection, displayer);
     player.play(secondsInterval);
 }
