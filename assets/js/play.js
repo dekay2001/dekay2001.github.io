@@ -8,9 +8,7 @@ class ResourceCollection {
 
     async fetchAll() {
         const response = await fetch(this.resourceUrl);
-        console.log(response);
         this.data = await response.json();
-        console.log(this.data);
     }
 }
 
