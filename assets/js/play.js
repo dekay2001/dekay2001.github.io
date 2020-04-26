@@ -11,13 +11,13 @@ class ResourceCollection {
         const xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = () => {
             if (this.status == 200) {
-                fetchedData = JSON.parse(this.responseText);
                 console.log(`Fetched data: ${fetchedData}`);
+                fetchedData = JSON.parse(this.responseText);
             } else {
-                console.log('Error fetching data.')
+                console.log(`Error fetching data. {}`)
             }
         }
-        xmlhttp.open("GET", this.resourceUrl, true);
+        xmlhttp.open("GET", this.resourceUrl, false);
         xmlhttp.send();
         this.data = fetchedData;
     }
