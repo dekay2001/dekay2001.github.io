@@ -17,7 +17,7 @@ class ResourceCollection {
                 console.log('Error fetching data.')
             }
         }
-        xmlhttp.open("GET", "../data/yoga/fundamental-basic-sequence.json", true);
+        xmlhttp.open("GET", this.resourceUrl, true);
         xmlhttp.send();
         this.data = fetchedData;
     }
