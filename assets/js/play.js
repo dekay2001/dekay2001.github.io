@@ -7,7 +7,7 @@ class ResourceCollection {
     }
 
     async fetch() {
-        const response = await this.fetch(this.resourceUrl);
+        const response = await fetch(this.resourceUrl);
         this.data = await response.json();
     }
     // async fetch() {
