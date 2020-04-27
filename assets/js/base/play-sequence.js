@@ -1,3 +1,4 @@
+// TODO:  extend ResourceCollection
 class DisplayableCollection {
     constructor(displayableData) {
         this.data = displayableData;
@@ -56,6 +57,7 @@ class DisplayablePlayer {
     }
 }
 
+//  TODO: Inject the displayer.  
 export async function playSequence(secondsInterval, inElementId, resourceCollection) {
     const displayer = new NameAsTextDisplayer(inElementId);
     await resourceCollection.fetchAll();
