@@ -51,7 +51,6 @@ class DisplayablePlayer {
     }
 
     display(displayable, seconds) {
-        console.log(`Displaying ${displayable.name}`);
         this.displayer.display(displayable);
         this.play(seconds);
     }
