@@ -1,4 +1,4 @@
-import { playSequence } from './base/play-sequence.js';
+import { playSequence } from './yoga/play-sequence.js';
 import { ResourceCollection } from "./base/models.js";
 
 function main() {

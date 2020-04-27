@@ -5,6 +5,10 @@ class DisplayableCollection {
         this.nextIndex = 0;
     }
 
+    getTitle() {
+        return this.data.title;
+    }
+
     nextDisplayable() {
         this.nextIndex++;
         if (this.nextIndex <= this.data.items.length) {
@@ -57,9 +61,7 @@ class DisplayablePlayer {
 }
 
 //  TODO: Inject the displayer.  
-//  Add a Title property to the DisplayableCollection so I can add a title for "Fundamental Basic Sequence"
 //  Add VCR controls.  Start, Stop, Forward, Back
-//  Add a "yoga" application folder.  Move playSequence to the main application of that folder. 
 //  Put logic/factory functions related to creating a yoga sequence player to that folder. 
 //  Add a yoga link/page that uses the yoga application.
 //  Add more sequences/data to yoga application. 
