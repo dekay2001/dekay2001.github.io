@@ -1,9 +1,9 @@
 import { DisplayableCollection, DisplayablePlayer, NameAsTextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
-export function start_app(config) {
+export async function start_app(config) {
     const app = new application(config);
-    app.start();
+    await app.start();
 }
 
 class application {

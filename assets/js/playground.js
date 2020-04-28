@@ -8,7 +8,7 @@ function main() {
         displayInDivId: "dynamicdiv",
         resourceUrl: "../assets/data/yoga/fundamental-basic-sequence.json"
     }
-    await start_app(config);
+    start_app(config);
 }
 
 window.onload = () => {
