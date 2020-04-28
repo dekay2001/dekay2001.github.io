@@ -1,8 +1,12 @@
 import { DisplayableCollection, DisplayablePlayer, NameAsTextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
+export function start_app(config) {
+    const app = new application(config);
+    app.start();
+}
 
-export class application {
+class application {
     constructor(config) {
         this.config = config;
         this.secondsInterval = config.secondsInterval;
