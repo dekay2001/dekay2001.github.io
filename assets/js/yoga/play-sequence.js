@@ -10,7 +10,7 @@ class application {
         this.displayInDiv = config.displayInDiv
     }
 
-    start() {
+    async start() {
         const displayer = NameAsTextDisplayer(this.displayInDiv);
         const resourceCollection = get_resource_collection(this.resourceUrl);
         await resourceCollection.fetchAll();
