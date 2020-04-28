@@ -1,5 +1,6 @@
 import { ResourceCollection } from "./base/models.js";
-import { NameAsTextDisplayer, playSequence } from './yoga/play-sequence.js';
+import { NameAsTextDisplayer } from "./base/displayables.js"
+import { playSequence } from './yoga/play-sequence.js';
 
 
 function main() {
