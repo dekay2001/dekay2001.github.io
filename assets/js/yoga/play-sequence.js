@@ -2,7 +2,7 @@ import { DisplayableCollection, DisplayablePlayer, NameAsTextDisplayer } from ".
 import { get_resource_collection } from "../base/models.js";
 
 
-class application {
+export class application {
     constructor(config) {
         this.config = config;
         this.secondsInterval = config.secondsInterval;
