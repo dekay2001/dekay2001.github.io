@@ -1,16 +1,21 @@
-import { DisplayableCollection, DisplayablePlayer } from "../base/displayables.js";
+import { DisplayableCollection, DisplayablePlayer, NameAsTextDisplayer } from "../base/displayables.js";
+import { get_resource_collection } from "./base/models.js";
 
 
-//  TODO: Inject the displayer.  
-//  Add VCR controls.  Start, Stop, Forward, Back
-//  Put logic/factory functions related to creating a yoga sequence player to that folder. 
-//  Add a yoga link/page that uses the yoga application.
-//  Add more sequences/data to yoga application. 
-//  Add controls to switch sequences. 
-//  Add controls to changing timing. 
-export async function playSequence(secondsInterval, displayer, resourceCollection) {
-    await resourceCollection.fetchAll();
-    const displayableCollection = new DisplayableCollection(resourceCollection.data);
-    const player = new DisplayablePlayer(displayableCollection, displayer);
-    player.play(secondsInterval);
+class application {
+    constructor(config) {
+        this.config = config;
+        this.secondsInterval = config.secondsInterval;
+        this.resourceUrl = config.resourceUrl;
+        this.displayInDiv = config.displayInDiv
+    }
+
+    start() {
+        const displayer = NameAsTextDisplayer(this.displayInDiv);
+        const resourceCollection = get_resource_collection(this.resourceUrl);
+        await resourceCollection.fetchAll();
+        const displayableCollection = new DisplayableCollection(resourceCollection);
+        const player = new DisplayablePlayer(displayableCollection, displayer);
+        player.play(this.secondsInterval);
+    }
 }

@@ -1,4 +1,8 @@
-export class ResourceCollection {
+export function get_resource_collection(resourceUrl) {
+    return ResourceCollection(resourceUrl);
+}
+
+class ResourceCollection {
     constructor(resourceUrl) {
         this.resourceUrl = resourceUrl;
         this.data = null;

@@ -1,15 +1,14 @@
-import { ResourceCollection } from "./base/models.js";
-import { NameAsTextDisplayer } from "./base/displayables.js";
-import { playSequence } from './yoga/play-sequence.js';
+import { application } from './yoga/play-sequence.js';
 
+const config = {
+    secondsInterval: 5,
+    displayInDivId: "dynamicdiv",
+    resourceUrl: "../assets/data/yoga/fundamental-basic-sequence.json"
+}
 
 function main() {
-    const secondsInterval = 5;
-    const displayInDivId = "dynamicdiv";
-    const displayer = new NameAsTextDisplayer(displayInDivId);
-    const resourceUrl = "../assets/data/yoga/fundamental-basic-sequence.json"
-    const resourceCollection = new ResourceCollection(resourceUrl);
-    playSequence(secondsInterval, displayer, resourceCollection);
+    app = application(config);
+    app.start();
 }
 
 window.onload = () => {
