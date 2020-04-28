@@ -11,11 +11,11 @@ class application {
         this.config = config;
         this.secondsInterval = config.secondsInterval;
         this.resourceUrl = config.resourceUrl;
-        this.displayInDiv = config.displayInDiv
+        this.displayInDivId = config.displayInDivId;
     }
 
     async start() {
-        const displayer = new NameAsTextDisplayer(this.displayInDiv);
+        const displayer = new NameAsTextDisplayer(this.displayInDivId);
         const resourceCollection = get_resource_collection(this.resourceUrl);
         await resourceCollection.fetchAll();
         const displayableCollection = new DisplayableCollection(resourceCollection.data);
