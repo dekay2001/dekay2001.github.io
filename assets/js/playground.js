@@ -7,7 +7,7 @@ const config = {
 }
 
 function main() {
-    app = application(config);
+    app = new application(config);
     app.start();
 }
 
