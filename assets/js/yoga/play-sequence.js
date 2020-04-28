@@ -18,7 +18,7 @@ class application {
         const displayer = new NameAsTextDisplayer(this.displayInDiv);
         const resourceCollection = get_resource_collection(this.resourceUrl);
         await resourceCollection.fetchAll();
-        const displayableCollection = new DisplayableCollection(resourceCollection);
+        const displayableCollection = new DisplayableCollection(resourceCollection.data);
         const player = new DisplayablePlayer(displayableCollection, displayer);
         player.play(this.secondsInterval);
     }
