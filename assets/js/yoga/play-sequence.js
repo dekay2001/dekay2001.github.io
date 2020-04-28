@@ -15,7 +15,7 @@ class application {
     }
 
     async start() {
-        const displayer = NameAsTextDisplayer(this.displayInDiv);
+        const displayer = new NameAsTextDisplayer(this.displayInDiv);
         const resourceCollection = get_resource_collection(this.resourceUrl);
         await resourceCollection.fetchAll();
         const displayableCollection = new DisplayableCollection(resourceCollection);
