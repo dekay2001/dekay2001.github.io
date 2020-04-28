@@ -1,5 +1,5 @@
 export function get_resource_collection(resourceUrl) {
-    return ResourceCollection(resourceUrl);
+    return new ResourceCollection(resourceUrl);
 }
 
 class ResourceCollection {
