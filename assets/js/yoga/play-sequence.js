@@ -1,5 +1,5 @@
 import { DisplayableCollection, DisplayablePlayer, NameAsTextDisplayer } from "../base/displayables.js";
-import { get_resource_collection } from "./base/models.js";
+import { get_resource_collection } from "../base/models.js";
 
 
 class application {
