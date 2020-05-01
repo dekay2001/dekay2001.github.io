@@ -49,7 +49,7 @@ class application {
     }
 
     displaySequenceTitle(yogaSequence) {
-        const titleDisplayer = TextDisplayer("dynamictitle");
+        const titleDisplayer = new TextDisplayer("dynamictitle");
         titleDisplayer.display(yogaSequence);
     }
 }
