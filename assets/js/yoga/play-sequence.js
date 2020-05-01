@@ -43,7 +43,7 @@ class application {
     }
 
     play(yogaSequenceCollection) {
-        const displayer = new NameAsTextDisplayer(this.displayInDivId);
+        const displayer = new TextDisplayer(this.displayInDivId);
         const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
         player.play(this.secondsInterval);
     }
