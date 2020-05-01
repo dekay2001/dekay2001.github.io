@@ -1,11 +1,7 @@
 export class DisplayableCollection {
-    constructor(displayableData) {
-        this.data = displayableData;
+    constructor(sourceData) {
+        this.data = this.toDisplayableData(sourceData);
         this.nextIndex = 0;
-    }
-
-    getTitle() {
-        return this.data.title;
     }
 
     nextDisplayable() {
@@ -15,16 +11,21 @@ export class DisplayableCollection {
         }
         return null;
     }
+
+    toDisplayableData(sourceData) {
+        // Override on descendents to provide text property if it doesn't exist
+        return sourceData;
+    }
 }
 
-export class NameAsTextDisplayer {
+export class TextDisplayer {
     constructor(elementId) {
         this.elementId = elementId;
     }
 
     display(displayable) {
         const displayInElement = document.getElementById(this.elementId)
-        displayInElement.innerText = displayable.content.name;
+        displayInElement.innerText = displayable.text;
     }
 }
 
@@ -56,5 +57,6 @@ export class DisplayablePlayer {
 class Displayable {
     constructor(content) {
         this.content = content;
+        this.text = content.text;
     }
 }

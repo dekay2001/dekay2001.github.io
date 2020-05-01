@@ -1,9 +1,24 @@
-import { DisplayableCollection, DisplayablePlayer, NameAsTextDisplayer } from "../base/displayables.js";
+import { DisplayableCollection, DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
 export async function start_app(config) {
     const app = new application(config);
     await app.start();
+}
+
+
+class YogaSequenceCollection extends DisplayableCollection {
+    constructor(yogaSequenceData) {
+        super(yogaSequenceData);
+        this.text = yogaSequenceData.title; // The collection itself is Displayable
+    }
+
+    toDisplayableData(sourceData) {
+        sourceData.items.forEach(item => {
+            item.text = item.name;
+        });
+        return sourceData;
+    }
 }
 
 class application {
@@ -15,11 +30,26 @@ class application {
     }
 
     async start() {
-        const displayer = new NameAsTextDisplayer(this.displayInDivId);
+        const yogaSequence = await this.getYogaSequenceCollection();
+        this.displaySequenceTitle(yogaSequence);
+        this.play(yogaSequence);
+    }
+
+    async getYogaSequenceCollection() {
         const resourceCollection = get_resource_collection(this.resourceUrl);
         await resourceCollection.fetchAll();
-        const displayableCollection = new DisplayableCollection(resourceCollection.data);
-        const player = new DisplayablePlayer(displayableCollection, displayer);
+        const yogaSequenceCollection = new YogaSequenceCollection(resourceCollection.data);
+        return yogaSequenceCollection;
+    }
+
+    play(yogaSequenceCollection) {
+        const displayer = new NameAsTextDisplayer(this.displayInDivId);
+        const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
         player.play(this.secondsInterval);
+    }
+
+    displaySequenceTitle(yogaSequence) {
+        const titleDisplayer = TextDisplayer("dynamictitle");
+        titleDisplayer.display(yogaSequence);
     }
 }
