@@ -4,7 +4,8 @@ function main() {
     const config = {
         secondsInterval: 5,
         displayInDivId: "dynamicdiv",
-        resourceUrl: "../assets/data/yoga/fundamental-basic-sequence.json"
+        resourceUrl: "../assets/data/yoga/suryanamaskara-a.json",
+        titleDivId: "dynamictitle"
     }
     start_app(config);
 }

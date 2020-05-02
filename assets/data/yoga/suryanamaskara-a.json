@@ -1,0 +1,45 @@
+{
+    "title": "Fundamental Basic Sequence",
+    "items": [
+        {
+            "name": "Urdhva Vrikasana",
+            "id": "1"
+        },
+        {
+            "name": "Uttanasana A",
+            "id": "2"
+        },
+        {
+            "name": "Uttanasana B",
+            "id": "3"
+        },
+        {
+            "name": "Chaturanga Dandasana",
+            "id": "4"
+        },
+        {
+            "name": "Urdhva Mukha Svanasana",
+            "id": "5"
+        },
+        {
+            "name": "Adho Mukha Svanasana",
+            "id": "6"
+        },
+        {
+            "name": "Uttanasana B",
+            "id": "7"
+        },
+        {
+            "name": "Uttanasana A",
+            "id": "8"
+        },
+        {
+            "name": "Urdhva Vrikasana",
+            "id": "9"
+        },
+        {
+            "name": "Samasthiti",
+            "id": "10"
+        }
+    ]
+}
