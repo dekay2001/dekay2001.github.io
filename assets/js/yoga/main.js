@@ -1,6 +1,6 @@
 import { getSequenceLinks, start_app } from './play-sequence.js';
 
-function main(sequenceId) {
+export function main(sequenceId) {
     const sequenceLinks = getSequenceLinks();
     const config = {
         secondsInterval: 5,
