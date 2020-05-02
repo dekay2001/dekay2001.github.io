@@ -43,12 +43,6 @@
     object-fit: cover;
     object-position: 50% 50%;
   }
-  /*playground*/
-  #dynamicdiv {
-    padding-top: 50px;
-    padding-bottom: 50px;
-    font-family: 'Cinzel', arial, verdana, sans-serif;
-  }
 }
 
 

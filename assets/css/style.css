@@ -122,3 +122,10 @@ main div{
 .language-python {
     text-align: left;
 }
+
+/*yoga/index*/
+#yoga-sequence {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    font-family: 'Cinzel', arial, verdana, sans-serif;
+  }

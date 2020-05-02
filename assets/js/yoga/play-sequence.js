@@ -27,6 +27,7 @@ class application {
         this.secondsInterval = config.secondsInterval;
         this.resourceUrl = config.resourceUrl;
         this.displayInDivId = config.displayInDivId;
+        this.titleDivId = config.titleDivId;
     }
 
     async start() {
@@ -49,7 +50,7 @@ class application {
     }
 
     displaySequenceTitle(yogaSequence) {
-        const titleDisplayer = new TextDisplayer("dynamictitle");
+        const titleDisplayer = new TextDisplayer(this.titleDivId);
         titleDisplayer.display(yogaSequence);
     }
 }
