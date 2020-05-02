@@ -1,15 +1,16 @@
-import { start_app } from './play-sequence.js';
+import { getSequenceLinks, start_app } from './play-sequence.js';
 
-function main() {
+function main(sequenceId) {
+    const sequenceLinks = getSequenceLinks();
     const config = {
         secondsInterval: 5,
         displayInDivId: "yoga-sequence",
         titleDivId: "sequence-title",
-        resourceUrl: "../assets/data/yoga/fundamental-basic-sequence.json"
+        resourceUrl: `..${sequenceLinks[sequenceId]}`
     }
     start_app(config);
 }
 
 window.onload = () => {
-    main();
+    main("suryanamskaraa");
 }

@@ -1,6 +1,13 @@
 import { DisplayableCollection, DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
+export function getSequenceLinks() {
+    return {
+        suryanamskaraa: "/assets/data/yoga/suryanamaskara-a.json",
+        fundamental: "/assets/data/yoga/fundamental-basic-sequence.json"
+    };
+}
+
 export async function start_app(config) {
     const app = new application(config);
     await app.start();
