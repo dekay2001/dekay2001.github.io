@@ -1,4 +1,4 @@
-import { start_app } from './yoga/play-sequence.js';
+import { start_app } from './play-sequence.js';
 
 function main() {
     const config = {
