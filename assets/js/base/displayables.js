@@ -24,7 +24,7 @@ export class TextDisplayer {
     }
 
     display(displayable) {
-        const displayInElement = document.getElementById(this.elementId)
+        const displayInElement = document.getElementById(this.elementId);
         displayInElement.innerText = displayable.text;
     }
 }

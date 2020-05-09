@@ -54,15 +54,20 @@ class application {
 
 class InteractiveAshtangaResources {
     constructor() {
-
     }
 
     async showInteractiveSequences(displayInElementId) {
         const interactiveYogaSequences = await this.getInteractiveYogaSequences();
-        const displayable = this.getDisplayable(interactiveYogaSequences);
-        const textDisplayer = new TextDisplayer(displayInElementId);
-        textDisplayer.display(displayable);
+        this.addInteractiveButtons(displayInElementId);
         // ToDo:  implement class to bind the displayables to the buttons now displayed.
+    }
+
+    addInteractiveButtons(displayInElementId) {
+        const displayInElement = document.getElementById(displayInElementId);
+        buttons = this.getInteractiveButtons(interactiveYogaSequences);
+        buttons.forEach((button) => {
+            displayInElement.appendChild(button);
+        });
     }
 
     async getInteractiveYogaSequences() {
@@ -75,27 +80,19 @@ class InteractiveAshtangaResources {
         return interactiveYogaSequences;
     }
 
-    getDisplayable(interactiveYogaSequences) {
-        return new Displayable(this.getDisplayableContent(interactiveYogaSequences));
-    }
-
-    getDisplayableContent(interactiveYogaSequences) {
-        const allInteractiveButtonsHtml = this.getInteractiveButtonsHtml(interactiveYogaSequences);
-        return {
-            text: allInteractiveButtonsHtml
-        };
-    }
-
-    getInteractiveButtonsHtml(interactiveYogaSequences) {
-        let buttonHtml = '';
+    getInteractiveButtons(interactiveYogaSequences) {
+        const buttons = [];
         interactiveYogaSequences.forEach((interactiveYogaSequence) => {
-            buttonHtml += this.getInteractiveButtonHtml(interactiveYogaSequence);
+            buttons.push(this.getInteractiveButton(interactiveYogaSequence));
         });
-        return buttonHtml;
+        return buttons;
     }
 
-    getInteractiveButtonHtml(interactiveYogaSequence) {
-        return `<button id="${interactiveYogaSequence.id}">${interactiveYogaSequence.name}</button>`;
+    getInteractiveButton(interactiveYogaSequence) {
+        const button = document.createElement("button");
+        button.innerText = interactiveYogaSequence.name;
+        button.id = interactiveYogaSequence.id;
+        return button;
     }
 }
 
