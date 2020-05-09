@@ -1,0 +1,77 @@
+{
+    "title": "Suryanamaskara A",
+    "items": [
+        {
+            "name": "Salamba Sarvangasana Vinyasa",
+            "id": "1"
+        },
+        {
+            "name": "Slamba Sarvangasana",
+            "id": "2"
+        },
+        {
+            "name": "Halasana",
+            "id": "3"
+        },
+        {
+            "name": "KarnaPidasana",
+            "id": "4"
+        },
+        {
+            "name": "Urdhva Padmasana",
+            "id": "5"
+        },
+        {
+            "name": "Pindasana",
+            "id": "6"
+        },
+        {
+            "name": "Mathsyasana",
+            "id": "7"
+        },
+        {
+            "name": "Uttana Padasana",
+            "id": "8"
+        },
+        {
+            "name": "Sirsasana A",
+            "id": "9"
+        },
+        {
+            "name": "Sirsasana B",
+            "id": "10"
+        },
+        {
+            "name": "Urdhva Dandasana",
+            "id": "11"
+        },
+        {
+            "name": "The Way Out",
+            "id": "12"
+        },
+        {
+            "name": "Balasana",
+            "id": "13"
+        },
+        {
+            "name": "Baddha Padmasana",
+            "id": "14"
+        },
+        {
+            "name": "Yoga-Mudra",
+            "id": "15"
+        },
+        {
+            "name": "Padmasana",
+            "id": "16"
+        },
+        {
+            "name": "Utpluthee",
+            "id": "17"
+        },
+        {
+            "name": "Shavasana",
+            "id": "18"
+        }
+    ]
+}

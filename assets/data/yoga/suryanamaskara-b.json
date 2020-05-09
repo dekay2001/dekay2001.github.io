@@ -1,0 +1,81 @@
+{
+    "title": "Suryanamaskara B",
+    "items": [
+        {
+            "name": "Urdhva Vrikasana",
+            "id": "1"
+        },
+        {
+            "name": "Utkatasana",
+            "id": "2"
+        },
+        {
+            "name": "Uttanasana A",
+            "id": "3"
+        },
+        {
+            "name": "Uttanasana B",
+            "id": "4"
+        },
+        {
+            "name": "Chaturanga Dandasana",
+            "id": "5"
+        },
+        {
+            "name": "Urdhva Mukha Svanasana",
+            "id": "6"
+        },
+        {
+            "name": "Adho Mukha Svanasana",
+            "id": "7"
+        },
+        {
+            "name": "Virabhadrasana A",
+            "id": "8"
+        },
+        {
+            "name": "Chaturanga Dandasana",
+            "id": "9"
+        },
+        {
+            "name": "Urdhva Mukha Svanasana",
+            "id": "10"
+        },
+        {
+            "name": "Adho Mukha Svanasana",
+            "id": "11"
+        },
+        {
+            "name": "Virabhadrasana A",
+            "id": "12"
+        },
+        {
+            "name": "Chaturanga Dandasana",
+            "id": "13"
+        },
+        {
+            "name": "Urdhva Mukha Svanasana",
+            "id": "14"
+        },
+        {
+            "name": "Adho Mukha Svanasana",
+            "id": "15"
+        },
+        {
+            "name": "Uttanasana B",
+            "id": "16"
+        },
+        {
+            "name": "Uttanasana A",
+            "id": "17"
+        },
+        {
+            "name": "Utkatasana",
+            "id": "18"
+        },
+        {
+            "name": "Samasthiti",
+            "id": "19"
+        }
+    ]
+}
