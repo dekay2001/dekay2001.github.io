@@ -6,9 +6,24 @@
             "ref": "/assets/data/yoga/suryanamaskara-a.json"
         },
         {
+            "id": "suryanamaskara-b",
+            "name": "Suryanamaskara B",
+            "ref": "/assets/data/yoga/suryanamaskara-b.json"
+        },
+        {
             "id": "fundamental-basic-sequence",
             "name": "Fundamental Basic Sequence",
             "ref": "/assets/data/yoga/fundamental-basic-sequence.json"
+        },
+        {
+            "id": "primary-series",
+            "name": "Primary Series",
+            "ref": "/assets/data/yoga/primary-series.json"
+        },
+        {
+            "id": "finishing-sequence",
+            "name": "Finishing Sequence",
+            "ref": "/assets/data/yoga/finishing-sequence.json"
         }
     ]
 }
