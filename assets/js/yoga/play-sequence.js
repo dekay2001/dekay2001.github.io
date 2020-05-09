@@ -71,8 +71,8 @@ class InteractiveAshtangaResources {
         const button = document.createElement("button");
         button.innerText = interactiveYogaSequence.name;
         button.id = interactiveYogaSequence.id;
-        button.addEventListener("click", () => {
-            this.playSequence(`..${interactiveYogaSequence.ref}`);
+        button.addEventListener("click", async () => {
+            await this.playSequence(`..${interactiveYogaSequence.ref}`);
         });
         return button;
     }
