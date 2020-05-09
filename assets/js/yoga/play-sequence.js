@@ -23,7 +23,7 @@ class application {
     }
 
     async start() {
-        const ashtangaResources = InteractiveAshtangaResources();
+        const ashtangaResources = new InteractiveAshtangaResources();
         ashtangaResources.showInteractiveSequences(this.displayInDivId);
         // const yogaSequence = await this.getYogaSequenceCollection();
     }
@@ -60,7 +60,7 @@ class InteractiveAshtangaResources {
     showInteractiveSequences(displayInElementId) {
         const interactiveYogaSequences = this.getInteractiveYogaSequences();
         const displayable = this.getDisplayable(interactiveYogaSequences);
-        const textDisplayer = TextDisplayer(displayInElementId);
+        const textDisplayer = new TextDisplayer(displayInElementId);
         textDisplayer.display(displayable);
         // ToDo:  implement class to bind the displayables to the buttons now displayed.
     }
@@ -76,7 +76,7 @@ class InteractiveAshtangaResources {
     }
 
     getDisplayable(interactiveYogaSequences) {
-        return Displayable(this.getDisplayableContent(interactiveYogaSequences));
+        return new Displayable(this.getDisplayableContent(interactiveYogaSequences));
     }
 
     getDisplayableContent(interactiveYogaSequences) {
