@@ -64,7 +64,7 @@ class InteractiveAshtangaResources {
 
     addInteractiveButtons(displayInElementId, interactiveYogaSequences) {
         const displayInElement = document.getElementById(displayInElementId);
-        buttons = this.getInteractiveButtons(interactiveYogaSequences);
+        const buttons = this.getInteractiveButtons(interactiveYogaSequences);
         buttons.forEach((button) => {
             displayInElement.appendChild(button);
         });
