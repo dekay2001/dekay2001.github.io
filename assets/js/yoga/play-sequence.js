@@ -58,11 +58,11 @@ class InteractiveAshtangaResources {
 
     async showInteractiveSequences(displayInElementId) {
         const interactiveYogaSequences = await this.getInteractiveYogaSequences();
-        this.addInteractiveButtons(displayInElementId);
+        this.addInteractiveButtons(displayInElementId, interactiveYogaSequences);
         // ToDo:  implement class to bind the displayables to the buttons now displayed.
     }
 
-    addInteractiveButtons(displayInElementId) {
+    addInteractiveButtons(displayInElementId, interactiveYogaSequences) {
         const displayInElement = document.getElementById(displayInElementId);
         buttons = this.getInteractiveButtons(interactiveYogaSequences);
         buttons.forEach((button) => {
