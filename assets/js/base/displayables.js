@@ -54,7 +54,7 @@ export class DisplayablePlayer {
     }
 }
 
-class Displayable {
+export class Displayable {
     constructor(content) {
         this.content = content;
         this.text = content.text;

@@ -1,0 +1,14 @@
+{
+    "items": [
+        {
+            "id": "suryanamaskara-a",
+            "name": "Suryanamaskara A",
+            "ref": "/assets/data/yoga/suryanamaskara-a.json"
+        },
+        {
+            "id": "fundamental-basic-sequence",
+            "name": "Fundamental Basic Sequence",
+            "ref": "/assets/data/yoga/fundamental-basic-sequence.json"
+        }
+    ]
+}
