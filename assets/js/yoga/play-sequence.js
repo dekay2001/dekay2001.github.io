@@ -88,7 +88,7 @@ class InteractiveAshtangaResources {
 
     getInteractiveButtonsHtml(interactiveYogaSequences) {
         let buttonHtml = '';
-        interactiveYogaSequences.forEach(interactiveYogaSequence => {
+        interactiveYogaSequences.forEach((interactiveYogaSequence) => {
             buttonHtml += this.getInteractiveButtonHtml(interactiveYogaSequence);
         });
         return buttonHtml;
