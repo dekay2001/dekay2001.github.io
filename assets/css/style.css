@@ -97,6 +97,9 @@ button {
     font-family: 'Cinzel', arial, verdana, sans-serif;
     color: #999999;
     cursor: pointer;
+    display: block;
+    margin: auto;
+    font-size: larger;
 }
 
 /*Header stuff*/
