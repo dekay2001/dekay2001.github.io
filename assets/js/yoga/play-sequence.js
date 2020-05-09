@@ -70,7 +70,7 @@ class InteractiveAshtangaResources {
         await interactiveResources.fetchAll();
         const interactiveYogaSequences = [];
         interactiveResources.data.items.forEach((interactiveResource) => {
-            interactiveYogaSequence.push(interactiveResource);
+            interactiveYogaSequences.push(interactiveResource);
         });
         return interactiveYogaSequences;
     }
@@ -88,14 +88,14 @@ class InteractiveAshtangaResources {
 
     getInteractiveButtonsHtml(interactiveYogaSequences) {
         let buttonHtml = '';
-        interactiveYogaSequences.forEach((interactiveSequence) => {
+        interactiveYogaSequences.forEach((interactiveYogaSequence) => {
             buttonHtml += this.getInteractiveButtonHtml(interactiveYogaSequence);
         });
         return buttonHtml;
     }
 
     getInteractiveButtonHtml(interactiveYogaSequence) {
-        return `<button id="${interactiveResource.id}">${interactiveResource.name}</button>`;
+        return `<button id="${interactiveYogaSequence.id}">${interactiveYogaSequence.name}</button>`;
     }
 }
 
