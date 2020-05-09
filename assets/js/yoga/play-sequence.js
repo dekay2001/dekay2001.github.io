@@ -19,22 +19,21 @@ class application {
         this.secondsInterval = config.secondsInterval;
         this.resourceUrl = config.resourceUrl;
         this.displayInDivId = config.displayInDivId;
-        this.titleDivId = config.titleDivId;
+        this.yogaSequencePlayer = new YogaSequencePlayer(config.titleDivId, config.displayInDivId);
     }
 
     async start() {
-        const ashtangaResources = new InteractiveAshtangaResources();
+        const ashtangaResources = new InteractiveAshtangaResources(this.yogaSequencePlayer);
         await ashtangaResources.showInteractiveSequences(this.displayInDivId);
-        // const yogaSequence = await this.getYogaSequenceCollection();
     }
 
 
 }
 
 class InteractiveAshtangaResources {
-    constructor() {
+    constructor(yogaSequencePlayer) {
         this.interactiveYogaSequences = null;
-        this.yogaSequencePlayer = new YogaSequencePlayer();
+        this.yogaSequencePlayer = yogaSequencePlayer;
     }
 
     async showInteractiveSequences(displayInElementId) {
@@ -92,6 +91,10 @@ class InteractiveAshtangaResources {
 }
 
 class YogaSequencePlayer {
+    constructor(titleDivId, displayInDivId) {
+        this.titleDivId = titleDivId;
+        this.displayInDivId = displayInDivId;
+    }
 
     displaySequence(yogaSequence) {
         this.displaySequenceTitle(yogaSequence);
