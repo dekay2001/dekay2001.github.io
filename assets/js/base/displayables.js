@@ -49,6 +49,8 @@ export class DisplayablePlayer {
     }
 
     display(displayable, seconds) {
+        console.log(`displayableplayer.display(${seconds})`);
+        console.log(displayable);
         this.displayer.display(displayable);
         this.play(seconds);
     }
