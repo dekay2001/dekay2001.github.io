@@ -24,7 +24,7 @@ class application {
 
     async start() {
         const ashtangaResources = new InteractiveAshtangaResources();
-        ashtangaResources.showInteractiveSequences(this.displayInDivId);
+        await ashtangaResources.showInteractiveSequences(this.displayInDivId);
         // const yogaSequence = await this.getYogaSequenceCollection();
     }
 
@@ -57,8 +57,8 @@ class InteractiveAshtangaResources {
 
     }
 
-    showInteractiveSequences(displayInElementId) {
-        const interactiveYogaSequences = this.getInteractiveYogaSequences();
+    async showInteractiveSequences(displayInElementId) {
+        const interactiveYogaSequences = await this.getInteractiveYogaSequences();
         const displayable = this.getDisplayable(interactiveYogaSequences);
         const textDisplayer = new TextDisplayer(displayInElementId);
         textDisplayer.display(displayable);
