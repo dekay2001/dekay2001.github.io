@@ -16,18 +16,19 @@ export async function start_app(config) {
 class application {
     constructor(config) {
         this.config = config;
-        this.secondsInterval = config.secondsInterval;
         this.resourceUrl = config.resourceUrl;
         this.displayInDivId = config.displayInDivId;
-        this.yogaSequencePlayer = new YogaSequencePlayer(config.titleDivId, config.displayInDivId);
+        this.yogaSequencePlayer = new YogaSequencePlayer(
+            config.titleDivId,
+            config.displayInDivId,
+            config.secondsInterval
+        );
     }
 
     async start() {
         const ashtangaResources = new InteractiveAshtangaResources(this.yogaSequencePlayer);
         await ashtangaResources.showInteractiveSequences(this.displayInDivId);
     }
-
-
 }
 
 class InteractiveAshtangaResources {
@@ -91,9 +92,10 @@ class InteractiveAshtangaResources {
 }
 
 class YogaSequencePlayer {
-    constructor(titleDivId, displayInDivId) {
+    constructor(titleDivId, displayInDivId, secondsInterval) {
         this.titleDivId = titleDivId;
         this.displayInDivId = displayInDivId;
+        this.secondsInterval = secondsInterval;
     }
 
     displaySequence(yogaSequence) {

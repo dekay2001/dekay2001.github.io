@@ -27,7 +27,6 @@ a:hover {
   
 a:active {
     color: darkgoldenrod;
-    
 }
 
 picture:hover .child, picture:focus .child {
@@ -90,6 +89,16 @@ li {
     margin-bottom: 1em;
 }
 
+/*Buttons look like links*/
+button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: 'Cinzel', arial, verdana, sans-serif;
+    color: #999999;
+    cursor: pointer;
+}
+
 /*Header stuff*/
 nav a{
     display:block;
@@ -128,4 +137,4 @@ main div{
     padding-top: 50px;
     padding-bottom: 50px;
     font-family: 'Cinzel', arial, verdana, sans-serif;
-  }
+}
