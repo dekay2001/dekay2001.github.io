@@ -28,38 +28,18 @@ class application {
         // const yogaSequence = await this.getYogaSequenceCollection();
     }
 
-    displaySequence(yogaSequence) {
-        this.displaySequenceTitle(yogaSequence);
-        this.play(yogaSequence);
-    }
 
-    displaySequenceTitle(yogaSequence) {
-        const titleDisplayer = new TextDisplayer(this.titleDivId);
-        titleDisplayer.display(yogaSequence);
-    }
-
-    async getYogaSequenceCollection() {
-        const resourceCollection = get_resource_collection(this.resourceUrl);
-        await resourceCollection.fetchAll();
-        const yogaSequenceCollection = new YogaSequenceCollection(resourceCollection.data);
-        return yogaSequenceCollection;
-    }
-
-    play(yogaSequenceCollection) {
-        const displayer = new TextDisplayer(this.displayInDivId);
-        const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
-        player.play(this.secondsInterval);
-    }
 }
 
 class InteractiveAshtangaResources {
     constructor() {
+        this.interactiveYogaSequences = null;
+        this.yogaSequencePlayer = new YogaSequencePlayer();
     }
 
     async showInteractiveSequences(displayInElementId) {
-        const interactiveYogaSequences = await this.getInteractiveYogaSequences();
-        this.addInteractiveButtons(displayInElementId, interactiveYogaSequences);
-        // ToDo:  implement class to bind the displayables to the buttons now displayed.
+        this.interactiveYogaSequences = await this.getInteractiveYogaSequences();
+        this.addInteractiveButtons(displayInElementId, this.interactiveYogaSequences);
     }
 
     addInteractiveButtons(displayInElementId, interactiveYogaSequences) {
@@ -92,7 +72,41 @@ class InteractiveAshtangaResources {
         const button = document.createElement("button");
         button.innerText = interactiveYogaSequence.name;
         button.id = interactiveYogaSequence.id;
+        button.addEventListener("click", () => {
+            this.playSequence(`..${interactiveYogaSequence.ref}`);
+        });
         return button;
+    }
+
+    async playSequence(resourceUrl) {
+        const yogaSequence = await this.getYogaSequenceCollection(resourceUrl);
+        this.yogaSequencePlayer.displaySequence(yogaSequence);
+    }
+
+    async getYogaSequenceCollection(resourceUrl) {
+        const resourceCollection = get_resource_collection(resourceUrl);
+        await resourceCollection.fetchAll();
+        const yogaSequenceCollection = new YogaSequenceCollection(resourceCollection.data);
+        return yogaSequenceCollection;
+    }
+}
+
+class YogaSequencePlayer {
+
+    displaySequence(yogaSequence) {
+        this.displaySequenceTitle(yogaSequence);
+        this.play(yogaSequence);
+    }
+
+    displaySequenceTitle(yogaSequence) {
+        const titleDisplayer = new TextDisplayer(this.titleDivId);
+        titleDisplayer.display(yogaSequence);
+    }
+
+    play(yogaSequenceCollection) {
+        const displayer = new TextDisplayer(this.displayInDivId);
+        const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
+        player.play(this.secondsInterval);
     }
 }
 
@@ -109,28 +123,3 @@ class YogaSequenceCollection extends DisplayableCollection {
         return sourceData;
     }
 }
-
-/*
-TODO:  As an ashtanga page I want to display a list of the resource names so that when
-I can click the resource to start playing the sequences.
-*/
-// class HtmlAsText {
-//     constructor() {
-//         this.content = 'some content';
-//         this.buttonId = "next";
-//         this.text = `<button id="next">→</button>`
-//     }
-
-//     addEventListener() {
-//         const button = document.getElementById(this.buttonId);
-//         button.addEventListener("click", () => {
-
-//         });
-//     }
-// }
-
-
-// document.getElementById("myBtn").addEventListener("click", function(){
-//     document.getElementById("demo").innerHTML = "Hello World";
-//   });
-
