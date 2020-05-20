@@ -21,6 +21,11 @@
             "ref": "/assets/data/yoga/primary-series.json"
         },
         {
+            "id": "intermediate-series",
+            "name": "Intermediate Series",
+            "ref": "/assets/data/yoga/intermediate-series.json"
+        },
+        {
             "id": "finishing-sequence",
             "name": "Finishing Sequence",
             "ref": "/assets/data/yoga/finishing-sequence.json"

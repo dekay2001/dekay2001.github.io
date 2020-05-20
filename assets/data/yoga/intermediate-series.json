@@ -1,0 +1,257 @@
+{
+    "title": "Intermediate Series",
+    "items": [
+        {
+            "id": "1",
+            "name": "Pashasana"
+        },
+        {
+            "id": "2",
+            "name": "Krounchasana"
+        },
+        {
+            "id": "3",
+            "name": "Shalabhasana A"
+        },
+        {
+            "id": "4",
+            "name": "Shalabhasana B"
+        },
+        {
+            "id": "5",
+            "name": "Bhekasana"
+        },
+        {
+            "id": "6",
+            "name": "Dhanurasana"
+        },
+        {
+            "id": "7",
+            "name": "Parshva Dhanurasana"
+        },
+        {
+            "id": "8",
+            "name": "Dhanurasana Vinyasa Out"
+        },
+        {
+            "id": "9",
+            "name": "Ushtrasana"
+        },
+        {
+            "id": "10",
+            "name": "Laghu-Vajrasana"
+        },
+        {
+            "id": "11",
+            "name": "Laghu-Vajrasana Vinyasa Out"
+        },
+        {
+            "id": "12",
+            "name": "Laghu-Vajrasana Vinyasa Out 2"
+        },
+        {
+            "id": "13",
+            "name": "Kapotasana Vinyasa In"
+        },
+        {
+            "id": "14",
+            "name": "Kapotasana Vinyasa In 2"
+        },
+        {
+            "id": "15",
+            "name": "Kapotasana A"
+        },
+        {
+            "id": "16",
+            "name": "Kapotasana B Vinyasa In"
+        },
+        {
+            "id": "17",
+            "name": "Kapatasana B"
+        },
+        {
+            "id": "18",
+            "name": "Bharadvajasana"
+        },
+        {
+            "id": "19",
+            "name": "Supta Vajrasana"
+        },
+        {
+            "id": "20",
+            "name": "Supta Vajrasana Vinyasa Out"
+        },
+        {
+            "id": "21",
+            "name": "Bakasana A"
+        },
+        {
+            "id": "22",
+            "name": "Bakasana B Vinyasa In"
+        },
+        {
+            "id": "23",
+            "name": "Bharadvajasana"
+        },
+        {
+            "id": "24",
+            "name": "Ardha Matsyendrasana"
+        },
+        {
+            "id": "25",
+            "name": "Eka-Pada-Shirshasana Vinyasa In"
+        },
+        {
+            "id": "26",
+            "name": "Eka-Pada-Shirshasana"
+        },
+        {
+            "id": "27",
+            "name": "Eka-Pada-Shirshasana Vinyasa Out"
+        },
+        {
+            "id": "28",
+            "name": "Dvi-Pada-Shirshasana"
+        },
+        {
+            "id": "29",
+            "name": "Dvi-Pada-Shirshasana Vinyasasa out"
+        },
+        {
+            "id": "30",
+            "name": "Yoga-Nidrasana"
+        },
+        {
+            "id": "31",
+            "name": "Tittibhasana A "
+        },
+        {
+            "id": "32",
+            "name": "Tittibhasana B"
+        },
+        {
+            "id": "33",
+            "name": "Tittibhasana 5 steps forward"
+        },
+        {
+            "id": "34",
+            "name": "Tittibhasana 5 steps backward"
+        },
+        {
+            "id": "35",
+            "name": "Tittibhasana C"
+        },
+        {
+            "id": "36",
+            "name": "Pincha Mayurasana"
+        },
+        {
+            "id": "37",
+            "name": "Karandavasana Vinyasa In"
+        },
+        {
+            "id": "38",
+            "name": "Karandavasana"
+        },
+        {
+            "id": "39",
+            "name": "Karandavasana Vinyasa Out"
+        },
+        {
+            "id": "40",
+            "name": "Mayurasana"
+        },
+        {
+            "id": "41",
+            "name": "Mayurasana Vinyasa Out"
+        },
+        {
+            "id": "42",
+            "name": "Mayurasana Vinyasa Out 2"
+        },
+        {
+            "id": "43",
+            "name": "Mayurasana Vinyasa Out 3"
+        },
+        {
+            "id": "44",
+            "name": "Nakrasana"
+        },
+        {
+            "id": "45",
+            "name": "Vatayanasana Vinyasa In"
+        },
+        {
+            "id": "46",
+            "name": "Vatayanasana Vinyasa In 2"
+        },
+        {
+            "id": "47",
+            "name": "Vatayanasana Vinyasa In 3"
+        },
+        {
+            "id": "48",
+            "name": "Vatayanasana Vinyasa In 4"
+        },
+        {
+            "id": "49",
+            "name": "Vatayanasana Vinyasa In 5"
+        },
+        {
+            "id": "50",
+            "name": "Vatayanasana Vinyasa In 6 "
+        },
+        {
+            "id": "51",
+            "name": "Vatayanasana"
+        },
+        {
+            "id": "52",
+            "name": "Parighaasana"
+        },
+        {
+            "id": "53",
+            "name": "Gomukhasana A "
+        },
+        {
+            "id": "54",
+            "name": "Gomukhasana B"
+        },
+        {
+            "id": "55",
+            "name": "Supta Urdhva Pada Vajrasana"
+        },
+        {
+            "id": "56",
+            "name": "Mukta Hasta Shirshasana A"
+        },
+        {
+            "id": "57",
+            "name": "Mukta Hasta Shirshasana B"
+        },
+        {
+            "id": "58",
+            "name": "Mukta Hasta Shirshasana C"
+        },
+        {
+            "id": "59",
+            "name": "Baddha Hasta Shirshasana A"
+        },
+        {
+            "id": "6",
+            "name": "Baddha Hasta Shirshasana B"
+        },
+        {
+            "id": "61",
+            "name": "Baddha Hasta Shirshasana C"
+        },
+        {
+            "id": "62",
+            "name": "Baddha Hasta Shirshasana D"
+        },
+        {
+            "id": "63",
+            "name": "Paschimottanasana"
+        }
+    ]
+}
