@@ -40,7 +40,8 @@
             <!-- This loops through the paginated posts -->
             <ul>
                 {% for post in paginator.posts %}
-                <li><a class="postlink" href="{{ post.url }}">{{ post.title }}</a></li>
+                <li><a class="postlink" href="{{ post.url }}"><span class="post-title">{{ post.title }}</span><span
+                            class="post-date">{{ post.date }}</span></a></li>
                 {% endfor %}
             </ul>
 

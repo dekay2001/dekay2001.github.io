@@ -29,6 +29,10 @@ a:active {
     color: darkgoldenrod;
 }
 
+.post-title:hover ~ .post-date {
+    display: block;
+}
+
 picture:hover .child, picture:focus .child {
     -ms-transform: scale(1.2);
     -moz-transform: scale(1.2);
