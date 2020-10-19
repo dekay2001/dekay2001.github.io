@@ -30,11 +30,14 @@ a:active {
 }
 
 .post-date {
-    display: none;
+    visibility:hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.1s linear;
 }
 
 .post-title:hover ~ .post-date {
-    display: inline;
+    visibility: visible;
+    opacity: 1;
 }
 
 picture:hover .child, picture:focus .child {
