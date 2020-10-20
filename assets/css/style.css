@@ -30,6 +30,7 @@ a:active {
 }
 
 .post-date {
+    display: block;
     visibility:hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.1s linear;

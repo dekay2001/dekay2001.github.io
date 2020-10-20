@@ -42,7 +42,7 @@
                 {% for post in paginator.posts %}
                 <li><a class="postlink" href="{{ post.url }}">
                         <span class="post-title">{{ post.title }}</span>
-                        <span class="post-date">-{{ post.date | date: "%a. %b %d, %y" }}</span>
+                        <span class="post-date">{{ post.date | date: "%a. %b %d, %y" }}</span>
                     </a>
                 </li>
                 {% endfor %}
