@@ -3,79 +3,98 @@
     "items": [
         {
             "name": "Urdhva Vrikasana",
-            "id": "1"
+            "id": "1",
+            "englishName": "Raised Arm Pose"
         },
         {
             "name": "Utkatasana",
-            "id": "2"
+            "id": "2",
+            "englishName": "Chair Pose"
         },
         {
             "name": "Uttanasana A",
-            "id": "3"
+            "id": "3",
+            "englishName": "Forward Bend Pose A"
         },
         {
             "name": "Uttanasana B",
-            "id": "4"
+            "id": "4",
+            "englishName": "Forward Bend Pose B"
         },
         {
             "name": "Chaturanga Dandasana",
-            "id": "5"
+            "id": "5",
+            "englishName": "Four Limbed Staff Pose"
         },
         {
             "name": "Urdhva Mukha Svanasana",
-            "id": "6"
+            "id": "6",
+            "englishName": "Upward Facing Dog"
         },
         {
             "name": "Adho Mukha Svanasana",
-            "id": "7"
+            "id": "7",
+            "englishName": "Downward Facing Dog"
         },
         {
             "name": "Virabhadrasana A",
-            "id": "8"
+            "id": "8",
+            "englishName": "Warrior 1"
         },
         {
             "name": "Chaturanga Dandasana",
-            "id": "9"
+            "id": "9",
+            "englishName": "Four Limbed Staff Pose"
         },
         {
             "name": "Urdhva Mukha Svanasana",
-            "id": "10"
+            "id": "10",
+            "englishName": "Upward Facing Dog"
         },
         {
             "name": "Adho Mukha Svanasana",
-            "id": "11"
+            "id": "11",
+            "englishName": "Downward Facing Dog"
         },
         {
             "name": "Virabhadrasana A",
-            "id": "12"
+            "id": "12",
+            "englishName": "Warrior 1"
         },
         {
             "name": "Chaturanga Dandasana",
-            "id": "13"
+            "id": "13",
+            "englishName": "Four Limbed Staff Pose"
         },
         {
             "name": "Urdhva Mukha Svanasana",
-            "id": "14"
+            "id": "14",
+            "englishName": "Updward Facing Dog"
         },
         {
             "name": "Adho Mukha Svanasana",
-            "id": "15"
+            "id": "15",
+            "englishName": "Downward Facing Dog"
         },
         {
             "name": "Uttanasana B",
-            "id": "16"
+            "id": "16",
+            "englishName": "Forward Bend B"
         },
         {
             "name": "Uttanasana A",
-            "id": "17"
+            "id": "17",
+            "englishName": "Forward Bend A"
         },
         {
             "name": "Utkatasana",
-            "id": "18"
+            "id": "18",
+            "englishName": "Chair Pose"
         },
         {
             "name": "Samasthiti",
-            "id": "19"
+            "id": "19",
+            "englishName": "Mountain Pose"
         }
     ]
 }

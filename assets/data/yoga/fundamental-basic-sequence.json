@@ -3,47 +3,58 @@
     "items": [
         {
             "id": "1",
-            "name": "Padangusthasana"
+            "name": "Padangusthasana",
+            "englishName": "Big Toe Pose"
         },
         {
             "id": "2",
-            "name": "PadaHastasana"
+            "name": "Padahastasana",
+            "englishName": "Hand to Feet Pose"
         },
         {
             "id": "3",
-            "name": "Utthita Trikonasana"
+            "name": "Utthita Trikonasana",
+            "englishName": "Triangle Pose"
         },
         {
             "id": "4",
-            "name": "Parivritta Trikonasana"
+            "name": "Parivritta Trikonasana",
+            "englishName": "Revolved Triangle Pose"
         },
         {
             "id": "5",
-            "name": "Utthita Parsvakonasana"
+            "name": "Utthita Parsvakonasana",
+            "englishName": "Extended Side Angle Pose"
         },
         {
             "id": "6",
-            "name": "Parivritta Parsvakonasana"
+            "name": "Parivritta Parsvakonasana",
+            "englishName": "Revolved Extended Side Angle Pose"
         },
         {
             "id": "7",
-            "name": "Prasariata Padottanasana A"
+            "name": "Prasarita Padottanasana A",
+            "englishName": "Wide Legged Standing Forward Bend A (handstand)"
         },
         {
             "id": "8",
-            "name": "Prasariata Padottanasana B"
+            "name": "Prasariata Padottanasana B",
+            "englishName": "Wided Legged Standing Forward Bend B (hands to waist)"
         },
         {
             "id": "9",
-            "name": "Prasariata Padottanasana C"
+            "name": "Prasariata Padottanasana C",
+            "englishName": "Wided Legged Standing Forward Bend C (hannds interlaced behind back)"
         },
         {
             "id": "10",
-            "name": "Prasariata Padottanasana D"
+            "name": "Prasariata Padottanasana D",
+            "englishName": "Wide Legged Standing Forward Bend D (fingers around toes)"
         },
         {
             "id": "11",
-            "name": "Parsvottanasa"
+            "name": "Parsvottanasana",
+            "englishName": "Pyramid Pose"
         }
     ]
 }
