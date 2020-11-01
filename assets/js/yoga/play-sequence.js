@@ -120,7 +120,7 @@ class YogaSequencePlayer {
 
 class YogaSequenceCollection {
     constructor(yogaSequenceData) {
-        this.text = yogaSequence.title;
+        this.text = yogaSequenceData.title;
         this.nextIndex = 0;
         this.data = yogaSequenceData;
     }
