@@ -131,7 +131,6 @@ class YogaPoseDisplayer {
     }
 
     display(yogaPoseData) {
-        const yogaPose = JSON.parse(yogaPoseData);
         this.setInnerText("name", yogaPose.name);
         this.setInnerText("englishName", yogaPose.englishName);
     }
