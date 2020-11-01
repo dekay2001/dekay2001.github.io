@@ -111,7 +111,8 @@ class YogaSequencePlayer {
     }
 
     play(yogaSequenceCollection) {
-        const displayer = new TextDisplayer(this.displayInDivId);
+        // Update style.css to handle hover (maybe) of the name to display the englishName
+        const displayer = new YogaPoseDisplayer(this.displayInDivId);
         const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
         player.play(this.secondsInterval);
     }
@@ -122,11 +123,20 @@ class YogaSequenceCollection extends DisplayableCollection {
         super(yogaSequenceData);
         this.text = yogaSequenceData.title; // The collection itself is Displayable
     }
+}
 
-    toDisplayableData(sourceData) {
-        sourceData.items.forEach(item => {
-            item.text = item.name;
-        });
-        return sourceData;
+class YogaPoseDisplayer {
+    constructor(displayInDivId) {
+        this.displayInDivId = displayInDivId;
+    }
+
+    display(yogaPoseData) {
+        this.setInnerText("name", yogaPoseData.name);
+        this.setInnerText("englishName", yogaPoseData.englishName);
+    }
+
+    setInnerText(elementId, text) {
+        const displayInElement = document.getElementById(elementId);
+        displayInElement.innerText = text;
     }
 }
