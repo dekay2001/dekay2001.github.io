@@ -158,7 +158,7 @@ class YogaPoseDisplayer {
     }
 
     displayGreetingText(greetingText) {
-        this.greetingDisplayer.display(greetingText);
+        this.greetingDisplayer.display({ text: greetingText });
     }
 
     display(yogaPoseData) {
