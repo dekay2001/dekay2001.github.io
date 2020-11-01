@@ -4,7 +4,8 @@ export function main(sequenceId) {
     const sequenceLinks = getSequenceLinks();
     const config = {
         secondsInterval: 5,
-        displayInDivId: "yoga-sequence",
+        displayInDivId: "yoga-sequences",
+        displayYogaPoseDivId: "yoga-pose",
         titleDivId: "sequence-title",
         resourceUrl: `..${sequenceLinks[sequenceId]}`
     }

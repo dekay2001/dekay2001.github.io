@@ -20,7 +20,7 @@ class application {
         this.displayInDivId = config.displayInDivId;
         this.yogaSequencePlayer = new YogaSequencePlayer(
             config.titleDivId,
-            config.displayInDivId,
+            config.displayYogaPoseDivId,
             config.secondsInterval
         );
     }
@@ -106,8 +106,8 @@ class YogaSequencePlayer {
     displaySequenceTitle(yogaSequence) {
         const titleDisplayer = new TextDisplayer(this.titleDivId);
         titleDisplayer.display(yogaSequence);
-        // const getReady = new TextDisplayer(this.displayInDivId);
-        // getReady.display({ text: 'Get ready...' });
+        const getReady = new TextDisplayer(this.displayInDivId);
+        getReady.display({ text: 'Get ready...' });
     }
 
     play(yogaSequenceCollection) {
@@ -131,8 +131,9 @@ class YogaPoseDisplayer {
     }
 
     display(yogaPoseData) {
-        this.setInnerText("name", yogaPoseData.name);
-        this.setInnerText("englishName", yogaPoseData.englishName);
+        const yogaPose = JSON.parse(yogaPoseData);
+        this.setInnerText("name", yogaPose.name);
+        this.setInnerText("englishName", yogaPose.englishName);
     }
 
     setInnerText(elementId, text) {
