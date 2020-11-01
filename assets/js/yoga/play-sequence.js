@@ -26,54 +26,54 @@ class application {
     }
 
     async start() {
-        const ashtangaResources = new InteractiveAshtangaResources(this.yogaSequencePlayer);
+        const ashtangaResources = new AshtangaController(this.yogaSequencePlayer);
         await ashtangaResources.showInteractiveSequences(this.ashtangaSequencesDivId);
     }
 }
 
-class InteractiveAshtangaResources {
+class AshtangaController {
     constructor(yogaSequencePlayer) {
-        this.interactiveYogaSequences = null;
+        this.allSeriesOptions = null;
         this.yogaSequencePlayer = yogaSequencePlayer;
     }
 
     async showInteractiveSequences(displayInElementId) {
-        this.interactiveYogaSequences = await this.getInteractiveYogaSequences();
-        this.addInteractiveButtons(displayInElementId, this.interactiveYogaSequences);
+        this.allSeriesOptions = await this.createSeriesOptions();
+        this.displaySeriesOptions(displayInElementId);
     }
 
-    addInteractiveButtons(displayInElementId, interactiveYogaSequences) {
+    displaySeriesOptions(displayInElementId) {
         const displayInElement = document.getElementById(displayInElementId);
-        const buttons = this.getInteractiveButtons(interactiveYogaSequences);
+        const buttons = this.createButtons();
         buttons.forEach((button) => {
             displayInElement.appendChild(button);
         });
     }
 
-    async getInteractiveYogaSequences() {
+    async createSeriesOptions() {
         const interactiveResources = get_resource_collection('../assets/data/yoga/interactive-series.json');
         await interactiveResources.fetchAll();
-        const interactiveYogaSequences = [];
+        const allSeriesOptions = [];
         interactiveResources.data.items.forEach((interactiveResource) => {
-            interactiveYogaSequences.push(interactiveResource);
+            allSeriesOptions.push(interactiveResource);
         });
-        return interactiveYogaSequences;
+        return allSeriesOptions;
     }
 
-    getInteractiveButtons(interactiveYogaSequences) {
+    createButtons() {
         const buttons = [];
-        interactiveYogaSequences.forEach((interactiveYogaSequence) => {
-            buttons.push(this.getInteractiveButton(interactiveYogaSequence));
+        this.allSeriesOptions.forEach((seriesOption) => {
+            buttons.push(this.createButton(seriesOption));
         });
         return buttons;
     }
 
-    getInteractiveButton(interactiveYogaSequence) {
+    createButton(seriesOption) {
         const button = document.createElement("button");
-        button.innerText = interactiveYogaSequence.name;
-        button.id = interactiveYogaSequence.id;
+        button.innerText = seriesOption.name;
+        button.id = seriesOption.id;
         button.addEventListener("click", async () => {
-            await this.playSequence(`..${interactiveYogaSequence.ref}`);
+            await this.playSequence(`..${seriesOption.ref}`);
         });
         return button;
     }
@@ -141,33 +141,6 @@ class YogaPose {
         this.englishName = poseData.englishName;
     }
 }
-
-// class YogaSequenceCollection extends DisplayableCollection {
-//     constructor(yogaSequenceData) {
-//         super(yogaSequenceData);
-//         this.text = yogaSequenceData.title; // The collection itself is Displayable
-//     }
-// }
-
-// export class DisplayableCollection {
-//     constructor(sourceData) {
-//         this.data = this.toDisplayableData(sourceData);
-//         this.nextIndex = 0;
-//     }
-
-//     nextDisplayable() {
-//         this.nextIndex++;
-//         if (this.nextIndex <= this.data.items.length) {
-//             return new Displayable(this.data.items[this.nextIndex - 1]);
-//         }
-//         return null;
-//     }
-
-//     toDisplayableData(sourceData) {
-//         // Override on descendents to provide text property if it doesn't exist
-//         return sourceData;
-//     }
-// }
 
 
 class YogaPoseDisplayer {
