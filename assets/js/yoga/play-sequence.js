@@ -1,4 +1,4 @@
-import { Displayable, DisplayableCollection, DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
+import { DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
 export function getSequenceLinks() {
@@ -118,12 +118,57 @@ class YogaSequencePlayer {
     }
 }
 
-class YogaSequenceCollection extends DisplayableCollection {
+class YogaSequenceCollection {
     constructor(yogaSequenceData) {
-        super(yogaSequenceData);
-        this.text = yogaSequenceData.title; // The collection itself is Displayable
+        this.text = yogaSequence.title;
+        this.nextIndex = 0;
+        this.data = yogaSequenceData;
+    }
+
+    nextDisplayable() {
+        this.nextIndex++;
+        if (this.nextIndex <= this.data.items.length) {
+            return new YogaPose(this.data.items[this.nextIndex - 1]);
+        }
+        return null;
     }
 }
+
+
+class YogaPose {
+    constructor(poseData) {
+        this.name = poseData.name;
+        this.englishName = poseData.englishName;
+    }
+}
+
+// class YogaSequenceCollection extends DisplayableCollection {
+//     constructor(yogaSequenceData) {
+//         super(yogaSequenceData);
+//         this.text = yogaSequenceData.title; // The collection itself is Displayable
+//     }
+// }
+
+// export class DisplayableCollection {
+//     constructor(sourceData) {
+//         this.data = this.toDisplayableData(sourceData);
+//         this.nextIndex = 0;
+//     }
+
+//     nextDisplayable() {
+//         this.nextIndex++;
+//         if (this.nextIndex <= this.data.items.length) {
+//             return new Displayable(this.data.items[this.nextIndex - 1]);
+//         }
+//         return null;
+//     }
+
+//     toDisplayableData(sourceData) {
+//         // Override on descendents to provide text property if it doesn't exist
+//         return sourceData;
+//     }
+// }
+
 
 class YogaPoseDisplayer {
     constructor(displayInDivId) {
