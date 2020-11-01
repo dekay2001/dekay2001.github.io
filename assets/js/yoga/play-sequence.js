@@ -131,8 +131,8 @@ class YogaPoseDisplayer {
     }
 
     display(yogaPoseData) {
-        this.setInnerText("name", yogaPose.name);
-        this.setInnerText("englishName", yogaPose.englishName);
+        this.setInnerText("name", yogaPoseData.name);
+        this.setInnerText("englishName", yogaPoseData.englishName);
     }
 
     setInnerText(elementId, text) {
