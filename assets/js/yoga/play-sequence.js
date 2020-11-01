@@ -106,8 +106,8 @@ class YogaSequencePlayer {
     displaySequenceTitle(yogaSequence) {
         const titleDisplayer = new TextDisplayer(this.titleDivId);
         titleDisplayer.display(yogaSequence);
-        const getReady = new TextDisplayer("ashtanga-sequences");
-        getReady.display({ text: 'Get ready...' });
+        // const getReady = new TextDisplayer("ashtanga-sequences");
+        // getReady.display({ text: 'Get ready...' });
     }
 
     play(yogaSequenceCollection) {
@@ -146,11 +146,30 @@ class YogaPose {
 class YogaPoseDisplayer {
     constructor(displayInDivId) {
         this.displayInDivId = displayInDivId;
+        this.currentPoseData = null;
+        this.greetingDisplayer = new TextDisplayer("ashtanga-sequences");
+        this.displayGreetingText('Get ready...');
+    }
+
+    clearGreetingText() {
+        if (this.isFirstPose()) {
+            this.displayGreetingText('');
+        }
+    }
+
+    displayGreetingText(greetingText) {
+        this.greetingDisplayer.display(greetingText);
     }
 
     display(yogaPoseData) {
+        this.clearGreetingText();
+        this.currentPoseData = yogaPoseData;
         this.setInnerText("name", yogaPoseData.name);
         this.setInnerText("englishName", yogaPoseData.englishName);
+    }
+
+    isFirstPose() {
+        return this.currentPoseData == null;
     }
 
     setInnerText(elementId, text) {
