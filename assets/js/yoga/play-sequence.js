@@ -17,7 +17,7 @@ class application {
     constructor(config) {
         this.config = config;
         this.resourceUrl = config.resourceUrl;
-        this.displayInDivId = config.displayInDivId;
+        this.ashtangaSequencesDivId = config.ashtangaSequencesDivId;
         this.yogaSequencePlayer = new YogaSequencePlayer(
             config.titleDivId,
             config.displayYogaPoseDivId,
@@ -27,7 +27,7 @@ class application {
 
     async start() {
         const ashtangaResources = new InteractiveAshtangaResources(this.yogaSequencePlayer);
-        await ashtangaResources.showInteractiveSequences(this.displayInDivId);
+        await ashtangaResources.showInteractiveSequences(this.ashtangaSequencesDivId);
     }
 }
 
@@ -92,9 +92,9 @@ class InteractiveAshtangaResources {
 }
 
 class YogaSequencePlayer {
-    constructor(titleDivId, displayInDivId, secondsInterval) {
+    constructor(titleDivId, displayYogaPoseDivId, secondsInterval) {
         this.titleDivId = titleDivId;
-        this.displayInDivId = displayInDivId;
+        this.displayYogaPoseDivId = displayYogaPoseDivId;
         this.secondsInterval = secondsInterval;
     }
 
@@ -106,13 +106,13 @@ class YogaSequencePlayer {
     displaySequenceTitle(yogaSequence) {
         const titleDisplayer = new TextDisplayer(this.titleDivId);
         titleDisplayer.display(yogaSequence);
-        // const getReady = new TextDisplayer(this.displayInDivId);
-        // getReady.display({ text: 'Get ready...' });
+        const getReady = new TextDisplayer("ashtanga-sequences");
+        getReady.display({ text: 'Get ready...' });
     }
 
     play(yogaSequenceCollection) {
         // Update style.css to handle hover (maybe) of the name to display the englishName
-        const displayer = new YogaPoseDisplayer(this.displayInDivId);
+        const displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
         const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
         player.play(this.secondsInterval);
     }
