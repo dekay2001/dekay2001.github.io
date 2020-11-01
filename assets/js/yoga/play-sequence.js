@@ -106,8 +106,8 @@ class YogaSequencePlayer {
     displaySequenceTitle(yogaSequence) {
         const titleDisplayer = new TextDisplayer(this.titleDivId);
         titleDisplayer.display(yogaSequence);
-        const getReady = new TextDisplayer(this.displayInDivId);
-        getReady.display({ text: 'Get ready...' });
+        // const getReady = new TextDisplayer(this.displayInDivId);
+        // getReady.display({ text: 'Get ready...' });
     }
 
     play(yogaSequenceCollection) {
