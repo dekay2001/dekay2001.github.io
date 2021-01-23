@@ -26,8 +26,8 @@ class application {
     }
 
     async start() {
-        const ashtangaResources = new AshtangaController(this.yogaSequencePlayer);
-        await ashtangaResources.showInteractiveSequences(this.ashtangaSequencesDivId);
+        const controller = new AshtangaController(this.yogaSequencePlayer);
+        await controller.displayAllSeries(this.ashtangaSequencesDivId);
     }
 }
 
@@ -37,20 +37,20 @@ class AshtangaController {
         this.yogaSequencePlayer = yogaSequencePlayer;
     }
 
-    async showInteractiveSequences(displayInElementId) {
-        this.allSeriesOptions = await this.createSeriesOptions();
-        this.displaySeriesOptions(displayInElementId);
+    async displayAllSeries(displayInElementId) {
+        this.allSeriesOptions = await this._createSeriesOptions();
+        this._displaySeriesOptions(displayInElementId);
     }
 
-    displaySeriesOptions(displayInElementId) {
+    _displaySeriesOptions(displayInElementId) {
         const displayInElement = document.getElementById(displayInElementId);
-        const buttons = this.createButtons();
+        const buttons = this._createButtons();
         buttons.forEach((button) => {
             displayInElement.appendChild(button);
         });
     }
 
-    async createSeriesOptions() {
+    async _createSeriesOptions() {
         const interactiveResources = get_resource_collection('../assets/data/yoga/interactive-series.json');
         await interactiveResources.fetchAll();
         const allSeriesOptions = [];
@@ -60,30 +60,30 @@ class AshtangaController {
         return allSeriesOptions;
     }
 
-    createButtons() {
+    _createButtons() {
         const buttons = [];
         this.allSeriesOptions.forEach((seriesOption) => {
-            buttons.push(this.createButton(seriesOption));
+            buttons.push(this._createButton(seriesOption));
         });
         return buttons;
     }
 
-    createButton(seriesOption) {
+    _createButton(seriesOption) {
         const button = document.createElement("button");
         button.innerText = seriesOption.name;
         button.id = seriesOption.id;
         button.addEventListener("click", async () => {
-            await this.playSequence(`..${seriesOption.ref}`);
+            await this._playSequence(`..${seriesOption.ref}`);
         });
         return button;
     }
 
-    async playSequence(resourceUrl) {
-        const yogaSequence = await this.getYogaSequenceCollection(resourceUrl);
+    async _playSequence(resourceUrl) {
+        const yogaSequence = await this._getYogaSequenceCollection(resourceUrl);
         this.yogaSequencePlayer.displaySequence(yogaSequence);
     }
 
-    async getYogaSequenceCollection(resourceUrl) {
+    async _getYogaSequenceCollection(resourceUrl) {
         const resourceCollection = get_resource_collection(resourceUrl);
         await resourceCollection.fetchAll();
         const yogaSequenceCollection = new YogaSequenceCollection(resourceCollection.data);
@@ -99,19 +99,16 @@ class YogaSequencePlayer {
     }
 
     displaySequence(yogaSequence) {
-        this.displaySequenceTitle(yogaSequence);
-        this.play(yogaSequence);
+        this._displaySequenceTitle(yogaSequence);
+        this._play(yogaSequence);
     }
 
-    displaySequenceTitle(yogaSequence) {
+    _displaySequenceTitle(yogaSequence) {
         const titleDisplayer = new TextDisplayer(this.titleDivId);
         titleDisplayer.display(yogaSequence);
-        // const getReady = new TextDisplayer("ashtanga-sequences");
-        // getReady.display({ text: 'Get ready...' });
     }
 
-    play(yogaSequenceCollection) {
-        // Update style.css to handle hover (maybe) of the name to display the englishName
+    _play(yogaSequenceCollection) {
         const displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
         const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
         player.play(this.secondsInterval);
