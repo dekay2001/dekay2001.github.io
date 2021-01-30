@@ -42,6 +42,10 @@ class AshtangaController {
         this._displaySeriesOptions(displayInElementId);
     }
 
+    displayPrevious() {
+        this.yogaSequencePlayer.displayPrevious();
+    }
+
     _displaySeriesOptions(displayInElementId) {
         const displayInElement = document.getElementById(displayInElementId);
         const buttons = this._createButtons();
@@ -96,11 +100,40 @@ class YogaSequencePlayer {
         this.titleDivId = titleDivId;
         this.displayYogaPoseDivId = displayYogaPoseDivId;
         this.secondsInterval = secondsInterval;
+        this.displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
+        this.player = new DisplayablePlayer(yogaSequenceCollection, this.displayer);
     }
 
     displaySequence(yogaSequence) {
         this._displaySequenceTitle(yogaSequence);
         this._play(yogaSequence);
+        this._displayBackButton();
+    }
+
+    displayPrevious() {
+        this.player.displayPrevious();
+    }
+
+    _displayBackButton() {
+        // TODO:  Initialize the back button or make it displayble and bind it to displayPrevious().
+        // this.displayer.displayBackButton();
+        /*
+            <div style="width:50%;float:left">←</div>
+            <div style="style=width: 50%">→</div>
+        */
+        const displayInElement = document.getElementById("yoga-sequences");
+        const backButton = this._createBackButton();
+        displayInElement.appendChild();
+    }
+
+    _createBackButton() {
+        const button = document.createElement("button");
+        button.innerText = "←";
+        button.id = "previous-pose";
+        button.addEventListener("click", async () => {
+            this.displayPrevious();
+        });
+        return button;
     }
 
     _displaySequenceTitle(yogaSequence) {
@@ -109,9 +142,7 @@ class YogaSequencePlayer {
     }
 
     _play(yogaSequenceCollection) {
-        const displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
-        const player = new DisplayablePlayer(yogaSequenceCollection, displayer);
-        player.play(this.secondsInterval);
+        this.player.play(this.secondsInterval);
     }
 }
 
@@ -125,9 +156,21 @@ class YogaSequenceCollection {
     nextDisplayable() {
         this.nextIndex++;
         if (this.nextIndex <= this.data.items.length) {
-            return new YogaPose(this.data.items[this.nextIndex - 1]);
+            return new this._newYogaPose(this.nextIndex - 1]);
         }
         return null;
+    }
+
+    previousDisplayable() {
+        if (this.nextIndex > 0) {
+            this.nextIndex--;
+            return this._newYogaPose(this.nextIndex);
+        }
+        return null
+    }
+
+    _yogaPose(index) {
+        return new YogaPose(this.data.items[index]);
     }
 }
 
@@ -152,6 +195,10 @@ class YogaPoseDisplayer {
         if (this.isFirstPose()) {
             this.displayGreetingText('');
         }
+    }
+
+    displayBackButton() {
+        // TODO:  create the back button and return it so it can be found.
     }
 
     displayGreetingText(greetingText) {
