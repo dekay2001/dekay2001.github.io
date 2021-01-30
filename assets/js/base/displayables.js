@@ -61,8 +61,8 @@ export class DisplayablePlayer {
 
     displayPrevious() {
         const previousDisplayable = this.displayableCollection.previousDisplayable();
-        if (nextDisplayable !== null) {
-            this.displayer.display(displayable);
+        if (previousDisplayable !== null) {
+            this.displayer.display(previousDisplayable);
         }
     }
 
