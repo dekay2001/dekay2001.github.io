@@ -141,9 +141,9 @@ class YogaSequencePlayer {
     }
 
     _play(yogaSequenceCollection) {
-        this.player.play(this.secondsInterval);
         this.displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
         this.player = new DisplayablePlayer(yogaSequenceCollection, this.displayer);
+        this.player.play(this.secondsInterval);
     }
 }
 
