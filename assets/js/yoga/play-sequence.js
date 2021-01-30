@@ -100,8 +100,7 @@ class YogaSequencePlayer {
         this.titleDivId = titleDivId;
         this.displayYogaPoseDivId = displayYogaPoseDivId;
         this.secondsInterval = secondsInterval;
-        this.displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
-        this.player = new DisplayablePlayer(yogaSequenceCollection, this.displayer);
+        this.player = null;  // initialized in this.play
     }
 
     displaySequence(yogaSequence) {
@@ -143,6 +142,8 @@ class YogaSequencePlayer {
 
     _play(yogaSequenceCollection) {
         this.player.play(this.secondsInterval);
+        this.displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
+        this.player = new DisplayablePlayer(yogaSequenceCollection, this.displayer);
     }
 }
 
