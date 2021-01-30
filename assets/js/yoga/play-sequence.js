@@ -157,7 +157,7 @@ class YogaSequenceCollection {
     nextDisplayable() {
         this.nextIndex++;
         if (this.nextIndex <= this.data.items.length) {
-            return this._newYogaPose(this.nextIndex - 1);
+            return this._yogaPose(this.nextIndex - 1);
         }
         return null;
     }
@@ -165,7 +165,7 @@ class YogaSequenceCollection {
     previousDisplayable() {
         if (this.nextIndex > 0) {
             this.nextIndex--;
-            return this._newYogaPose(this.nextIndex);
+            return this._yogaPose(this.nextIndex);
         }
         return null
     }
