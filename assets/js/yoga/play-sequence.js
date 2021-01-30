@@ -122,7 +122,7 @@ class YogaSequencePlayer {
         */
         const displayInElement = document.getElementById("yoga-sequences");
         const backButton = this._createBackButton();
-        displayInElement.appendChild();
+        displayInElement.appendChild(backButton);
     }
 
     _createBackButton() {
