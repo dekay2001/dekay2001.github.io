@@ -1,33 +1,3 @@
-// export class DisplayableCollection {
-//     constructor(sourceData) {
-//         this.data = this.toDisplayableData(sourceData);
-//         this.nextIndex = 0;
-//     }
-
-//     nextDisplayable() {
-//         this.nextIndex++;
-//         if (this.nextIndex <= this.data.items.length) {
-//             return this._displayable(this.nextIndex - 1);
-//         }
-//         return null;
-//     }
-
-//     previousDisplayable() {
-//         if (this.nextIndex > 0) {
-//             this.nextIndex--;
-//             return this._displayable(this.nextIndex);
-//         }
-//     }
-
-//     toDisplayableData(sourceData) {
-//         // Override on descendents to provide text property if it doesn't exist
-//         return sourceData;
-//     }
-
-//     _displayable(index) {
-//         return new Displayable(this.data.items[index]);
-//     }
-// }
 
 export class TextDisplayer {
     constructor(elementId) {
