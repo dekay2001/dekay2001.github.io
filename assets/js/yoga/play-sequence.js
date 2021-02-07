@@ -150,14 +150,14 @@ class YogaSequencePlayer {
 class YogaSequenceCollection {
     constructor(yogaSequenceData) {
         this.text = yogaSequenceData.title;
-        this.nextIndex = 0;
+        this.nextIndex = -1;
         this.data = yogaSequenceData;
     }
 
     nextDisplayable() {
         this.nextIndex++;
-        if (this.nextIndex <= this.data.items.length) {
-            return this._yogaPose(this.nextIndex - 1);
+        if (this.nextIndex < this.data.items.length) {
+            return this._yogaPose(this.nextIndex);
         }
         return null;
     }
