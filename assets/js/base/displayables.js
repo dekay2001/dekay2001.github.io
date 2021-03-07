@@ -31,9 +31,7 @@ export class DisplayablePlayer {
 
     displayPrevious() {
         const previousDisplayable = this.displayableCollection.previousDisplayable();
-        if (previousDisplayable !== null) {
-            this._notifyListeners(previousDisplayable);
-        }
+        this._notifyListenersDisplayPrevious(previousDisplayable);
     }
 
     display(displayable, seconds) {
@@ -48,6 +46,12 @@ export class DisplayablePlayer {
     _notifyListeners(newDisplayable) {
         this._listeners.forEach(listener => {
             listener.display(newDisplayable);
+        });
+    }
+
+    _notifyListenersDisplayPrevious(previousDisplayable) {
+        this._listeners.forEach(listener => {
+            listener.displayPrevious(previousDisplayable);
         });
     }
 }

@@ -101,6 +101,7 @@ class YogaSequencePlayer {
         this.displayYogaPoseDivId = displayYogaPoseDivId;
         this.secondsInterval = secondsInterval;
         this.player = null;  // initialized in this.play
+        this._backButton = null;
     }
 
     displaySequence(yogaSequence) {
@@ -121,8 +122,8 @@ class YogaSequencePlayer {
             <div style="style=width: 50%">→</div>
         */
         const displayInElement = document.getElementById("yoga-sequences");
-        const backButton = this._createBackButton();
-        displayInElement.appendChild(backButton);
+        this._backButton = this._createBackButton();
+        displayInElement.appendChild(this._backButton);
     }
 
     _createBackButton() {
@@ -198,6 +199,12 @@ class YogaPoseDisplayer {
         this._currentPoseData = yogaPoseData;
         this._setInnerText("name", yogaPoseData.name);
         this._setInnerText("englishName", yogaPoseData.englishName);
+    }
+
+    displayPrevious(previousDisplayable) {
+        if (previousDisplayable !== null) {
+            this.display(previousDisplayable);
+        }
     }
 
     _clearGreetingText() {
