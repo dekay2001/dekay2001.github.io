@@ -186,38 +186,34 @@ class YogaPose {
 
 class YogaPoseDisplayer {
     constructor(displayInDivId) {
-        this.displayInDivId = displayInDivId;
-        this.currentPoseData = null;
-        this.greetingDisplayer = new TextDisplayer("ashtanga-sequences");
-        this.displayGreetingText('Get ready...');
-    }
-
-    clearGreetingText() {
-        if (this.isFirstPose()) {
-            this.displayGreetingText('');
-        }
-    }
-
-    displayBackButton() {
-        // TODO:  create the back button and return it so it can be found.
-    }
-
-    displayGreetingText(greetingText) {
-        this.greetingDisplayer.display({ text: greetingText });
+        // this.displayInDivId = displayInDivId; TODO: either eliminate displayInDivId or use it
+        this._currentPoseData = null;
+        this._greetingDisplayer = new TextDisplayer("ashtanga-sequences");
+        this._displayGreetingText('Get ready...');
     }
 
     display(yogaPoseData) {
-        this.clearGreetingText();
-        this.currentPoseData = yogaPoseData;
-        this.setInnerText("name", yogaPoseData.name);
-        this.setInnerText("englishName", yogaPoseData.englishName);
+        this._clearGreetingText();
+        this._currentPoseData = yogaPoseData;
+        this._setInnerText("name", yogaPoseData.name);
+        this._setInnerText("englishName", yogaPoseData.englishName);
     }
 
-    isFirstPose() {
-        return this.currentPoseData == null;
+    _clearGreetingText() {
+        if (this._isFirstPose()) {
+            this._displayGreetingText('');
+        }
     }
 
-    setInnerText(elementId, text) {
+    _displayGreetingText(greetingText) {
+        this._greetingDisplayer.display({ text: greetingText });
+    }
+
+    _isFirstPose() {
+        return this._currentPoseData == null;
+    }
+
+    _setInnerText(elementId, text) {
         const displayInElement = document.getElementById(elementId);
         displayInElement.innerText = text;
     }
