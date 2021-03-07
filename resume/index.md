@@ -8,11 +8,11 @@ tags: []
 
 
 # Professional Summary
-Innovative and highly skilled leader of developer teams with over fifteen years of experience, specializing in object
-oriented design and programming, database design, and software development. Utilizes research skills,
-excellent communication, and adoption of new technologies and programming languages to continually grow
-the department and foster a healthy team environment. Possesses extensive knowledge of the development
-process from gathering requirements, prioritization, feature design, build automation, test, and deploy while participating and providing the team with support to deliver production ready software on time with quality.
+Innovative and highly skilled leader of developer teams with over fifteen years of experience, specializing in  
+object oriented design and programming, database design, and software development. Utilizes research skills,  
+excellent communication, and adoption of new technologies and programming languages to continually grow  
+the department and foster a healthy team environment. Possesses extensive knowledge of the development  
+process from gathering requirements, prioritization, feature design, build automation, test, and deploy while   participating and providing the team with support to deliver production ready software on time with quality.  
 
 ## Technical Skills
 
