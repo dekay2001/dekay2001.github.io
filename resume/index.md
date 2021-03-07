@@ -19,36 +19,35 @@ process from gathering requirements, prioritization, feature design, build autom
 | Skill                                | Estimated Years Experience | Skill Level 1-10 |
 |--------------------------------------|----------------------------|------------------|
 | PowerBuilder 9, 10.5, 12, 2019       | 15                         | 10               |
-| SQL / Relational Database Designs    | 15                         | 9                |
-| Query Writing and Optimization       | 15                         | 9                |
+| SQL Query Writing and Optimization   | 15                         | 10               |
+| Relational Database Designs          | 15                         | 9                |
 | Object Oriented Design               | 15                         | 8                |
 | Sybase Adaptive Server Anywhere      | 15                         | 8                |
 | Python 2.7, 3+                       | 5                          | 8                |
 | UX / UI Design                       | 15                         | 8                |
 | Test Driven Development              | 4                          | 8                |
 | Agile Product Development            | 6                          | 8                |
-| Design Patterns                      | 15                         | 7                |
-| Behavior Driven Development          | 4                          | 7                |
-| SOLID Principles                     | 4                          | 7                |
+| Design Patterns                      | 15                         | 8                |
+| SOLID Principles                     | 4                          | 8                |
 | HTML / CSS                           | 6                          | 7                |
+| Behavior Driven Development          | 4                          | 7                |
 | REST API Design and Implementation   | 2                          | 7                |
-| Business Intelligence (SiSense)      | 3                          | 6                |
-| PostgreSQL                           | 2                          | 6                |
-| JavaScript                           | 3                          | 6                |
-| AWS Lambda                           | 4                          | 6                |
-| AWS S3                               | 4                          | 6                |
-| AWS EC2                              | 4                          | 6                |
-| AWS SQS                              | 4                          | 6                |
-| AWS API Gateway                      | 4                          | 6                |
-| TypeScript                           | 2                          | 5                |
-| Bootstrap.Vue                        | 2                          | 5                |
-| SiSense Business Intelligence        | 3                          | 4                |
-| Vue.js, Vuex                         | 2                          | 4                |
-| JQuery                               | 2                          | 3                |
-| Docker                               | 2                          | 3                |
+| PostgreSQL                           | 2                          | 7                |
+| Business Intelligence (SiSense)      | 3                          | 7                |
+| JavaScript                           | 3                          | 7                |
+| AWS Lambda                           | 4                          | 7                |
+| AWS S3                               | 4                          | 7                |
+| AWS EC2                              | 4                          | 7                |
+| AWS SQS                              | 4                          | 7                |
+| AWS API Gateway                      | 4                          | 7                |
+| Bootstrap.Vue                        | 2                          | 7                |
+| TypeScript                           | 2                          | 6                |
+| Vue.js, Vuex                         | 2                          | 6                |
+| JQuery                               | 2                          | 4                |
+| Docker                               | 2                          | 4                |
+| Jenkins CICD                         | 2                          | 4                |
+| AWS Cognito                          | < 1                        | 4                |
 | C# / .NET                            | < 1                        | 3                |
 | Java                                 | 1                          | 3                |
-| Jenkins CICD                         | 2                          | 3                |
-| AWS Cognito                          | < 1                        | 3                |
 | Android Development                  | < 1                        | 2                |
 | C / C++                              | < 1                        | 1                |
