@@ -11,9 +11,9 @@ export class TextDisplayer {
 }
 
 export class DisplayablePlayer {
-    constructor(displayableCollection, displayer) {
+    constructor(displayableCollection) {
         this.displayableCollection = displayableCollection;
-        this.displayer = displayer;
+        this._listeners = [];
     }
 
     play(seconds) {
@@ -32,13 +32,23 @@ export class DisplayablePlayer {
     displayPrevious() {
         const previousDisplayable = this.displayableCollection.previousDisplayable();
         if (previousDisplayable !== null) {
-            this.displayer.display(previousDisplayable);
+            this._notifyListeners(previousDisplayable);
         }
     }
 
     display(displayable, seconds) {
-        this.displayer.display(displayable);
+        this._notifyListeners(displayable);
         this.play(seconds);
+    }
+
+    register(listener) {
+        this._listeners[this._listeners.length] = listener;
+    }
+
+    _notifyListeners(newDisplayable) {
+        this._listeners.forEach(listener => {
+            listener.display(newDisplayable);
+        });
     }
 }
 
