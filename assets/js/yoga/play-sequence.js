@@ -123,7 +123,7 @@ class YogaSequencePlayer {
         */
         const displayInElement = document.getElementById("yoga-sequences");
         this._backButton = new PlayerButton("previous-pose", "←", this.player.displayPrevious);
-        displayInElement.appendChild(this._backButton);
+        displayInElement.appendChild(this._backButton.playerButton);
     }
 
     _displaySequenceTitle(yogaSequence) {
