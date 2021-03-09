@@ -122,7 +122,7 @@ class YogaSequencePlayer {
             <div style="style=width: 50%">→</div>
         */
         const displayInElement = document.getElementById("yoga-sequences");
-        this._backButton = PlayerButton("previous-pose", "←", this.player.displayPrevious);
+        this._backButton = new PlayerButton("previous-pose", "←", this.player.displayPrevious);
         displayInElement.appendChild(this._backButton);
     }
 
