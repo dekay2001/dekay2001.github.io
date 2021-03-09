@@ -122,7 +122,8 @@ class YogaSequencePlayer {
             <div style="style=width: 50%">→</div>
         */
         const displayInElement = document.getElementById("yoga-sequences");
-        this._backButton = new PlayerButton("previous-pose", "←", this.player.displayPrevious);
+        // this._backButton = new PlayerButton("previous-pose", "←", this.player.displayPrevious);
+        this._backButton = new PreviousPoseButton("previous-pose", "←", this.player);
         displayInElement.appendChild(this._backButton.playerButton);
     }
 
@@ -139,16 +140,27 @@ class YogaSequencePlayer {
     }
 }
 
-class PlayerButton {
-    constructor(id, text, clickFn) {
+class PreviousPoseButton {
+    constructor(id, text, player) {
         this.playerButton = document.createElement("button");
         this.playerButton.innerText = text;
         this.playerButton.id = id;
         this.playerButton.addEventListener("click", async () => {
-            clickFn();
+            player.previousDisplayable();
         });
     }
 }
+
+// class PlayerButton {
+//     constructor(id, text, clickFn) {
+//         this.playerButton = document.createElement("button");
+//         this.playerButton.innerText = text;
+//         this.playerButton.id = id;
+//         this.playerButton.addEventListener("click", async () => {
+//             clickFn();
+//         });
+//     }
+// }
 
 class YogaSequenceCollection {
     constructor(yogaSequenceData) {
