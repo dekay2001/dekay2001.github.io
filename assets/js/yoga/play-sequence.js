@@ -145,8 +145,9 @@ class PreviousPoseButton {
         this.playerButton = document.createElement("button");
         this.playerButton.innerText = text;
         this.playerButton.id = id;
+        this.player = player;
         this.playerButton.addEventListener("click", async () => {
-            player.previousDisplayable();
+            this.player.previousDisplayable();
         });
     }
 }
