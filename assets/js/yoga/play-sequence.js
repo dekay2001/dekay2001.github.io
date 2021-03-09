@@ -95,6 +95,10 @@ class AshtangaController {
     }
 }
 
+// TODO: New Listener class to handle back button and register an
+// instance of the new listener class this.player.register(this.backButtonDisplayer);
+// The new BackButtonDisplayer should respond to displayPrevious(previousDisplayable)
+// detecting it is the first and hide the button.
 class YogaSequencePlayer {
     constructor(titleDivId, displayYogaPoseDivId, secondsInterval) {
         this.titleDivId = titleDivId;
@@ -110,10 +114,6 @@ class YogaSequencePlayer {
         this._displayBackButton();
     }
 
-    displayPrevious() {
-        this.player.displayPrevious();
-    }
-
     _displayBackButton() {
         // TODO:  Initialize the back button or make it displayble and bind it to displayPrevious().
         // this.displayer.displayBackButton();
@@ -122,18 +122,8 @@ class YogaSequencePlayer {
             <div style="style=width: 50%">→</div>
         */
         const displayInElement = document.getElementById("yoga-sequences");
-        this._backButton = this._createBackButton();
+        this._backButton = PlayerButton("previous-pose", "←", this.player.displayPrevious);
         displayInElement.appendChild(this._backButton);
-    }
-
-    _createBackButton() {
-        const button = document.createElement("button");
-        button.innerText = "←";
-        button.id = "previous-pose";
-        button.addEventListener("click", async () => {
-            this.displayPrevious();
-        });
-        return button;
     }
 
     _displaySequenceTitle(yogaSequence) {
@@ -146,6 +136,17 @@ class YogaSequencePlayer {
         this.player = new DisplayablePlayer(yogaSequenceCollection);
         this.player.register(this.displayer);
         this.player.play(this.secondsInterval);
+    }
+}
+
+class PlayerButton {
+    constructor(id, text, clickFn) {
+        this.playerButton = document.createElement("button");
+        this.playerButton.innerText = text;
+        this.playerButton.id = id;
+        this.playerButton.addEventListener("click", async () => {
+            clickFn();
+        });
     }
 }
 
