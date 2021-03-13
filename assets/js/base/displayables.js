@@ -26,6 +26,7 @@ export class DisplayablePlayer {
         const nextDisplayable = this.displayableCollection.nextDisplayable();
         if (nextDisplayable !== null) {
             this._display(nextDisplayable, seconds);
+            this._notifyListenersDisplayNext(displayable);
         }
     }
 
@@ -39,13 +40,12 @@ export class DisplayablePlayer {
     }
 
     _display(displayable, seconds) {
-        this._notifyListeners(displayable);
         this.play(seconds);
     }
 
-    _notifyListeners(newDisplayable) {
+    _notifyListenersDisplayNext(newDisplayable) {
         this._listeners.forEach(listener => {
-            listener.display(newDisplayable);
+            listener.displayNext(newDisplayable);
         });
     }
 

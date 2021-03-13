@@ -193,7 +193,7 @@ class YogaPoseDisplayer {
         this._displayGreetingText('Get ready...');
     }
 
-    display(yogaPoseData) {
+    displayNext(yogaPoseData) {
         this._clearGreetingText();
         this._currentPoseData = yogaPoseData;
         this._setInnerText("name", yogaPoseData.name);
@@ -207,7 +207,7 @@ class YogaPoseDisplayer {
     }
 
     _clearGreetingText() {
-        if (this._isFirstPose()) {
+        if (this._isDisplayingPose()) {
             this._displayGreetingText('');
         }
     }
@@ -216,7 +216,7 @@ class YogaPoseDisplayer {
         this._greetingDisplayer.display({ text: greetingText });
     }
 
-    _isFirstPose() {
+    _isDisplayingPose() {
         return this._currentPoseData == null;
     }
 
