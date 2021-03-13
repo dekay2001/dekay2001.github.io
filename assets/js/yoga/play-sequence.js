@@ -114,7 +114,7 @@ class SequenceView {
 
     _displayBackButton() {
         // TODO:  Initialize the back button or make it displayble and bind it to displayPrevious().
-        // this.displayer.displayBackButton();
+        // this._displayer.displayBackButton();
         /*
             <div style="width:50%;float:left">←</div>
             <div style="style=width: 50%">→</div>
@@ -130,9 +130,9 @@ class SequenceView {
     }
 
     _play(yogaSequenceCollection) {
-        this.displayer = new YogaPoseDisplayer();
+        const displayer = new YogaPoseDisplayer();
         this._player = new DisplayablePlayer(yogaSequenceCollection);
-        this._player.register(this.displayer);
+        this._player.register(displayer);
         this._player.play(this._secondsInterval);
     }
 }
