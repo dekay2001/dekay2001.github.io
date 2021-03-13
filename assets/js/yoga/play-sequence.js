@@ -18,7 +18,7 @@ class application {
         this.config = config;
         this.resourceUrl = config.resourceUrl;
         this.ashtangaSequencesDivId = config.ashtangaSequencesDivId;
-        this.yogaSequencePlayer = new YogaSequencePlayer(
+        this.sequenceViewInitializer = new SequenceViewInitializer(
             config.titleDivId,
             config.displayYogaPoseDivId,
             config.secondsInterval
@@ -26,15 +26,15 @@ class application {
     }
 
     async start() {
-        const controller = new AshtangaController(this.yogaSequencePlayer);
+        const controller = new AshtangaController(this.sequenceViewInitializer);
         await controller.displayAllSeries(this.ashtangaSequencesDivId);
     }
 }
 
 class AshtangaController {
-    constructor(yogaSequencePlayer) {
+    constructor(sequenceViewInitializer) {
         this.allSeriesOptions = null;
-        this.yogaSequencePlayer = yogaSequencePlayer;
+        this.sequenceViewInitializer = sequenceViewInitializer;
     }
 
     async displayAllSeries(displayInElementId) {
@@ -43,7 +43,7 @@ class AshtangaController {
     }
 
     displayPrevious() {
-        this.yogaSequencePlayer.displayPrevious();
+        this.sequenceViewInitializer.displayPrevious();
     }
 
     _displaySeriesOptions(displayInElementId) {
@@ -84,7 +84,7 @@ class AshtangaController {
 
     async _playSequence(resourceUrl) {
         const yogaSequence = await this._getYogaSequenceCollection(resourceUrl);
-        this.yogaSequencePlayer.displaySequence(yogaSequence);
+        this.sequenceViewInitializer.displaySequence(yogaSequence);
     }
 
     async _getYogaSequenceCollection(resourceUrl) {
@@ -99,7 +99,7 @@ class AshtangaController {
 // instance of the new listener class this.player.register(this.backButtonDisplayer);
 // The new BackButtonDisplayer should respond to displayPrevious(previousDisplayable)
 // detecting it is the first and hide the button.
-class YogaSequencePlayer {
+class SequenceViewInitializer {
     constructor(titleDivId, displayYogaPoseDivId, secondsInterval) {
         this.titleDivId = titleDivId;
         this.displayYogaPoseDivId = displayYogaPoseDivId;
