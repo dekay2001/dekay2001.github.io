@@ -18,34 +18,34 @@ class application {
         this.config = config;
         this.resourceUrl = config.resourceUrl;
         this.ashtangaSequencesDivId = config.ashtangaSequencesDivId;
-        this.sequenceViewInitializer = new SequenceViewInitializer(
+        this.sequenceView = new SequenceView(
             config.titleDivId,
             config.secondsInterval
         );
     }
 
     async start() {
-        const controller = new AshtangaController(this.sequenceViewInitializer);
-        await controller.displayAllSeries(this.ashtangaSequencesDivId);
+        const controller = new SequencesView(this.sequenceView);
+        await controller.displayAll(this.ashtangaSequencesDivId);
     }
 }
 
-class AshtangaController {
-    constructor(sequenceViewInitializer) {
+class SequencesView {
+    constructor(sequenceView) {
         this.allSeriesOptions = null;
-        this.sequenceViewInitializer = sequenceViewInitializer;
+        this.sequenceView = sequenceView;
     }
 
-    async displayAllSeries(displayInElementId) {
+    async displayAll(displayInElementId) {
         this.allSeriesOptions = await this._createSeriesOptions();
-        this._displaySeriesOptions(displayInElementId);
+        this._displayAll(displayInElementId);
     }
 
     displayPrevious() {
-        this.sequenceViewInitializer.displayPrevious();
+        this.sequenceView.displayPrevious();
     }
 
-    _displaySeriesOptions(displayInElementId) {
+    _displayAll(displayInElementId) {
         const displayInElement = document.getElementById(displayInElementId);
         const buttons = this._createButtons();
         buttons.forEach((button) => {
@@ -83,7 +83,7 @@ class AshtangaController {
 
     async _playSequence(resourceUrl) {
         const yogaSequence = await this._getYogaSequenceCollection(resourceUrl);
-        this.sequenceViewInitializer.displaySequence(yogaSequence);
+        this.sequenceView.displaySequence(yogaSequence);
     }
 
     async _getYogaSequenceCollection(resourceUrl) {
@@ -98,7 +98,7 @@ class AshtangaController {
 // instance of the new listener class this.player.register(this.backButtonDisplayer);
 // The new BackButtonDisplayer should respond to displayPrevious(previousDisplayable)
 // detecting it is the first and hide the button.
-class SequenceViewInitializer {
+class SequenceView {
     constructor(titleDivId, secondsInterval) {
         this._titleDivId = titleDivId;
         this._secondsInterval = secondsInterval;
