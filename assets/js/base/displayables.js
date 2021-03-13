@@ -26,7 +26,7 @@ export class DisplayablePlayer {
         const nextDisplayable = this.displayableCollection.nextDisplayable();
         if (nextDisplayable !== null) {
             this._display(nextDisplayable, seconds);
-            this._notifyListenersDisplayNext(displayable);
+            this._notifyListenersDisplayNext(nextDisplayable);
         }
     }
 
