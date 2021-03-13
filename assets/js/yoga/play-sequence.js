@@ -199,7 +199,7 @@ class YogaPoseDisplayer {
     }
 
     displayPrevious(yogaPoseData) {
-        if (previousDisplayable !== null) {
+        if (yogaPoseData !== null) {
             this._display(yogaPoseData);
         }
     }
