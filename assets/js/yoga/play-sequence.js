@@ -198,7 +198,7 @@ class YogaPoseDisplayer {
         this._display(yogaPoseData);
     }
 
-    displayPrevious(previousDisplayable) {
+    displayPrevious(yogaPoseData) {
         if (previousDisplayable !== null) {
             this._display(yogaPoseData);
         }
