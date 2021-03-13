@@ -195,14 +195,12 @@ class YogaPoseDisplayer {
 
     displayNext(yogaPoseData) {
         this._clearGreetingText();
-        this._currentPoseData = yogaPoseData;
-        this._setInnerText("name", yogaPoseData.name);
-        this._setInnerText("englishName", yogaPoseData.englishName);
+        this._display(yogaPoseData);
     }
 
     displayPrevious(previousDisplayable) {
         if (previousDisplayable !== null) {
-            this.display(previousDisplayable);
+            this._display(yogaPoseData);
         }
     }
 
@@ -214,6 +212,12 @@ class YogaPoseDisplayer {
 
     _displayGreetingText(greetingText) {
         this._greetingDisplayer.display({ text: greetingText });
+    }
+
+    _display(yogaPoseData) {
+        this._currentPoseData = yogaPoseData;
+        this._setInnerText("name", yogaPoseData.name);
+        this._setInnerText("englishName", yogaPoseData.englishName);
     }
 
     _isDisplayingPose() {
