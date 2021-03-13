@@ -20,7 +20,6 @@ class application {
         this.ashtangaSequencesDivId = config.ashtangaSequencesDivId;
         this.sequenceViewInitializer = new SequenceViewInitializer(
             config.titleDivId,
-            config.displayYogaPoseDivId,
             config.secondsInterval
         );
     }
@@ -100,11 +99,10 @@ class AshtangaController {
 // The new BackButtonDisplayer should respond to displayPrevious(previousDisplayable)
 // detecting it is the first and hide the button.
 class SequenceViewInitializer {
-    constructor(titleDivId, displayYogaPoseDivId, secondsInterval) {
-        this.titleDivId = titleDivId;
-        this.displayYogaPoseDivId = displayYogaPoseDivId;
-        this.secondsInterval = secondsInterval;
-        this.player = null;  // initialized in this.play
+    constructor(titleDivId, secondsInterval) {
+        this._titleDivId = titleDivId;
+        this._secondsInterval = secondsInterval;
+        this._player = null;  // initialized in this.play
         this._backButton = null;
     }
 
@@ -122,20 +120,20 @@ class SequenceViewInitializer {
             <div style="style=width: 50%">→</div>
         */
         const displayInElement = document.getElementById("yoga-sequences");
-        this._backButton = new PreviousPoseButton("previous-pose", "←", this.player);
+        this._backButton = new PreviousPoseButton("previous-pose", "←", this._player);
         displayInElement.appendChild(this._backButton.playerButton);
     }
 
     _displaySequenceTitle(yogaSequence) {
-        const titleDisplayer = new TextDisplayer(this.titleDivId);
+        const titleDisplayer = new TextDisplayer(this._titleDivId);
         titleDisplayer.display(yogaSequence);
     }
 
     _play(yogaSequenceCollection) {
-        this.displayer = new YogaPoseDisplayer(this.displayYogaPoseDivId);
-        this.player = new DisplayablePlayer(yogaSequenceCollection);
-        this.player.register(this.displayer);
-        this.player.play(this.secondsInterval);
+        this.displayer = new YogaPoseDisplayer();
+        this._player = new DisplayablePlayer(yogaSequenceCollection);
+        this._player.register(this.displayer);
+        this._player.play(this._secondsInterval);
     }
 }
 
@@ -189,8 +187,7 @@ class YogaPose {
 
 
 class YogaPoseDisplayer {
-    constructor(displayInDivId) {
-        // this.displayInDivId = displayInDivId; TODO: either eliminate displayInDivId or use it
+    constructor() {
         this._currentPoseData = null;
         this._greetingDisplayer = new TextDisplayer("ashtanga-sequences");
         this._displayGreetingText('Get ready...');

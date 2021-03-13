@@ -5,7 +5,6 @@ export function main(sequenceId) {
     const config = {
         secondsInterval: 5,
         ashtangaSequencesDivId: "ashtanga-sequences",
-        displayYogaPoseDivId: "yoga-pose",
         titleDivId: "sequence-title",
         resourceUrl: `..${sequenceLinks[sequenceId]}`
     }
