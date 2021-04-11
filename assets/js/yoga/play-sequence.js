@@ -178,7 +178,7 @@ export class YogaSequenceCollection {
     }
 
     _yogaPose(index) {
-        return JSON.parse(this.data.items[index]);
+        return this.data.items[index];
     }
 }
 

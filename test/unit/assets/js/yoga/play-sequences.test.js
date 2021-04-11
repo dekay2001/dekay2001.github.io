@@ -29,7 +29,7 @@ function getData(poseCount) {
     };
     for (let index = 0; index < poseCount; index++) {
         yogaSequnceData.items.push(
-            JSON.stringify({ name: `name ${index}`, englishName: `EN ${index}` })
+            { name: `name ${index}`, englishName: `EN ${index}` }
         );
     }
     return yogaSequnceData;
