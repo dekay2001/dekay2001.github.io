@@ -7,6 +7,13 @@ export async function start_app(config) {
     await app.start();
 }
 
+export function getSequenceLinks() {
+    return {
+        suryanamskaraa: "/assets/data/yoga/suryanamaskara-a.json",
+        fundamental: "/assets/data/yoga/fundamental-basic-sequence.json"
+    };
+}
+
 class application {
     constructor(config) {
         this.config = config;
