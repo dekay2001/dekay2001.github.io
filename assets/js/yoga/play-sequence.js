@@ -1,12 +1,6 @@
 import { DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
-export function getSequenceLinks() {
-    return {
-        suryanamskaraa: "/assets/data/yoga/suryanamaskara-a.json",
-        fundamental: "/assets/data/yoga/fundamental-basic-sequence.json"
-    };
-}
 
 export async function start_app(config) {
     const app = new application(config);
@@ -149,7 +143,7 @@ class PreviousPoseButton {
     }
 }
 
-class YogaSequenceCollection {
+export class YogaSequenceCollection {
     constructor(yogaSequenceData) {
         this.text = yogaSequenceData.title;
         this.nextIndex = -1;
@@ -158,7 +152,7 @@ class YogaSequenceCollection {
 
     nextDisplayable() {
         this.nextIndex++;
-        if (this.nextIndex < this.data.items.length) {
+        if (this._hasItems() && this.nextIndex < this.data.items.length) {
             return this._yogaPose(this.nextIndex);
         }
         return null;
@@ -172,18 +166,15 @@ class YogaSequenceCollection {
         return null
     }
 
+    _hasItems() {
+        return this.data.items.length > 0;
+    }
+
     _yogaPose(index) {
-        return new YogaPose(this.data.items[index]);
+        return JSON.parse(this.data.items[index]);
     }
 }
 
-
-class YogaPose {
-    constructor(poseData) {
-        this.name = poseData.name;
-        this.englishName = poseData.englishName;
-    }
-}
 
 
 class YogaPoseDisplayer {
@@ -191,16 +182,19 @@ class YogaPoseDisplayer {
         this._currentPoseData = null;
         this._greetingDisplayer = new TextDisplayer("ashtanga-sequences");
         this._displayGreetingText('Get ready...');
+        this._nextCount = 0;
     }
 
     displayNext(yogaPoseData) {
         this._clearGreetingText();
         this._display(yogaPoseData);
+        this._nextCount++;
     }
 
     displayPrevious(yogaPoseData) {
         if (yogaPoseData !== null) {
             this._display(yogaPoseData);
+            this._nextCount--;
         }
     }
 
