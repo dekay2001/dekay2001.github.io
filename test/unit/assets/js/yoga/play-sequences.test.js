@@ -20,6 +20,21 @@ describe('YogaSequenceCollection', () => {
         expect(next.englishName).toEqual("EN 1");
         expect(collection.nextDisplayable()).toBeNull();
     });
+
+    it('returns null when no items and previousDisplayable is called', () => {
+        const yogaSequenceData = getData(0);
+        const collection = new ps.YogaSequenceCollection(yogaSequenceData);
+        expect(collection.previousDisplayable()).toBeNull();
+    });
+
+    it('returns first displayable', () => {
+        const yogaSequnceData = getData(2);
+        const collection = new ps.YogaSequenceCollection(yogaSequnceData);
+        collection.nextDisplayable();
+        collection.nextDisplayable();
+        const previous = collection.previousDisplayable();
+        expect(previous.name).toEqual("name 0")
+    });
 });
 
 function getData(poseCount) {
