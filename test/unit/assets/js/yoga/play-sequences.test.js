@@ -37,6 +37,63 @@ describe('YogaSequenceCollection', () => {
     });
 });
 
+describe('YogaPoseDisplayer', () => {
+
+    it('invokes set greeting text with get ready...', () => {
+        const textDisplayer = new TextDisplayerDouble();
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer);
+        expect(textDisplayer.invokedDisplayWith.text).toEqual('Get ready...');
+    });
+
+    it('clears greeting text and displays yogaPoseData', () => {
+        const textDisplayer = new TextDisplayerDouble();
+        const document = new DocumentDouble();
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
+        const poseData = getPoseData();
+        displayer.displayNext(poseData);
+        expect(textDisplayer.invokedDisplayWith).toEqual({ text: '' });
+        expect(document.invokedSetInnerTextWith['name']).toEqual('name 0');
+        expect(document.invokedSetInnerTextWith['englishName']).toEqual('EN 0');
+    });
+});
+
+class TextDisplayerDouble {
+    constructor() {
+        this.invokedDisplayWith = null;
+    }
+
+    display(greetingText) {
+        this.invokedDisplayWith = greetingText;
+    }
+}
+
+class DocumentDouble {
+    constructor() {
+        this.elements = [];
+        this.invokedSetInnerTextWith = {};
+        this._innerText = null;
+    }
+
+    get innerText() {
+        return this._innerText;
+    }
+
+    set innerText(value) {
+        this.invokedSetInnerTextWith[this._lastElementId] = value;
+    }
+
+    getElementById(elementId) {
+        this._lastElementId = elementId;
+        return this;
+    }
+
+
+}
+
+function getPoseData() {
+    return getData(1).items[0];
+}
+
 function getData(poseCount) {
     const yogaSequnceData = {
         title: "my sequence title",
@@ -49,4 +106,3 @@ function getData(poseCount) {
     }
     return yogaSequnceData;
 };
-

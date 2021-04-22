@@ -184,12 +184,13 @@ export class YogaSequenceCollection {
 
 
 
-class YogaPoseDisplayer {
-    constructor() {
+export class YogaPoseDisplayer {
+    constructor(greetingDisplayer = null, doc = null) {
         this._currentPoseData = null;
-        this._greetingDisplayer = new TextDisplayer("ashtanga-sequences");
+        this._greetingDisplayer = greetingDisplayer || new TextDisplayer("ashtanga-sequences");
         this._displayGreetingText('Get ready...');
         this._nextCount = 0;
+        this._document = doc || document;
     }
 
     displayNext(yogaPoseData) {
@@ -226,7 +227,7 @@ class YogaPoseDisplayer {
     }
 
     _setInnerText(elementId, text) {
-        const displayInElement = document.getElementById(elementId);
+        const displayInElement = this._document.getElementById(elementId);
         displayInElement.innerText = text;
     }
 }
