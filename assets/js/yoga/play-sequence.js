@@ -1,6 +1,7 @@
 import { DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
+const BACK_ARROW = "←";
 
 export async function start_app(config) {
     const app = new application(config);
@@ -121,7 +122,7 @@ class SequenceView {
             <div style="style=width: 50%">→</div>
         */
         const displayInElement = document.getElementById("yoga-sequences");
-        this._backButton = new PreviousPoseButton("previous-pose", "←", this._player);
+        this._backButton = new PreviousPoseButton("previous-pose", BACK_ARROW, this._player);
         displayInElement.appendChild(this._backButton.playerButton);
     }
 

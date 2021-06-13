@@ -45,13 +45,24 @@ describe('YogaPoseDisplayer', () => {
         expect(textDisplayer.invokedDisplayWith.text).toEqual('Get ready...');
     });
 
-    it('clears greeting text and displays yogaPoseData', () => {
+    it('clears greeting text and displays next yogaPoseData', () => {
         const textDisplayer = new TextDisplayerDouble();
         const document = new DocumentDouble();
         const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
         const poseData = getPoseData();
         displayer.displayNext(poseData);
         expect(textDisplayer.invokedDisplayWith).toEqual({ text: '' });
+        expect(document.invokedSetInnerTextWith['name']).toEqual('name 0');
+        expect(document.invokedSetInnerTextWith['englishName']).toEqual('EN 0');
+    });
+
+    it('displays previous yogaPoseData', () => {
+        const textDisplayer = new TextDisplayerDouble();
+        const document = new DocumentDouble();
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
+        const poseData = getPoseData();
+        expect(displayer.displayPrevious(poseData)).toEqual(undefined);
+        expect(textDisplayer.invokedDisplayWith).toEqual({ text: 'Get ready...' });
         expect(document.invokedSetInnerTextWith['name']).toEqual('name 0');
         expect(document.invokedSetInnerTextWith['englishName']).toEqual('EN 0');
     });
