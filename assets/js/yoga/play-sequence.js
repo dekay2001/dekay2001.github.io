@@ -1,7 +1,7 @@
 import { DisplayablePlayer, TextDisplayer } from "../base/displayables.js";
 import { get_resource_collection } from "../base/models.js";
 
-const BACK_ARROW = "←";
+export const BACK_ARROW = "←";
 
 export async function start_app(config) {
     const app = new application(config);
@@ -192,18 +192,23 @@ export class YogaPoseDisplayer {
         this._displayGreetingText('Get ready...');
         this._nextCount = 0;
         this._document = doc || document;
+        this._setBackButtonText('');
     }
 
     displayNext(yogaPoseData) {
         this._clearGreetingText();
         this._display(yogaPoseData);
         this._nextCount++;
+        this._setBackButtonText(BACK_ARROW);
     }
 
     displayPrevious(yogaPoseData) {
         if (yogaPoseData !== null) {
             this._display(yogaPoseData);
             this._nextCount--;
+        }
+        if (this._nextCount == 0) {
+            this._setBackButtonText('');
         }
     }
 
@@ -221,6 +226,10 @@ export class YogaPoseDisplayer {
         this._currentPoseData = yogaPoseData;
         this._setInnerText("name", yogaPoseData.name);
         this._setInnerText("englishName", yogaPoseData.englishName);
+    }
+
+    _setBackButtonText(text) {
+        this._setInnerText('previous-pose', text);
     }
 
     _isDisplayingPose() {

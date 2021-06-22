@@ -41,11 +41,19 @@ describe('YogaPoseDisplayer', () => {
 
     it('invokes set greeting text with get ready...', () => {
         const textDisplayer = new TextDisplayerDouble();
-        const displayer = new ps.YogaPoseDisplayer(textDisplayer);
+        const document = new DocumentDouble();
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
         expect(textDisplayer.invokedDisplayWith.text).toEqual('Get ready...');
     });
 
-    it('clears greeting text and displays next yogaPoseData', () => {
+    it('invokes hide previous button initially', () => {
+        const textDisplayer = new TextDisplayerDouble();
+        const document = new DocumentDouble();
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
+        expect(document.invokedSetInnerTextWith['previous-pose']).toEqual('');
+    });
+
+    it('clears greeting text, displays next yogaPoseData, and displays back button', () => {
         const textDisplayer = new TextDisplayerDouble();
         const document = new DocumentDouble();
         const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
@@ -54,9 +62,10 @@ describe('YogaPoseDisplayer', () => {
         expect(textDisplayer.invokedDisplayWith).toEqual({ text: '' });
         expect(document.invokedSetInnerTextWith['name']).toEqual('name 0');
         expect(document.invokedSetInnerTextWith['englishName']).toEqual('EN 0');
+        expect(document.invokedSetInnerTextWith['previous-pose']).toEqual(ps.BACK_ARROW);
     });
 
-    it('displays previous yogaPoseData', () => {
+    it('displays get ready... when previous yogaPoseData is null', () => {
         const textDisplayer = new TextDisplayerDouble();
         const document = new DocumentDouble();
         const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
@@ -65,6 +74,16 @@ describe('YogaPoseDisplayer', () => {
         expect(textDisplayer.invokedDisplayWith).toEqual({ text: 'Get ready...' });
         expect(document.invokedSetInnerTextWith['name']).toEqual('name 0');
         expect(document.invokedSetInnerTextWith['englishName']).toEqual('EN 0');
+    });
+
+    it('displays previous yogaPoseData hides previous pose button', () => {
+        const textDisplayer = new TextDisplayerDouble();
+        const document = new DocumentDouble();
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
+        displayer._nextCount = 1;
+        const poseData = getPoseData();
+        displayer.displayPrevious(poseData)
+        expect(document.invokedSetInnerTextWith['previous-pose']).toEqual('');
     });
 });
 
