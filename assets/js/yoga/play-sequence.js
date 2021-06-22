@@ -238,6 +238,11 @@ export class YogaPoseDisplayer {
 
     _setInnerText(elementId, text) {
         const displayInElement = this._document.getElementById(elementId);
-        displayInElement.innerText = text;
+        if (displayInElement != undefined) {
+            displayInElement.innerText = text;
+        }
+        else {
+            console.log(`Could not find element ${elementId} to set ${text}.`)
+        }
     }
 }
