@@ -4,7 +4,7 @@ title:  "Resume"
 categories: [professional]
 tags: []
 ---
-{{ page.date | date: "%m/%d/%Y" }}
+Last updated: 2021-09-21
 
 
 # Professional Summary
