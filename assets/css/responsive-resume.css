@@ -1,0 +1,57 @@
+body {
+    text-align: left;
+}
+
+/*Smallest display for wide menu with 4 items across*/
+@media only screen and (min-width:451px) {
+    header, nav, footer{
+      width:100%;
+    }
+    nav a{
+      display:inline-block;
+    }
+    main{
+      display: inline-flex;
+      flex-wrap: wrap;
+    }
+    main #middle{
+      width: 40%;
+      min-width: 200px;
+    }
+  }
+  
+  @media only screen and (min-width: 960px){
+    main #middle{
+        width:55%;
+        order:1;
+        margin-left: 1em;
+        margin-right: 0px;
+    }
+    main #right{
+        width:20%;
+        order:2;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    main #left{
+        width:20%;
+        order:0;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+  }
+  
+  @media screen and (min-height: 800px) and (min-width: 960px) {
+    main #middle{
+        width: 60%;
+        min-width: 200px;
+        order:0;
+    }
+    main #right{
+        width:100%;
+        order:0;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+  }
+  

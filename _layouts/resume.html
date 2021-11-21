@@ -1,0 +1,47 @@
+---
+---
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-resume.css">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+    <![endif]-->
+    <meta charset="UTF-8">
+    <meta name="description" content="Blog">
+    <meta name="keywords" content="Blog">
+    <meta name="author" content="Dan Kimball">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    {% include navheader.html %}
+    <main id="home_content" class="content">
+        <!-- Left -->
+        <div id="left">
+            <picture>
+                <source media="(min-width: 960px)" srcset="/assets/images/main-16-9-compressed.jpg 1x">
+                <img id="blog-main-pic" src="/assets/images/main-high-def-16-9-compressed.jpg"
+                    alt="Sunset over the pacific; The eastern most point in Portugal.  Taken during Wild Vibes yoga retreat that I attended."
+                    title="Portugal Sunset">
+                <i>Photo by: <a href="http://monicajustesen.com/" target="_blank">Monica Justesen</a></i>
+            </picture>
+        </div>
+        <!-- Middle -->
+        <div id="middle">
+            <section>
+                {{ content }}
+            </section>
+        </div>
+        <!--Right -->
+        <div id="right">
+        </div>
+    </main>
+    {% include footer.html %}
+</body>
+
+</html>
