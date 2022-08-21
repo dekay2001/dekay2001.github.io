@@ -33,7 +33,7 @@ Once I got home I showered and then looked him up on instagram.  Turns out he is
  
 Here's one of mine.
  
-![Irises](/assets/images/withmyeyes1.jpg)
+![me](/assets/images/withmyeyes1.jpg)
  
  
 Photo credit: Sal Ptalanosal, https://www.instagram.com/patalanosal/
