@@ -59,10 +59,12 @@ process from gathering requirements, prioritization, feature design, build autom
  
 # Professional Experience
 
-**WiseTech Global** Remote,
+**WiseTech Global** Remote,  
  _Lead Senior Software Engineer 2023-current_
 
- ### Responsibilities, Projects, and Accomplishments
+
+ ### Responsibilities, Projects, and Accomplishments  
+
 
  - 2023 Delivered new installer technology for a pluggable application including UI/UX using [Flet](https://flet.dev/) (Python Library) and feature version management with [LaunchDarkly](https://launchdarkly.com/demo/?utm_source=google&utm_medium=cpc&utm_campaign=NA_Search_Brand&utm_adgroup=Brand_General&utm_term=launchdarkly&matchtype=b&creative=554491127903&device=c&_bt=554491127903&_bn=g&gad_source=1&gclid=Cj0KCQiAwbitBhDIARIsABfFYIL6EJXvHddJTzCrMJNFDKkNLaJDAY4IaA5pqSyfl1GxfRKL2KlJQY0aArj_EALw_wcB).  The application is self updateable and was is able to fully install and upgrade python on a Windows machine, create virtual envrironments, download and install requirements from Artifactory, a pluggable Flask application, and user selected plugins.  Each plugin is updateable.  The installed service and installer technology can be monitored in AWS Cloudwatch and AWS Xray.  Also the service can send notifications to Microsoft Teams.
 
