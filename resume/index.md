@@ -4,7 +4,7 @@ title:  "Resume"
 categories: [professional]
 tags: []
 ---
-Last updated: 2024-01-22
+Last updated: 2024-08-18
  
  
 # Professional Summary
@@ -34,19 +34,21 @@ process from gathering requirements, prioritization, feature design, build autom
 | HTML / CSS                           | 6                          | 6                |
 | Business Intelligence (SiSense)      | 3                          | 6                |
 | PostgreSQL                           | 3                          | 6                |
-| LaunchDarkly                         | 1                          | 6                |
+| LaunchDarkly                         | 2                          | 6                |
 | AWS S3                               | 7                          | 6                |
 | AWS EC2                              | 7                          | 6                |
 | AWS SQS                              | 5                          | 6                |
-| AWS API Gateway                      | 7                          | 7                |
+| AWS API Gateway                      | 7                          | 6                |
 | AWS Route 53                         | 1                          | 7                |
 | AWS Cloudwatch                       | 3                          | 7                |
 | AWS Lambda                           | 7                          | 6                |
 | AWS Xray                             | 3                          | 7                |
 | Artifactory                          | 7                          | 7                |
 | JavaScript                           | 3                          | 6                |
+| WiX Toolset                          | 1                          | 5                |
 | TypeScript                           | 2                          | 5                |
 | C# / .NET                            | 1                          | 4                |
+| Vuetify                              | 1                          | 4                |
 | Bootstrap.Vue                        | 2                          | 4                |
 | Vue.js, Vuex                         | 2                          | 4                |
 | JQuery                               | 2                          | 3                |
@@ -65,8 +67,11 @@ process from gathering requirements, prioritization, feature design, build autom
 
  ### Responsibilities, Projects, and Accomplishments  
 
+- 2024 Worked with [WiX Toolset](https://wixtoolset.org/) and researched the [Windows Installer Service](https://learn.microsoft.com/en-us/windows/win32/msi/windows-installer-portal) to create an MSI for the Profit Tools application.  The project required reverse engineering an existing installation technology and automating the many manual steps of installing the application as either a client or server.  The bootstrapper application was improved to be able to install this application and its required components to support clean and upgrade installations of the legacy installation.  The installer technology additionally installs a Windows scheduled task to check for and install ugrades to the installed components.  CICD was created to create a new MSI with each new versioned release of the technology. Each release was managed in LaunchDarkly to target customers and machines eligible for upgrades.
 
- - 2023 Delivered new installer technology for a pluggable application including UI/UX using [Flet](https://flet.dev/) (Python Library) and feature version management with [LaunchDarkly](https://launchdarkly.com/demo/?utm_source=google&utm_medium=cpc&utm_campaign=NA_Search_Brand&utm_adgroup=Brand_General&utm_term=launchdarkly&matchtype=b&creative=554491127903&device=c&_bt=554491127903&_bn=g&gad_source=1&gclid=Cj0KCQiAwbitBhDIARIsABfFYIL6EJXvHddJTzCrMJNFDKkNLaJDAY4IaA5pqSyfl1GxfRKL2KlJQY0aArj_EALw_wcB).  The application is self updateable and was is able to fully install and upgrade python on a Windows machine, create virtual envrironments, download and install requirements from Artifactory, a pluggable Flask application, and user selected plugins.  Each plugin is updateable.  The installed service and installer technology can be monitored in AWS Cloudwatch and AWS Xray.  Also the service can send notifications to Microsoft Teams.
+- 2024 Migrated a web application UI to use Vue 3 and [Vuetify](https://vuetifyjs.com/en/) from its originally written Vue 2 and Bootstrap Vue framework. Also the UI was improved to remove the dependency on Axios by implementing a client with a similar interface using Fetch API.
+
+- 2023 Delivered new installer technology for a pluggable application including UI/UX using [Flet](https://flet.dev/) (Python Library) and feature version management with [LaunchDarkly](https://launchdarkly.com/demo/?utm_source=google&utm_medium=cpc&utm_campaign=NA_Search_Brand&utm_adgroup=Brand_General&utm_term=launchdarkly&matchtype=b&creative=554491127903&device=c&_bt=554491127903&_bn=g&gad_source=1&gclid=Cj0KCQiAwbitBhDIARIsABfFYIL6EJXvHddJTzCrMJNFDKkNLaJDAY4IaA5pqSyfl1GxfRKL2KlJQY0aArj_EALw_wcB).  The application is self updateable and was is able to fully install and upgrade python on a Windows machine, create virtual envrironments, download and install requirements from Artifactory, a pluggable Flask application, and user selected plugins.  Each plugin is updateable.  The installed service and installer technology can be monitored in AWS Cloudwatch and AWS Xray.  Also the service can send notifications to Microsoft Teams.
 
 - 2023 Interviewed and trained software engineers and quality assurance candidates to join and contribute to our team by teaching them how to write feature tests in Python and use AWS EC2 instances and AMIs to test the installer technology and Core-API.
 
