@@ -235,7 +235,8 @@ Current package.json devDependencies:
   "@babel/core": "^7.13.10",
   "@babel/preset-env": "^7.13.10",
   "babel-jest": "^30.0.5",
-  "jest": "^30.0.5"
+  "jest": "^30.0.5",
+  "jest-environment-jsdom": "^30.0.5"
 }
 ```
 
