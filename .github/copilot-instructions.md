@@ -16,10 +16,14 @@ This is a Jekyll-based GitHub Pages site (`dekay2001.github.io`) serving as a pe
 ## Development Environment
 
 - **OS**: Windows with PowerShell
-- **Testing**: Jest with Babel (ES6+ support)
-- **Dependencies**: @babel/core, @babel/preset-env, babel-jest, jest, jest-environment-jsdom
+- **Ruby**: Ruby 3.4.7 (installed at C:\Ruby34-x64\bin)
+- **Jekyll**: Installed via Bundler with GitHub Pages gem
+- **Testing**: Jest with Babel (ES6+ support) and jsdom environment
+- **Node Dependencies**: @babel/core, @babel/preset-env, babel-jest, jest, jest-environment-jsdom
+- **Ruby Dependencies**: github-pages gem (includes Jekyll and all GitHub Pages dependencies)
 - **Deployment**: Automatic via GitHub Pages on push to `master` branch
 - **Site URL**: https://dekay2001.github.io
+- **Local Development**: http://localhost:4000 (via Jekyll server)
 
 ---
 
@@ -215,9 +219,13 @@ Before suggesting `git push`, ensure:
 - Consider security with `npm audit`
 
 ### When Asked About Local Development
-- Jekyll requires Ruby (note: may not be installed)
-- Suggest `bundle exec jekyll serve` for local preview
-- Alternative: push to GitHub and view live site
+- Ruby 3.4.7 is installed at C:\Ruby34-x64\bin
+- Jekyll is set up with GitHub Pages gem via Bundler
+- Start local server: `bundle exec jekyll serve`
+- Access at: http://localhost:4000
+- Note: May need to add Ruby to PATH in new PowerShell sessions: `$env:PATH += ";C:\Ruby34-x64\bin"`
+- Gemfile includes github-pages gem for GitHub Pages compatibility
+- Jekyll auto-regenerates on file changes (watch mode enabled by default)
 
 ### When Debugging
 - Check Jest tests first
@@ -241,6 +249,17 @@ Current package.json devDependencies:
 ```
 
 **Note**: These versions may be outdated. When asked to update, suggest latest versions.
+
+### Ruby Dependencies (Gemfile)
+
+The project uses Bundler to manage Jekyll and GitHub Pages dependencies:
+```ruby
+source "https://rubygems.org"
+gem "github-pages", group: :jekyll_plugins
+gem "webrick"
+```
+
+The `github-pages` gem includes all dependencies needed for GitHub Pages compatibility, including Jekyll and all approved plugins.
 
 ---
 
@@ -289,9 +308,12 @@ git add .                             # Stage all changes
 git commit -m "message"               # Commit
 git push origin master                # Deploy to GitHub Pages
 
-# Local Development (if Ruby/Jekyll installed)
-bundle exec jekyll serve              # Start local server
-bundle exec jekyll serve --livereload # With live reload
+# Local Jekyll Development
+$env:PATH += ";C:\Ruby34-x64\bin"     # Add Ruby to PATH (if needed)
+bundle exec jekyll serve              # Start local server at http://localhost:4000
+bundle exec jekyll serve --livereload # With live reload (requires wdm gem)
+bundle install                        # Install/update Ruby dependencies
+bundle update                         # Update all gems to latest compatible versions
 ```
 
 ---
