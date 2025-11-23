@@ -17,7 +17,7 @@ This is a Jekyll-based GitHub Pages site (`dekay2001.github.io`) serving as a pe
 
 - **OS**: Windows with PowerShell
 - **Testing**: Jest with Babel (ES6+ support)
-- **Dependencies**: @babel/core, @babel/preset-env, babel-jest, jest
+- **Dependencies**: @babel/core, @babel/preset-env, babel-jest, jest, jest-environment-jsdom
 - **Deployment**: Automatic via GitHub Pages on push to `master` branch
 - **Site URL**: https://dekay2001.github.io
 
