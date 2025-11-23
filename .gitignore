@@ -1,1 +1,17 @@
-node_modules
+# Node.js
+node_modules/
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby/Bundler
+vendor/
+.bundle/
+Gemfile.lock
+
+# OS
+.DS_Store
+Thumbs.db
