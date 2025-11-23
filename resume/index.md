@@ -4,7 +4,7 @@ title:  "Resume"
 categories: [professional]
 tags: []
 ---
-Last updated: 2024-08-18
+Last updated: 2025-11-23
  
  
 # Professional Summary
@@ -18,46 +18,49 @@ process from gathering requirements, prioritization, feature design, build autom
  
 | Skill                                | Estimated Years Experience | Skill Level 1-10 |
 |--------------------------------------|----------------------------|------------------|
-| PowerBuilder 9, 10.5, 12, 2019, 2022 | 18                         | 10               |
-| SQL / Relational Database Designs    | 18                         | 9                |
-| Query Writing and Optimization       | 18                         | 9                |
-| Object Oriented Design               | 18                         | 8                |
-| Sybase Adaptive Server Anywhere      | 18                         | 8                |
-| Python 2.7, 3+                       | 8                          | 9                |
-| UX / UI Design                       | 18                         | 8                |
-| Test Driven Development              | 7                          | 8                |
-| SOLID Principles                     | 7                          | 7                |
-| Design Patterns                      | 18                         | 7                |
+| PowerBuilder 9, 10.5, 12, 2019, 2022 | 2005-2025                  | 10               |
+| SQL / Relational Database Designs    | 2005-2025                  | 9                |
+| Query Writing and Optimization       | 2005-2025                  | 9                |
+| AI Tools & Prompt Engineering        | 2024-2025                  | 7                |
+| GitHub Copilot                       | 2024-2025                  | 8                |
+| Microsoft Graph API                  | 2025                       | 4                |
+| Object Oriented Design               | 2005-2025                  | 8                |
+| Sybase Adaptive Server Anywhere 12/17| 2005-2025                  | 8                |
+| Python 2.7, 3+                       | 2016-2025                  | 9                |
+| UX / UI Design                       | 2005-2025                  | 8                |
+| Test Driven Development              | 2017-2025                  | 8                |
+| SOLID Principles                     | 2017-2025                  | 7                |
+| Design Patterns                      | 2005-2025                  | 7                |
 | Behavior Driven Development          | 7                          | 7                |
-| REST API Design and Implementation   | 5                          | 7                |
-| Agile Product Development            | 9                          | 8                |
-| HTML / CSS                           | 6                          | 6                |
-| Business Intelligence (SiSense)      | 3                          | 6                |
-| PostgreSQL                           | 3                          | 6                |
-| LaunchDarkly                         | 2                          | 6                |
-| AWS S3                               | 7                          | 6                |
-| AWS EC2                              | 7                          | 6                |
-| AWS SQS                              | 5                          | 6                |
-| AWS API Gateway                      | 7                          | 6                |
-| AWS Route 53                         | 1                          | 7                |
-| AWS Cloudwatch                       | 3                          | 7                |
-| AWS Lambda                           | 7                          | 6                |
-| AWS Xray                             | 3                          | 7                |
-| Artifactory                          | 7                          | 7                |
-| JavaScript                           | 3                          | 6                |
-| WiX Toolset                          | 1                          | 5                |
-| TypeScript                           | 2                          | 5                |
-| C# / .NET                            | 1                          | 4                |
-| Vuetify                              | 1                          | 4                |
-| Bootstrap.Vue                        | 2                          | 4                |
-| Vue.js, Vuex                         | 2                          | 4                |
-| JQuery                               | 2                          | 3                |
-| Docker                               | 2                          | 3                |
-| Java                                 | 1                          | 3                |
-| Jenkins CICD                         | 3                          | 3                |
-| AWS Cognito                          | 2                          | 3                |
-| Android Development                  | < 1                        | 2                |
-| C / C++                              | < 1                        | 1                |
+| REST API Design and Implementation   | 2020-2025                  | 7                |
+| Agile Product Development            | 2016-2025                  | 8                |
+| HTML / CSS                           | 2012-2018                  | 6                |
+| Business Intelligence (SiSense)      | 2016-2019                  | 6                |
+| PostgreSQL                           | 2019-2025                  | 6                |
+| LaunchDarkly                         | 2022-2025                  | 6                |
+| AWS S3                               | 2018-2025                  | 6                |
+| AWS EC2                              | 2018-2025                  | 6                |
+| AWS SQS                              | 2020-2025                  | 6                |
+| AWS API Gateway                      | 2018-2025                  | 6                |
+| AWS Route 53                         | 2024-2025                  | 7                |
+| AWS Cloudwatch                       | 2022-2025                  | 7                |
+| AWS Lambda                           | 2018-2025                  | 6                |
+| AWS Xray                             | 2022-2025                  | 7                |
+| Artifactory                          | 2018-2025                  | 7                |
+| JavaScript                           | 2017-2020                  | 6                |
+| WiX Toolset                          | 2024-2025                  | 5                |
+| TypeScript                           | 2017-2020                  | 5                |
+| C# / .NET                            | 2023, 2025                 | 4                |
+| Vuetify                              | 2024                       | 4                |
+| Bootstrap.Vue                        | 2017-2018                  | 4                |
+| Vue.js, Vuex                         | 2017, 2018, 2024           | 4                |
+| JQuery                               | 2015-2016                  | 3                |
+| Docker                               | 2015-2016                  | 3                |
+| Java                                 | 2017                       | 3                |
+| Jenkins CICD                         | 2017-2019                  | 3                |
+| AWS Cognito                          | 2017-2020                  | 3                |
+| Android Development                  | 2017                       | 2                |
+| C / C++                              | 2005                       | 1                |
  
 # Professional Experience
 
@@ -66,6 +69,12 @@ process from gathering requirements, prioritization, feature design, build autom
 
 
  ### Responsibilities, Projects, and Accomplishments  
+
+- 2025 As Lead Senior Software Engineer, mentored and guided engineering team members in software development best practices, code reviews, and professional growth. Led the critical migration of the Profit Tools application to use updated Sybase database components, ensuring compatibility and improved performance. Modernized the WinSCP functionality to support modern encryption algorithms, enhancing security for file transfers. Implemented Microsoft 365 secure email functionality through Microsoft Graph API, enabling seamless integration with modern authentication and security protocols.
+
+- 2025 Championed AI adoption and best practices within the team and organization. Studied "The AI-Driven Leader" and continuously researched emerging AI technologies to stay current with industry trends. Gained hands-on experience with cutting-edge AI tools including agentic AI systems, Ollama for local LLM deployment, GitHub Copilot for AI-assisted development, and Office 365 AI agents for research and analysis. Collaborated with team members to establish and promote best practices for responsible and effective AI usage in software development workflows, improving team productivity and code quality. Actively researched and evaluated various AI models to identify optimal solutions for specific development tasks.
+
+- 2025 Collaborated extensively with cross-functional teams across WiseTech Global to design and develop a robust, scalable API for the transportation management system. Focused on creating generic, reusable API designs that meet diverse requirements across multiple product teams. Participated in architectural design discussions, requirements gathering sessions, and technical reviews to ensure API consistency, maintainability, and alignment with enterprise standards. Worked closely with stakeholders to balance specific team needs with broader organizational goals, fostering strong cross-team collaboration and knowledge sharing.
 
 - 2024 Worked with [WiX Toolset](https://wixtoolset.org/) and researched the [Windows Installer Service](https://learn.microsoft.com/en-us/windows/win32/msi/windows-installer-portal) to create an MSI for the Profit Tools application.  The project required reverse engineering an existing installation technology and automating the many manual steps of installing the application as either a client or server.  The bootstrapper application was improved to be able to install this application and its required components to support clean and upgrade installations of the legacy installation.  The installer technology additionally installs a Windows scheduled task to check for and install ugrades to the installed components.  CICD was created to create a new MSI with each new versioned release of the technology. Each release was managed in LaunchDarkly to target customers and machines eligible for upgrades.
 
