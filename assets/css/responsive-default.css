@@ -1,63 +1,117 @@
-/*Smallest display for wide menu with 4 items across*/
-@media only screen and (min-width:451px) {
-  header, nav, footer{
-    width:100%;
+/* Masculine Sunset Theme - Home Page Responsive */
+
+/* Mobile First - Base styles in style.css */
+
+/* Tablet and Above (451px+) */
+@media only screen and (min-width: 451px) {
+  header, nav, footer {
+    width: 100%;
   }
 
-  nav a{
-    display:inline-block;
+  nav a {
+    display: inline-block;
+    flex: 1;
   }
+  
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   main {
     text-align: center;
     position: relative;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
   }
+  
   main #div-main-pic {
-    max-width: 1600px;  
+    max-width: 1200px;
     max-height: 500px;
     overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: 0 12px 32px var(--color-shadow-hover);
+    margin: 0 auto var(--spacing-lg);
+    border: 2px solid rgba(249, 115, 22, 0.3);
   }
+  
   main .post-list {
-    max-width: 1600px;  
-    max-height: 500px;
-    overflow: auto;
-    width: 20%;
-    min-width: 300px;
-    position: absolute;
-    top: 0px;
-    background: black;
-    opacity: .5;
+    max-width: 400px;
+    background: rgba(45, 50, 80, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: 0 8px 24px var(--color-shadow-hover);
+    margin: var(--spacing-lg) auto;
+    opacity: 1;
+    position: relative;
+    text-align: left;
+    border: 1px solid rgba(249, 115, 22, 0.3);
   }
+  
   main .main-text {
-    width: 40%;
-    min-width: 200px;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -100%);
+    background: rgba(26, 29, 46, 0.9);
+    backdrop-filter: blur(15px);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xl);
+    box-shadow: 0 12px 40px var(--color-shadow-hover);
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    border: 2px solid var(--color-accent);
   }
-  /* trying to center background pic*/
+  
+  main .main-text h1 {
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 2px 10px var(--color-glow);
+  }
+  
   #default-background-pic {
     object-fit: cover;
     object-position: 50% 50%;
+    width: 100%;
+    height: 100%;
   }
 }
 
-
-/* @media only screen and (min-width: 960px){
+/* Desktop (960px+) */
+@media only screen and (min-width: 960px) {
   main {
-    max-width: 1000px;
+    max-width: 1200px;
+    padding: var(--spacing-xl);
   }
-} */
+  
+  nav a {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  main .post-list {
+    max-width: 500px;
+  }
+  
+  main .main-text {
+    max-width: 700px;
+    padding: var(--spacing-xl) calc(var(--spacing-xl) * 1.5);
+  }
+}
 
-/*Higher than 570px*/
-/* @media screen and (min-height: 800px) and (min-width: 960px) {
-} */
-
+/* Large Desktop (1024px+ and tall screens) */
 @media screen and (min-height: 768px) and (min-width: 1024px) {
   main {
-    max-width: 1600px;
+    max-width: 1400px;
+  }
+  
+  header h1 {
+    font-size: 3rem;
+  }
+  
+  main #div-main-pic {
+    max-height: 600px;
   }
 }
