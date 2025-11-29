@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 const { TestScheduler } = require('@jest/core');
 const models = require('../../../../../assets/js/base/models.js');
 
@@ -11,7 +15,7 @@ describe("models.get_resource_collection", () => {
     });
 
     it("can fetchAll on returned ResourceCollection", async () => {
-        window.fetch = jest.fn(() => Promise.resolve({
+        global.fetch = jest.fn(() => Promise.resolve({
             json: async () => ({ "id": "15" })
         }));
         const uri = "../../../../../assets/data/advanced-series.json";

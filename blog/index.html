@@ -16,6 +16,7 @@
     <meta name="keywords" content="Blog">
     <meta name="author" content="Dan Kimball">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/blog-search.js" defer></script>
 </head>
 
 <body>
@@ -37,8 +38,26 @@
                     {% endif %}
                 </div>
             </h2>
-            <!-- This loops through the paginated posts -->
-            <ul>
+            
+            <!-- Search Box -->
+            <div id="blog-search-container" class="blog-search-container">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="blog-search-input" 
+                        class="blog-search-input" 
+                        placeholder="Search posts... (Ctrl+K)"
+                        autocomplete="off"
+                    />
+                    <button id="clear-search" class="clear-search-btn" title="Clear search">✕</button>
+                </div>
+            </div>
+
+            <!-- Search Results (hidden by default) -->
+            <div id="search-results" class="search-results" style="display: none;"></div>
+            
+            <!-- Original Post List -->
+            <ul id="post-list">
                 {% for post in paginator.posts %}
                 <li><a class="postlink" href="{{ post.url }}">
                         <span class="post-title">{{ post.title }}</span>

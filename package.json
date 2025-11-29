@@ -4,7 +4,11 @@
     },
     "jest": {
         "verbose": true,
-        "rootDir": "."
+        "rootDir": ".",
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "/_site/"
+        ]
     },
     "devDependencies": {
         "@babel/core": "^7.13.10",
