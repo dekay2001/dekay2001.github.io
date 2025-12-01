@@ -1,5 +1,17 @@
-import { getSequenceLinks, start_app } from './play-sequence.js';
+/**
+ * @file Yoga Main Entry Point
+ * @description Entry point for yoga sequence player on yoga page.
+ * Initializes and starts the sequence application.
+ */
 
+import { getSequenceLinks, startApp } from './play-sequence.js';
+
+/**
+ * Main entry point for yoga sequence application
+ * @param {string} sequenceId - ID of the sequence to display
+ * @example
+ * main("suryanamskaraa");
+ */
 export function main(sequenceId) {
     const sequenceLinks = getSequenceLinks();
     const config = {
@@ -7,10 +19,11 @@ export function main(sequenceId) {
         ashtangaSequencesDivId: "ashtanga-sequences",
         titleDivId: "sequence-title",
         resourceUrl: `..${sequenceLinks[sequenceId]}`
-    }
-    start_app(config);
+    };
+    startApp(config);
 }
 
+// Initialize on page load
 window.onload = () => {
     main("suryanamskaraa");
-}
+};

@@ -6,10 +6,10 @@ const { TestScheduler } = require('@jest/core');
 const models = require('../../../../../assets/js/base/models.js');
 
 
-describe("models.get_resource_collection", () => {
+describe("models.getResourceCollection", () => {
     test("Initializes with resourceUrl and no data", () => {
         const url = "http://myUrl";
-        const collection = models.get_resource_collection(url);
+        const collection = models.getResourceCollection(url);
         expect(collection.resourceUrl).toEqual(url);
         expect(collection.data).toEqual(null);
     });
@@ -19,7 +19,7 @@ describe("models.get_resource_collection", () => {
             json: async () => ({ "id": "15" })
         }));
         const uri = "../../../../../assets/data/advanced-series.json";
-        const collection = models.get_resource_collection(uri);
+        const collection = models.getResourceCollection(uri);
         await collection.fetchAll();
         expect(collection.data.id).toEqual("15")
     });

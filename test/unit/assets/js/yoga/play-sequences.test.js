@@ -85,6 +85,23 @@ describe('YogaPoseDisplayer', () => {
         displayer.displayPrevious(poseData)
         expect(document.invokedSetInnerTextWith['previous-pose']).toEqual('');
     });
+
+    it('handles missing DOM elements gracefully without throwing errors', () => {
+        const textDisplayer = new TextDisplayerDouble();
+        const document = new DocumentDoubleWithNullElements();
+        
+        // Should not throw when elements don't exist (return null)
+        expect(() => {
+            new ps.YogaPoseDisplayer(textDisplayer, document);
+        }).not.toThrow();
+        
+        // Should not throw when trying to display poses with missing elements
+        const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
+        const poseData = getPoseData();
+        expect(() => {
+            displayer.displayNext(poseData);
+        }).not.toThrow();
+    });
 });
 
 class TextDisplayerDouble {
@@ -116,8 +133,17 @@ class DocumentDouble {
         this._lastElementId = elementId;
         return this;
     }
+}
 
+class DocumentDoubleWithNullElements {
+    constructor() {
+        this.invokedSetInnerTextWith = {};
+    }
 
+    getElementById(elementId) {
+        // Simulates missing DOM elements by returning null
+        return null;
+    }
 }
 
 function getPoseData() {
