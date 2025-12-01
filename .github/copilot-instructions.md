@@ -180,6 +180,172 @@ Before suggesting `git push`, ensure:
 
 ---
 
+## Code Organization and Clean Code Standards
+
+### Public Interface First (Critical)
+**Always declare public interfaces at the top of modules and classes** to enable top-down reading without jumping around in code.
+
+- **Modules**: Export statements and public functions/constants should be declared first
+- **Classes**: Public methods and properties should be declared before private ones
+- **Rationale**: Readers should understand the public API without scrolling through implementation details
+
+**Example - Module Structure**:
+```javascript
+// ✅ CORRECT: Public interface first
+export function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + _applyDiscount(item), 0);
+}
+
+export function formatPrice(amount) {
+  return _currencyFormatter.format(amount);
+}
+
+// Private implementation details below
+function _applyDiscount(item) {
+  return item.price * (1 - item.discount);
+}
+
+const _currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});
+```
+
+```javascript
+// ❌ INCORRECT: Private details mixed with public interface
+function _applyDiscount(item) {
+  return item.price * (1 - item.discount);
+}
+
+export function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + _applyDiscount(item), 0);
+}
+
+const _currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});
+
+export function formatPrice(amount) {
+  return _currencyFormatter.format(amount);
+}
+```
+
+**Example - Class Structure**:
+```javascript
+// ✅ CORRECT: Public methods first
+class DataProcessor {
+  // Public interface
+  constructor(config) {
+    this._config = config;
+    this._cache = new Map();
+  }
+
+  process(data) {
+    if (this._cache.has(data.id)) {
+      return this._cache.get(data.id);
+    }
+    return this._processAndCache(data);
+  }
+
+  clearCache() {
+    this._cache.clear();
+  }
+
+  // Private methods below
+  _processAndCache(data) {
+    const result = this._transform(data);
+    this._cache.set(data.id, result);
+    return result;
+  }
+
+  _transform(data) {
+    return { ...data, processed: true };
+  }
+}
+```
+
+### JavaScript Best Practices
+
+**Modern JavaScript (ES6+)**:
+- Use `const` by default, `let` only when reassignment needed, never `var`
+- Prefer arrow functions for callbacks and non-method functions
+- Use template literals for string interpolation
+- Destructuring for object/array extraction
+- Spread operator for object/array copying
+- Default parameters instead of `||` fallbacks
+
+**Naming Conventions**:
+- `camelCase` for variables, functions, and methods
+- `PascalCase` for classes and constructors
+- `UPPER_SNAKE_CASE` for constants
+- Prefix private methods/properties with underscore: `_privateMethod`
+- Use descriptive names that reveal intent
+
+**Function Design**:
+- Keep functions small and focused (single responsibility)
+- Limit parameters (3 or fewer; use object for more)
+- Avoid side effects in pure functions
+- Return early to reduce nesting
+- Use async/await instead of promise chains
+
+**Error Handling**:
+- Always handle promise rejections
+- Use try/catch with async/await
+- Throw meaningful error messages
+- Validate inputs early
+- Don't catch errors you can't handle
+
+**Code Organization**:
+- One class per file (with same name as file)
+- Group related functions in modules
+- Import statements at top, grouped by type (external, internal, local)
+- Maximum file length: ~300 lines (split if larger)
+
+**Comments and Documentation**:
+- Use JSDoc for public APIs
+- Comment "why", not "what"
+- Keep comments up-to-date with code
+- Document non-obvious behavior or edge cases
+
+### Code Review Checklist
+
+During code reviews, **always verify**:
+
+1. ✅ **Public interfaces declared first** in all modules and classes
+2. ✅ Modern JavaScript patterns used (const/let, arrow functions, destructuring)
+3. ✅ Functions are small, focused, and well-named
+4. ✅ Consistent naming conventions throughout
+5. ✅ Error handling present for async operations
+6. ✅ No commented-out code or console.log statements
+7. ✅ JSDoc comments for public APIs
+8. ✅ Imports organized and grouped logically
+9. ✅ No magic numbers or strings (use named constants)
+10. ✅ Code is DRY (Don't Repeat Yourself)
+
+### Anti-Patterns to Avoid
+
+**Avoid**:
+- ❌ Nested callbacks (callback hell) - use async/await
+- ❌ Modifying function parameters
+- ❌ Implicit type coercion (`==` instead of `===`)
+- ❌ Global variables
+- ❌ Large functions (>30 lines typically needs splitting)
+- ❌ Deep nesting (>3 levels indicates refactoring needed)
+- ❌ Mixed public/private declarations in classes
+- ❌ Mixing concerns in a single function/module
+
+### Testing Standards
+
+- Write tests before or alongside code (TDD/BDD)
+- Test file naming: `*.test.js` or `*.spec.js`
+- Use descriptive test names: `it('should calculate total with discount applied')`
+- Follow Arrange-Act-Assert pattern
+- Mock external dependencies
+- Aim for >80% code coverage for critical paths
+
+---
+
 ## Code Style Preferences
 
 ### JavaScript
