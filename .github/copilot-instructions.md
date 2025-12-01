@@ -133,7 +133,7 @@ describe('myFunction', () => {
 
 ## Testing Requirements
 
-See [Testing Standards](#testing-standards) in the Code Organization section below for comprehensive testing guidelines including:
+See "Testing Standards" in the Code Organization section below for comprehensive testing guidelines including:
 - Test file structure and naming conventions
 - Test-Driven Development (TDD/BDD) approach
 - Arrange-Act-Assert pattern
