@@ -133,10 +133,18 @@ describe('myFunction', () => {
 
 ## Testing Requirements
 
+See [Testing Standards](#testing-standards) in the Code Organization section below for comprehensive testing guidelines including:
+- Test file structure and naming conventions
+- Test-Driven Development (TDD/BDD) approach
+- Arrange-Act-Assert pattern
+- Coverage targets and mocking strategies
+
+**Quick Reference:**
 - **Always** run tests before committing: `npm test -- --watchAll=false`
-- Test coverage for all exported JavaScript functions
-- Mock external dependencies in tests
-- Use descriptive test names following pattern: "should [expected behavior] when [condition]"
+- Test file naming: `*.test.js` in `test/unit/` mirroring source structure
+- Use descriptive test names: `test('should [expected behavior] when [condition]')`
+- Mock external dependencies (fetch, DOM, etc.)
+- Aim for >80% code coverage for critical paths
 
 ---
 
@@ -177,6 +185,206 @@ Before suggesting `git push`, ensure:
 | Layout | `*.html` | `default.html`, `post.html` |
 | Include | `*.html` | `footer.html`, `navheader.html` |
 | Data | `*.json` or `*.yml` | `navigation.yml`, `primary-series.json` |
+
+---
+
+## Code Organization and Clean Code Standards
+
+### Public Interface First (Critical)
+**Always declare public interfaces at the top of modules and classes** to enable top-down reading without jumping around in code.
+
+- **Modules**: Export statements and public functions/constants should be declared first
+- **Classes**: Public methods and properties should be declared before private ones
+- **Rationale**: Readers should understand the public API without scrolling through implementation details
+
+**Example - Module Structure**:
+```javascript
+// ✅ CORRECT: Public interface first
+export function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + _applyDiscount(item), 0);
+}
+
+export function formatPrice(amount) {
+  return _currencyFormatter.format(amount);
+}
+
+// Private implementation details below
+function _applyDiscount(item) {
+  return item.price * (1 - item.discount);
+}
+
+const _currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});
+```
+
+```javascript
+// ❌ INCORRECT: Private details mixed with public interface
+function _applyDiscount(item) {
+  return item.price * (1 - item.discount);
+}
+
+export function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + _applyDiscount(item), 0);
+}
+
+const _currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});
+
+export function formatPrice(amount) {
+  return _currencyFormatter.format(amount);
+}
+```
+
+**Example - Class Structure**:
+```javascript
+// ✅ CORRECT: Public methods first
+class DataProcessor {
+  // Public interface
+  constructor(config) {
+    this._config = config;
+    this._cache = new Map();
+  }
+
+  process(data) {
+    if (this._cache.has(data.id)) {
+      return this._cache.get(data.id);
+    }
+    return this._processAndCache(data);
+  }
+
+  clearCache() {
+    this._cache.clear();
+  }
+
+  // Private methods below
+  _processAndCache(data) {
+    const result = this._transform(data);
+    this._cache.set(data.id, result);
+    return result;
+  }
+
+  _transform(data) {
+    return { ...data, processed: true };
+  }
+}
+```
+
+### JavaScript Best Practices
+
+**Modern JavaScript (ES6+)**:
+- Use `const` by default, `let` only when reassignment needed, never `var`
+- Prefer arrow functions for callbacks and non-method functions
+- Use template literals for string interpolation
+- Destructuring for object/array extraction
+- Spread operator for object/array copying
+- Default parameters instead of `||` fallbacks
+
+**Naming Conventions**:
+- `camelCase` for variables, functions, and methods
+- `PascalCase` for classes and constructors
+- `UPPER_SNAKE_CASE` for constants
+- Prefix private methods/properties with underscore: `_privateMethod`
+- Use descriptive names that reveal intent
+
+**Function Design**:
+- Keep functions small and focused (single responsibility)
+- Limit parameters (3 or fewer; use object for more)
+- Avoid side effects in pure functions
+- Return early to reduce nesting
+- Use async/await instead of promise chains
+
+**Error Handling**:
+- Always handle promise rejections
+- Use try/catch with async/await
+- Throw meaningful error messages
+- Validate inputs early
+- Don't catch errors you can't handle
+
+**Code Organization**:
+- One class per file (with same name as file)
+- Group related functions in modules
+- Import statements at top, grouped by type (external, internal, local)
+- Maximum file length: ~300 lines (split if larger)
+
+**Comments and Documentation**:
+- Use JSDoc for public APIs
+- Comment "why", not "what"
+- Keep comments up-to-date with code
+- Document non-obvious behavior or edge cases
+
+### Code Review Checklist
+
+During code reviews, **always verify**:
+
+1. ✅ **Public interfaces declared first** in all modules and classes
+2. ✅ Modern JavaScript patterns used (const/let, arrow functions, destructuring)
+3. ✅ Functions are small, focused, and well-named
+4. ✅ Consistent naming conventions throughout
+5. ✅ Error handling present for async operations
+6. ✅ No commented-out code or console.log statements
+7. ✅ JSDoc comments for public APIs
+8. ✅ Imports organized and grouped logically
+9. ✅ No magic numbers or strings (use named constants)
+10. ✅ Code is DRY (Don't Repeat Yourself)
+
+### Anti-Patterns to Avoid
+
+**Avoid**:
+- ❌ Nested callbacks (callback hell) - use async/await
+- ❌ Modifying function parameters
+- ❌ Implicit type coercion (`==` instead of `===`)
+- ❌ Global variables
+- ❌ Large functions (>30 lines typically needs splitting)
+- ❌ Deep nesting (>3 levels indicates refactoring needed)
+- ❌ Mixed public/private declarations in classes
+- ❌ Mixing concerns in a single function/module
+
+### Testing Standards
+
+**Test Development Approach:**
+- Write tests before or alongside code (TDD/BDD)
+- Tests should document expected behavior and serve as living documentation
+- Create test files in `test/unit/` mirroring source structure
+
+**Test File Structure:**
+- Test file naming: `*.test.js` (e.g., `blog-search.test.js`)
+- Use `@jest-environment jsdom` comment when DOM is required
+- Import from source: `import { Thing } from '../../../../assets/js/path/to/file.js';`
+- Group related tests with `describe()` blocks
+
+**Test Naming and Organization:**
+- Use descriptive test names: `test('should calculate total with discount applied')`
+- Alternative pattern: "should [expected behavior] when [condition]"
+- Follow **Arrange-Act-Assert** pattern:
+  ```javascript
+  test('should return discounted price', () => {
+    // Arrange: Set up test data
+    const item = { price: 100, discount: 0.2 };
+    
+    // Act: Execute the function
+    const result = calculatePrice(item);
+    
+    // Assert: Verify the result
+    expect(result).toBe(80);
+  });
+  ```
+
+**Mocking and Dependencies:**
+- Mock external dependencies (fetch, DOM elements, file system)
+- Use Jest mocking: `jest.fn()`, `jest.mock()`
+- Mock `global.fetch` for API calls in jsdom environment
+- Keep mocks simple and focused on the test's purpose
+
+**Coverage and Quality:**
+- Aim for >80% code coverage for critical paths
+- Test both happy paths and edge cases
+- Test error handling and validation
+- Run tests before committing: `npm test -- --watchAll=false`
+- Verify all tests pass before pushing changes
 
 ---
 
