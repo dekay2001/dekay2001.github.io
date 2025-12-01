@@ -40,7 +40,7 @@ class BlogSearch {
      * Loads all blog posts from the JSON feed
      * @async
      * @returns {Promise<void>}
-     * @throws {Error} If fetch fails, falls back to loadPostsFromPage()
+     * @description Falls back to loading posts from the current page DOM if fetch fails
      */
     async loadAllPosts() {
         try {
