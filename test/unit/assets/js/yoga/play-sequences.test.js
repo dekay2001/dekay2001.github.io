@@ -92,7 +92,7 @@ describe('YogaPoseDisplayer', () => {
         
         // Should not throw when elements don't exist (return null)
         expect(() => {
-            const displayer = new ps.YogaPoseDisplayer(textDisplayer, document);
+            new ps.YogaPoseDisplayer(textDisplayer, document);
         }).not.toThrow();
         
         // Should not throw when trying to display poses with missing elements
