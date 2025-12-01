@@ -133,10 +133,18 @@ describe('myFunction', () => {
 
 ## Testing Requirements
 
+See [Testing Standards](#testing-standards) in the Code Organization section below for comprehensive testing guidelines including:
+- Test file structure and naming conventions
+- Test-Driven Development (TDD/BDD) approach
+- Arrange-Act-Assert pattern
+- Coverage targets and mocking strategies
+
+**Quick Reference:**
 - **Always** run tests before committing: `npm test -- --watchAll=false`
-- Test coverage for all exported JavaScript functions
-- Mock external dependencies in tests
-- Use descriptive test names following pattern: "should [expected behavior] when [condition]"
+- Test file naming: `*.test.js` in `test/unit/` mirroring source structure
+- Use descriptive test names: `test('should [expected behavior] when [condition]')`
+- Mock external dependencies (fetch, DOM, etc.)
+- Aim for >80% code coverage for critical paths
 
 ---
 
@@ -337,12 +345,46 @@ During code reviews, **always verify**:
 
 ### Testing Standards
 
+**Test Development Approach:**
 - Write tests before or alongside code (TDD/BDD)
-- Test file naming: `*.test.js`
+- Tests should document expected behavior and serve as living documentation
+- Create test files in `test/unit/` mirroring source structure
+
+**Test File Structure:**
+- Test file naming: `*.test.js` (e.g., `blog-search.test.js`)
+- Use `@jest-environment jsdom` comment when DOM is required
+- Import from source: `import { Thing } from '../../../../assets/js/path/to/file.js';`
+- Group related tests with `describe()` blocks
+
+**Test Naming and Organization:**
 - Use descriptive test names: `test('should calculate total with discount applied')`
-- Follow Arrange-Act-Assert pattern
-- Mock external dependencies
+- Alternative pattern: "should [expected behavior] when [condition]"
+- Follow **Arrange-Act-Assert** pattern:
+  ```javascript
+  test('should return discounted price', () => {
+    // Arrange: Set up test data
+    const item = { price: 100, discount: 0.2 };
+    
+    // Act: Execute the function
+    const result = calculatePrice(item);
+    
+    // Assert: Verify the result
+    expect(result).toBe(80);
+  });
+  ```
+
+**Mocking and Dependencies:**
+- Mock external dependencies (fetch, DOM elements, file system)
+- Use Jest mocking: `jest.fn()`, `jest.mock()`
+- Mock `global.fetch` for API calls in jsdom environment
+- Keep mocks simple and focused on the test's purpose
+
+**Coverage and Quality:**
 - Aim for >80% code coverage for critical paths
+- Test both happy paths and edge cases
+- Test error handling and validation
+- Run tests before committing: `npm test -- --watchAll=false`
+- Verify all tests pass before pushing changes
 
 ---
 
