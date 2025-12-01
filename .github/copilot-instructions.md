@@ -339,7 +339,7 @@ During code reviews, **always verify**:
 
 - Write tests before or alongside code (TDD/BDD)
 - Test file naming: `*.test.js`
-- Use descriptive test names: `it('should calculate total with discount applied')`
+- Use descriptive test names: `test('should calculate total with discount applied')`
 - Follow Arrange-Act-Assert pattern
 - Mock external dependencies
 - Aim for >80% code coverage for critical paths
