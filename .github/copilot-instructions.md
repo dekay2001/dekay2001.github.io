@@ -338,7 +338,7 @@ During code reviews, **always verify**:
 ### Testing Standards
 
 - Write tests before or alongside code (TDD/BDD)
-- Test file naming: `*.test.js` or `*.spec.js`
+- Test file naming: `*.test.js`
 - Use descriptive test names: `it('should calculate total with discount applied')`
 - Follow Arrange-Act-Assert pattern
 - Mock external dependencies
