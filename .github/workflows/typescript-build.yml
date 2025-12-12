@@ -1,0 +1,51 @@
+name: Build TypeScript
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/**/*.ts'
+      - 'tsconfig.json'
+      - 'package.json'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'src/**/*.ts'
+      - 'tsconfig.json'
+      - 'package.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Compile TypeScript
+        run: npm run build
+      
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code assets/js/ || echo "changes=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit compiled JavaScript
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/js/**/*.js assets/js/**/*.d.ts assets/js/**/*.js.map assets/js/**/*.d.ts.map
+          git commit -m "Build: Compile TypeScript to JavaScript [skip ci]"
+          git push

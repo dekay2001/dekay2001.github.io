@@ -3,16 +3,18 @@
  * @description Entry point for yoga sequence player on yoga page.
  * Initializes and starts the sequence application.
  */
-import { getSequenceLinks, startApp } from './play-sequence.js';
+
+import { getSequenceLinks, startApp, AppConfig, SequenceLinks } from './play-sequence.js';
+
 /**
  * Main entry point for yoga sequence application
  * @param sequenceId - ID of the sequence to display
  * @example
  * main("suryanamskaraa");
  */
-export function main(sequenceId) {
-    const sequenceLinks = getSequenceLinks();
-    const config = {
+export function main(sequenceId: string): void {
+    const sequenceLinks: SequenceLinks = getSequenceLinks();
+    const config: AppConfig = {
         secondsInterval: 5,
         ashtangaSequencesDivId: "ashtanga-sequences",
         titleDivId: "sequence-title",
@@ -20,8 +22,8 @@ export function main(sequenceId) {
     };
     startApp(config);
 }
+
 // Initialize on page load
-window.onload = () => {
+window.onload = (): void => {
     main("suryanamskaraa");
 };
-//# sourceMappingURL=main.js.map

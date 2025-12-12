@@ -1,12 +1,36 @@
-"use strict";
 /**
  * @file Blog Search Functionality
  * @description Provides client-side search across all blog posts using a JSON feed.
  * Supports searching by title and excerpt with result highlighting and keyboard shortcuts.
  */
+
+/**
+ * Post data structure from search.json
+ */
+interface PostData {
+    title: string;
+    date: string;
+    url: string;
+    excerpt?: string;
+    categories?: string[];
+}
+
+/**
+ * Internal searchable post structure
+ */
+interface SearchablePost {
+    title: string;
+    titleOriginal: string;
+    date: string;
+    url: string;
+    excerpt: string;
+    excerptOriginal: string;
+    categories: string[];
+}
+
 /**
  * BlogSearch - Manages blog post search functionality
- *
+ * 
  * @class
  * @description Provides site-wide blog search with the following features:
  * - Fetches all posts from /search.json for comprehensive searching
@@ -14,12 +38,19 @@
  * - Highlights matching terms in results
  * - Keyboard shortcut (Ctrl/Cmd+K) to focus search
  * - XSS protection through HTML escaping
- *
+ * 
  * @example
  * // Automatically initialized on DOMContentLoaded
  * const search = new BlogSearch();
  */
 class BlogSearch {
+    private posts: SearchablePost[];
+    private allPostsLoaded: boolean;
+    private searchInput: HTMLInputElement | null;
+    private searchResults: HTMLElement | null;
+    private postList: HTMLElement | null;
+    private clearButton: HTMLElement | null;
+
     /**
      * Creates a BlogSearch instance and initializes the search interface
      * @constructor
@@ -27,22 +58,25 @@ class BlogSearch {
     constructor() {
         this.posts = [];
         this.allPostsLoaded = false;
-        this.searchInput = document.getElementById('blog-search-input');
+        this.searchInput = document.getElementById('blog-search-input') as HTMLInputElement;
         this.searchResults = document.getElementById('search-results');
         this.postList = document.getElementById('post-list');
         this.clearButton = document.getElementById('clear-search');
+        
         this._init();
     }
+
     /**
      * Loads all blog posts from the JSON feed
      * @async
      * @returns Promise that resolves when posts are loaded
      * @description Falls back to loading posts from the current page DOM if fetch fails
      */
-    async loadAllPosts() {
+    async loadAllPosts(): Promise<void> {
         try {
             const response = await fetch('/search.json');
-            const postsData = await response.json();
+            const postsData: PostData[] = await response.json();
+            
             this.posts = postsData.map(post => ({
                 title: post.title.toLowerCase(),
                 titleOriginal: post.title,
@@ -52,39 +86,47 @@ class BlogSearch {
                 excerptOriginal: post.excerpt || '',
                 categories: post.categories || []
             }));
+            
             this.allPostsLoaded = true;
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Error loading posts:', error);
             this._loadPostsFromPage();
         }
     }
+
     /**
      * Handles search input and filters posts
      * @param query - The search query string
      */
-    handleSearch(query) {
+    handleSearch(query: string): void {
         const searchQuery = query.toLowerCase().trim();
+        
         if (searchQuery.length === 0) {
             this.showAllPosts();
             return;
         }
+
         if (searchQuery.length < 2) {
             return; // Wait for at least 2 characters
         }
+
         // Search in title and excerpt
-        const results = this.posts.filter(post => post.title.includes(searchQuery) ||
-            post.excerpt.includes(searchQuery));
+        const results = this.posts.filter(post => 
+            post.title.includes(searchQuery) || 
+            post.excerpt.includes(searchQuery)
+        );
+
         this.displayResults(results, searchQuery);
     }
+
     /**
      * Displays search results with highlighting
      * @param results - Array of post objects matching the search
      * @param query - The search query for highlighting
      */
-    displayResults(results, query) {
-        if (!this.searchResults || !this.postList)
-            return;
+    displayResults(results: SearchablePost[], query: string): void {
+        if (!this.searchResults || !this.postList) return;
+
         if (results.length === 0) {
             this.searchResults.innerHTML = `
                 <div class="no-results">
@@ -96,10 +138,12 @@ class BlogSearch {
             this.postList.style.display = 'none';
             return;
         }
+
         const resultsHtml = results.map(post => {
-            const excerptHtml = post.excerptOriginal
+            const excerptHtml = post.excerptOriginal 
                 ? `<span class="post-excerpt">${this._highlightMatch(post.excerptOriginal, query)}</span>`
                 : '';
+            
             return `
                 <li>
                     <a class="postlink" href="${post.url}">
@@ -110,6 +154,7 @@ class BlogSearch {
                 </li>
             `;
         }).join('');
+
         this.searchResults.innerHTML = `
             <div class="search-results-header">
                 <p>Found ${results.length} post${results.length !== 1 ? 's' : ''} matching "<strong>${this._escapeHtml(query)}</strong>"</p>
@@ -117,44 +162,50 @@ class BlogSearch {
             </div>
             <ul>${resultsHtml}</ul>
         `;
+        
         this.searchResults.style.display = 'block';
         this.postList.style.display = 'none';
     }
+
     /**
      * Shows all posts by hiding search results
      */
-    showAllPosts() {
-        if (!this.searchResults || !this.postList)
-            return;
+    showAllPosts(): void {
+        if (!this.searchResults || !this.postList) return;
         this.searchResults.style.display = 'none';
         this.postList.style.display = 'block';
     }
+
     /**
      * Clears the search input and shows all posts
      */
-    clearSearch() {
-        if (!this.searchInput)
-            return;
+    clearSearch(): void {
+        if (!this.searchInput) return;
         this.searchInput.value = '';
         this.showAllPosts();
         this.searchInput.focus();
     }
+
     // Private methods
+
     /**
      * Initializes event listeners and loads posts
      * @private
      */
-    _init() {
-        if (!this.searchInput)
-            return;
+    private _init(): void {
+        if (!this.searchInput) return;
+        
         // Load all posts from JSON feed
         this.loadAllPosts();
+        
         // Add event listeners
         this.searchInput.addEventListener('input', (e) => {
-            const target = e.target;
+            const target = e.target as HTMLInputElement;
             this.handleSearch(target.value);
         });
+        
         this.clearButton?.addEventListener('click', () => this.clearSearch());
+        
         // Add keyboard shortcut (Ctrl+K or Cmd+K)
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -163,16 +214,18 @@ class BlogSearch {
             }
         });
     }
+
     /**
      * Fallback method to load posts from current page DOM
      * @private
      */
-    _loadPostsFromPage() {
+    private _loadPostsFromPage(): void {
         const postLinks = document.querySelectorAll('.postlink');
         postLinks.forEach(link => {
             const title = link.querySelector('.post-title')?.textContent || '';
             const date = link.querySelector('.post-date')?.textContent || '';
             const url = link.getAttribute('href') || '';
+            
             this.posts.push({
                 title: title.toLowerCase(),
                 titleOriginal: title,
@@ -184,6 +237,7 @@ class BlogSearch {
             });
         });
     }
+
     /**
      * Highlights matching text in search results
      * @private
@@ -191,35 +245,37 @@ class BlogSearch {
      * @param query - The search query to highlight
      * @returns HTML string with <mark> tags around matches
      */
-    _highlightMatch(text, query) {
-        if (!query)
-            return this._escapeHtml(text);
+    private _highlightMatch(text: string, query: string): string {
+        if (!query) return this._escapeHtml(text);
+        
         const regex = new RegExp(`(${this._escapeRegex(query)})`, 'gi');
         return this._escapeHtml(text).replace(regex, '<mark>$1</mark>');
     }
+
     /**
      * Escapes HTML to prevent XSS attacks
      * @private
      * @param text - The text to escape
      * @returns Escaped HTML string
      */
-    _escapeHtml(text) {
+    private _escapeHtml(text: string): string {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
+
     /**
      * Escapes special regex characters
      * @private
      * @param str - The string to escape
      * @returns Escaped regex string
      */
-    _escapeRegex(str) {
+    private _escapeRegex(str: string): string {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 }
+
 // Initialize search when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new BlogSearch();
 });
-//# sourceMappingURL=blog-search.js.map

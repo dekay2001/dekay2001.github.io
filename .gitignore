@@ -12,6 +12,9 @@ vendor/
 .bundle/
 Gemfile.lock
 
+# TypeScript
+*.tsbuildinfo
+
 # OS
 .DS_Store
 Thumbs.db

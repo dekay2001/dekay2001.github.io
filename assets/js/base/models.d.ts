@@ -11,9 +11,7 @@
  * await collection.fetchAll();
  * console.log(collection.data);
  */
-export function getResourceCollection(resourceUrl) {
-    return new ResourceCollection(resourceUrl);
-}
+export declare function getResourceCollection<T = unknown>(resourceUrl: string): ResourceCollection<T>;
 /**
  * ResourceCollection - Manages fetching and storing remote JSON data
  *
@@ -29,26 +27,22 @@ export function getResourceCollection(resourceUrl) {
  * await collection.fetchAll();
  * // collection.data now contains the parsed JSON
  */
-class ResourceCollection {
+declare class ResourceCollection<T = unknown> {
+    resourceUrl: string;
+    data: T | null;
     /**
      * Creates a ResourceCollection instance
      * @constructor
      * @param resourceUrl - The URL of the JSON resource to fetch
      */
-    constructor(resourceUrl) {
-        this.resourceUrl = resourceUrl;
-        this.data = null;
-    }
+    constructor(resourceUrl: string);
     /**
      * Fetches and parses the JSON resource
      * @async
      * @returns Promise that resolves when data is fetched
      * @throws Error if fetch fails or JSON parsing fails
      */
-    async fetchAll() {
-        const response = await fetch(this.resourceUrl);
-        this.data = await response.json();
-    }
+    fetchAll(): Promise<void>;
 }
 export { ResourceCollection };
-//# sourceMappingURL=models.js.map
+//# sourceMappingURL=models.d.ts.map

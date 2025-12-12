@@ -4,6 +4,26 @@
  * Implements observer pattern for notifying listeners of display changes.
  */
 /**
+ * Interface for objects that can be displayed
+ */
+export interface IDisplayable {
+    text: string;
+}
+/**
+ * Interface for collections that can provide displayable items
+ */
+export interface IDisplayableCollection {
+    nextDisplayable(): IDisplayable | null;
+    previousDisplayable(): IDisplayable | null;
+}
+/**
+ * Interface for listeners that respond to display events
+ */
+export interface IDisplayListener {
+    displayNext(displayable: IDisplayable): void;
+    displayPrevious(displayable: IDisplayable): void;
+}
+/**
  * TextDisplayer - Displays text content in a DOM element
  *
  * @class
@@ -16,25 +36,19 @@
  * const displayer = new TextDisplayer('title-div');
  * displayer.display({ text: 'Hello World' });
  */
-export class TextDisplayer {
+export declare class TextDisplayer {
+    elementId: string;
     /**
      * Creates a TextDisplayer instance
      * @constructor
      * @param elementId - The ID of the DOM element to display text in
      */
-    constructor(elementId) {
-        this.elementId = elementId;
-    }
+    constructor(elementId: string);
     /**
      * Displays the text content of a displayable object
      * @param displayable - An object with a text property
      */
-    display(displayable) {
-        const displayInElement = document.getElementById(this.elementId);
-        if (displayInElement) {
-            displayInElement.innerText = displayable.text;
-        }
-    }
+    display(displayable: IDisplayable): void;
 }
 /**
  * DisplayablePlayer - Manages automated sequence playback with observer pattern
@@ -53,82 +67,53 @@ export class TextDisplayer {
  * player.register(someListener);
  * player.play(5); // Display next item every 5 seconds
  */
-export class DisplayablePlayer {
+export declare class DisplayablePlayer {
+    displayableCollection: IDisplayableCollection;
+    private _listeners;
     /**
      * Creates a DisplayablePlayer instance
      * @constructor
      * @param displayableCollection - Collection implementing nextDisplayable() and previousDisplayable()
      */
-    constructor(displayableCollection) {
-        this.displayableCollection = displayableCollection;
-        this._listeners = [];
-    }
+    constructor(displayableCollection: IDisplayableCollection);
     /**
      * Starts playback at specified interval
      * @param seconds - Interval in seconds between displays
      */
-    play(seconds) {
-        setTimeout(() => {
-            this.displayNext(seconds);
-        }, seconds * 1000);
-    }
+    play(seconds: number): void;
     /**
      * Displays the next item in the collection
      * @param seconds - Interval for recursive playback
      */
-    displayNext(seconds) {
-        const nextDisplayable = this.displayableCollection.nextDisplayable();
-        if (nextDisplayable !== null) {
-            this._display(nextDisplayable, seconds);
-            this._notifyListenersDisplayNext(nextDisplayable);
-        }
-    }
+    displayNext(seconds: number): void;
     /**
      * Displays the previous item in the collection
      */
-    displayPrevious() {
-        const previousDisplayable = this.displayableCollection.previousDisplayable();
-        if (previousDisplayable !== null) {
-            this._notifyListenersDisplayPrevious(previousDisplayable);
-        }
-    }
+    displayPrevious(): void;
     /**
      * Registers a listener for display events
      * @param listener - Object with displayNext() and displayPrevious() methods
      */
-    register(listener) {
-        this._listeners.push(listener);
-    }
-    // Private methods
+    register(listener: IDisplayListener): void;
     /**
      * Internal display handler that continues playback
      * @private
      * @param _displayable - The displayable item (unused)
      * @param seconds - Interval for next display
      */
-    _display(_displayable, seconds) {
-        this.play(seconds);
-    }
+    private _display;
     /**
      * Notifies all listeners of next display
      * @private
      * @param newDisplayable - The newly displayed item
      */
-    _notifyListenersDisplayNext(newDisplayable) {
-        this._listeners.forEach(listener => {
-            listener.displayNext(newDisplayable);
-        });
-    }
+    private _notifyListenersDisplayNext;
     /**
      * Notifies all listeners of previous display
      * @private
      * @param previousDisplayable - The previously displayed item
      */
-    _notifyListenersDisplayPrevious(previousDisplayable) {
-        this._listeners.forEach(listener => {
-            listener.displayPrevious(previousDisplayable);
-        });
-    }
+    private _notifyListenersDisplayPrevious;
 }
 /**
  * Displayable - Basic displayable content wrapper
@@ -144,15 +129,14 @@ export class DisplayablePlayer {
  * const displayable = new Displayable({ text: 'Hello' });
  * console.log(displayable.text); // 'Hello'
  */
-export class Displayable {
+export declare class Displayable implements IDisplayable {
+    content: IDisplayable;
+    text: string;
     /**
      * Creates a Displayable instance
      * @constructor
      * @param content - Content object with a text property
      */
-    constructor(content) {
-        this.content = content;
-        this.text = content.text;
-    }
+    constructor(content: IDisplayable);
 }
-//# sourceMappingURL=displayables.js.map
+//# sourceMappingURL=displayables.d.ts.map

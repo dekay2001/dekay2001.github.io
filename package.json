@@ -1,20 +1,36 @@
 {
     "scripts": {
-        "test": "jest --watchAll"
+        "test": "jest --watchAll",
+        "build": "tsc",
+        "build:watch": "tsc --watch"
     },
     "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "jsdom",
         "verbose": true,
         "rootDir": ".",
         "testPathIgnorePatterns": [
             "/node_modules/",
             "/_site/"
-        ]
+        ],
+        "moduleNameMapper": {
+            "^(\\.{1,2}/.*)\\.js$": "$1"
+        },
+        "transform": {
+            "^.+\\.tsx?$": ["ts-jest", {
+                "useESM": true
+            }]
+        },
+        "extensionsToTreatAsEsm": [".ts"]
     },
     "devDependencies": {
         "@babel/core": "^7.13.10",
         "@babel/preset-env": "^7.13.10",
+        "@types/jest": "^30.0.0",
         "babel-jest": "^30.0.5",
         "jest": "^30.0.5",
-        "jest-environment-jsdom": "^30.0.5"
+        "jest-environment-jsdom": "^30.0.5",
+        "ts-jest": "^29.4.6",
+        "typescript": "^5.9.3"
     }
 }
