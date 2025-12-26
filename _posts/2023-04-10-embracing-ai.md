@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Embracing the Power of AI: My Experience with Chat GPT"
-categories: [AI, ChatGPT]
+categories: [ai, chatgpt]
 tags: []
 ---
 {{ page.date | date: "%m/%d/%Y" }}
