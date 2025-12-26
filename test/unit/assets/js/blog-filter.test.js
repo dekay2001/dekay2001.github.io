@@ -97,7 +97,7 @@ describe('BlogFilter', () => {
         });
 
         test('should attach event listeners to filter buttons', () => {
-            const filter = createBlogFilter();
+            createBlogFilter();
             const buttons = document.querySelectorAll('.filter-btn');
             expect(buttons.length).toBe(6);
         });
@@ -156,16 +156,16 @@ describe('BlogFilter', () => {
     });
 
     describe('Multiple Categories Support', () => {
-        test('should show posts with multiple categories in any matching filter', () => {
+        test('should show posts with multiple categories in any matching filter', async() => {
             const filter = createBlogFilter();
             
             // AI Mirrors has categories: ai, personal, reflection, moments
-            filter.filterByCategory('moments');
+            await filter.filterByCategory('moments');
             let aiMirrorsPost = Array.from(document.querySelectorAll('#post-list li'))
                 .find(li => li.textContent.includes('AI Mirrors'));
             expect(aiMirrorsPost.style.display).not.toBe('none');
             
-            filter.filterByCategory('personal');
+            await filter.filterByCategory('personal');
             aiMirrorsPost = Array.from(document.querySelectorAll('#post-list li'))
                 .find(li => li.textContent.includes('AI Mirrors'));
             expect(aiMirrorsPost.style.display).not.toBe('none');
@@ -341,7 +341,7 @@ describe('BlogFilter', () => {
 
     describe('Button Click Integration', () => {
         test('should filter posts when button is clicked', async () => {
-            const filter = createBlogFilter();
+            createBlogFilter();
             const momentsBtn = document.querySelector('[data-category="moments"]');
             
             momentsBtn.click();
@@ -354,7 +354,7 @@ describe('BlogFilter', () => {
         });
 
         test('should update active button when clicked', async () => {
-            const filter = createBlogFilter();
+            createBlogFilter();
             const momentsBtn = document.querySelector('[data-category="moments"]');
             
             momentsBtn.click();
@@ -376,7 +376,7 @@ describe('BlogFilter', () => {
         });
 
         test('should activate reflection button when clicked', async () => {
-            const filter = createBlogFilter();
+            createBlogFilter();
             const reflectionBtn = document.querySelector('[data-category="reflection"]');
             
             reflectionBtn.click();
