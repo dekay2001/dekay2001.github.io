@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Multiverse and Life Questions"
-categories: [life]
+categories: [philosophy]
 tags: [multiverse, life, personal, quantum computing, string theory, God equation]
 ---
 {{ page.date | date: "%m/%d/%Y" }}

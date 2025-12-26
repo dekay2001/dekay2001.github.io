@@ -2,7 +2,7 @@
 layout: post
 title: "AI Mirrors"
 date: 2025-12-05
-categories: ai personal reflection moments
+categories: [tech, personal, reflection]
 ---
 
 {{ page.date | date: "%m/%d/%Y" }}

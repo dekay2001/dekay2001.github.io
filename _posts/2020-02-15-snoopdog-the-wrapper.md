@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "snoopdog the wrapper"
-categories: [professional, software]
+categories: [tech]
 tags: [python, coding, wrapper functions, snoop dogg, rapper, humor]
 ---
 {{ page.date | date: "%m/%d/%Y" }}

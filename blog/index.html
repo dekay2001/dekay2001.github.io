@@ -43,10 +43,12 @@
             <!-- Category Filters -->
             <div class="category-filters">
                 <button class="filter-btn active" data-category="all">All Posts</button>
-                <button class="filter-btn" data-category="moments">Moments</button>
                 <button class="filter-btn" data-category="personal">Personal</button>
                 <button class="filter-btn" data-category="yoga">Yoga</button>
-                <button class="filter-btn" data-category="ai">AI</button>
+                <button class="filter-btn" data-category="tech">Tech</button>
+                <button class="filter-btn" data-category="creative">Creative</button>
+                <button class="filter-btn" data-category="philosophy">Philosophy</button>
+                <button class="filter-btn" data-category="mindfulness">Mindfulness</button>
                 <button class="filter-btn" data-category="reflection">Reflection</button>
             </div>
             
@@ -70,7 +72,8 @@
             <!-- Original Post List -->
             <ul id="post-list">
                 {% for post in paginator.posts %}
-                <li data-categories="{% if post.categories %}{{ post.categories | join: ', ' }}{% endif %}"><a class="postlink" href="{{ post.url }}">
+                <li data-categories="{% if post.categories %}{{ post.categories | join: ', ' }}{% endif %}">
+                    <a class="postlink" href="{{ post.url }}">
                         <span class="post-title">{{ post.title }}</span>
                         <span class="post-date">{{ post.date | date: "%a. %b %d, %y" }}</span>
                     </a>

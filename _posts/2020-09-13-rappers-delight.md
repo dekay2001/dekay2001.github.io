@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Rapper's Delight"
-categories: [personal]
+categories: [personal, creative]
 tags: [open mic, rap, music, performance]
 ---
 {{ page.date | date: "%m/%d/%Y" }}

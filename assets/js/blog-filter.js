@@ -53,6 +53,97 @@ export class BlogFilter {
     }
 
     /**
+     * Gets the currently active category
+     * @returns {string} The active category
+     */
+    getActiveCategory() {
+        return this.activeCategory;
+    }
+
+    /**
+     * Filters posts by category
+     * @param {string} category - The category to filter by ('all' shows all posts)
+     */
+    async filterByCategory(category) {
+        this.activeCategory = category;
+        
+        // If filtering by 'all', restore original paginated posts
+        if (category === CATEGORIES.ALL) {
+            this._restorePaginatedView();
+            this._updateActiveButton(category);
+            this._updateURL(category);
+            
+            const visibleCount = this.posts.filter(p => p.element.style.display !== 'none').length;
+            this._dispatchCategoryChangedEvent(category, visibleCount);
+            return;
+        }
+        
+        // Otherwise, fetch and show all matching posts from JSON
+        try {
+            const allPosts = await this._fetchAllPosts();
+            const filteredPosts = allPosts.filter(post => 
+                post.categories && post.categories.includes(category)
+            );
+            
+            this._renderFilteredPosts(filteredPosts);
+            this._hidePagination();
+            this._updateActiveButton(category);
+            this._updateURL(category);
+            this._dispatchCategoryChangedEvent(category, filteredPosts.length);
+        } catch (error) {
+            console.error('Failed to load posts:', error);
+            // Fallback to client-side filtering of current page
+            this._filterCurrentPagePosts(category);
+        }
+    }
+
+    /**
+     * Resets the filter to show all posts
+     */
+    async reset() {
+        await this.filterByCategory(CATEGORIES.ALL);
+    }
+
+    /**
+     * Fetches all posts from search.json
+     * @private
+     * @returns {Promise<Array>} Array of all posts
+     */
+    async _fetchAllPosts() {
+        const response = await fetch('/search.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    }
+
+    /**
+     * Renders filtered posts in the post list
+     * @private
+     * @param {Array} posts - Array of post objects to render
+     */
+    _renderFilteredPosts(posts) {
+        if (!this.postList) return;
+        
+        // Clear and render filtered posts
+        this.postList.innerHTML = '';
+        
+        posts.forEach(post => {
+            const li = document.createElement('li');
+            li.setAttribute(ATTRIBUTES.DATA_CATEGORIES, post.categories.join(', '));
+            
+            li.innerHTML = `
+                <a class="postlink" href="${post.url}">
+                    <span class="post-title">${post.title}</span>
+                    <span class="post-date">${post.date}</span>
+                </a>
+            `;
+            
+            this.postList.appendChild(li);
+        });
+    }
+
+    /**
      * Initializes the filter by loading posts and setting up event listeners
      * @private
      */
@@ -129,43 +220,6 @@ export class BlogFilter {
         return Array.from(this.filterButtons).some(btn => 
             btn.getAttribute(ATTRIBUTES.DATA_CATEGORY) === category
         );
-    }
-
-    /**
-     * Filters posts by category
-     * @param {string} category - The category to filter by ('all' shows all posts)
-     */
-    async filterByCategory(category) {
-        this.activeCategory = category;
-        
-        // If filtering by 'all', restore original paginated posts
-        if (category === CATEGORIES.ALL) {
-            this._restorePaginatedView();
-            this._updateActiveButton(category);
-            this._updateURL(category);
-            
-            const visibleCount = this.posts.filter(p => p.element.style.display !== 'none').length;
-            this._dispatchCategoryChangedEvent(category, visibleCount);
-            return;
-        }
-        
-        // Otherwise, fetch and show all matching posts from JSON
-        try {
-            const allPosts = await this._fetchAllPosts();
-            const filteredPosts = allPosts.filter(post => 
-                post.categories && post.categories.includes(category)
-            );
-            
-            this._renderFilteredPosts(filteredPosts);
-            this._hidePagination();
-            this._updateActiveButton(category);
-            this._updateURL(category);
-            this._dispatchCategoryChangedEvent(category, filteredPosts.length);
-        } catch (error) {
-            console.error('Failed to load posts:', error);
-            // Fallback to client-side filtering of current page
-            this._filterCurrentPagePosts(category);
-        }
     }
 
     /**
@@ -308,21 +362,6 @@ export class BlogFilter {
             }
         });
         document.dispatchEvent(event);
-    }
-
-    /**
-     * Gets the currently active category
-     * @returns {string} The active category
-     */
-    getActiveCategory() {
-        return this.activeCategory;
-    }
-
-    /**
-     * Resets the filter to show all posts
-     */
-    reset() {
-        this.filterByCategory(CATEGORIES.ALL);
     }
 }
 
