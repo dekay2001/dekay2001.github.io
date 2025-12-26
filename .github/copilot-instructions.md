@@ -1,194 +1,121 @@
 # GitHub Copilot Instructions
 
-## Project Context
+## Quick Reference
 
-This is a Jekyll-based GitHub Pages site (`dekay2001.github.io`) serving as a personal blog with resume, yoga sequences, and playground sections. The site uses `jekyll-theme-cayman` with custom layouts, JavaScript functionality, and Jest testing.
+### Essential Commands
+```powershell
+# Testing
+npm test -- --watchAll=false           # Run tests before commit
+npm test -- --coverage --watchAll=false # With coverage report
 
-## Repository Structure
+# Local Jekyll Development
+bundle exec jekyll serve               # Start server at http://localhost:4000
+$env:PATH += ";C:\Ruby34-x64\bin"     # Add Ruby to PATH (if needed)
 
-- **Jekyll Site**: Custom layouts in `_layouts/`, includes in `_includes/`, data in `_data/`
-- **Blog Posts**: Markdown files in `_posts/` with naming format `YYYY-MM-DD-title.md`
-- **JavaScript**: Source in `assets/js/` with subdirectories `base/` and `yoga/`
-- **Tests**: Jest tests in `test/unit/assets/js/` mirroring source structure
-- **Content Pages**: `index.md` (home), `resume/index.md`, `yoga/index.html`, `playground/index.html`
-- **Assets**: CSS in `assets/css/`, images in `assets/images/`, data files in `assets/data/`
+# Package Management
+npm outdated                           # Check outdated packages
+ncu -u && npm install                 # Update all packages
+npm audit                             # Security check
 
-## Development Environment
+# Deployment
+git push origin master                # Auto-deploy to https://dekay2001.github.io
+```
 
-- **OS**: Windows with PowerShell
-- **Ruby**: Ruby 3.4.7 (installed at C:\Ruby34-x64\bin)
-- **Jekyll**: Installed via Bundler with GitHub Pages gem
-- **Testing**: Jest with Babel (ES6+ support) and jsdom environment
-- **Node Dependencies**: @babel/core, @babel/preset-env, babel-jest, jest, jest-environment-jsdom
-- **Ruby Dependencies**: github-pages gem (includes Jekyll and all GitHub Pages dependencies)
-- **Deployment**: Automatic via GitHub Pages on push to `master` branch
-- **Site URL**: https://dekay2001.github.io
-- **Local Development**: http://localhost:4000 (via Jekyll server)
+### File Naming Conventions
+- **Blog Post**: `_posts/YYYY-MM-DD-title.md` with front matter (`layout: post`)
+- **Test File**: `test/unit/**/*.test.js` mirroring source structure
+- **JavaScript**: `assets/js/base/` or `assets/js/yoga/` (export for testing)
 
 ---
 
-## Code Generation Guidelines
+## Project Overview
 
-### When Creating Blog Posts
+**Jekyll-based GitHub Pages site** (`dekay2001.github.io`) with personal blog, resume, yoga sequences, and playground sections.
 
-- Use Jekyll naming convention: `YYYY-MM-DD-title-with-dashes.md`
-- Include front matter with layout, title, and date
-- Place in `_posts/` directory
-- Default layout: `post`
+### Tech Stack
+- **Jekyll**: Static site with `jekyll-theme-cayman`, Liquid templating
+- **JavaScript**: ES6+ with Jest/Babel testing
+- **Environment**: Windows/PowerShell, Ruby 3.4.7, Node.js
+- **Deployment**: Auto-deploy to GitHub Pages on `master` branch push
 
-**Template:**
+### Repository Structure
+```
+_posts/           → Blog posts (YYYY-MM-DD-title.md)
+_layouts/         → Custom page layouts (default.html, post.html, resume.html)
+_includes/        → Reusable components (header, footer, navigation)
+_data/            → YAML/JSON data files (navigation.yml)
+assets/
+  js/             → JavaScript (base/, yoga/ subdirectories)
+  css/            → Stylesheets (responsive-*.css variants)
+  data/           → Data files (yoga sequences, etc.)
+test/unit/        → Jest tests mirroring assets/js/ structure
+```
+
+---
+
+## Code Generation Patterns
+
+### Blog Posts
 ```markdown
+<!-- File: _posts/YYYY-MM-DD-title-with-dashes.md -->
 ---
 layout: post
 title: "Your Title Here"
 date: YYYY-MM-DD
 ---
-
 Content starts here...
 ```
 
-### When Writing JavaScript
+### JavaScript
+- **Location**: `assets/js/base/` (shared) or `assets/js/yoga/` (yoga-specific)
+- **Export for testing**: `export { functionName };`
+- **ES6+ required**: const/let, arrow functions, template literals
+- **Patterns**: See `displayables.js`, `models.js` for examples
 
-- Use ES6+ syntax (Babel transpiles for Jest)
-- Place source files in `assets/js/base/` or `assets/js/yoga/` depending on purpose
-- Export functions/classes for testing: `export { functionName };`
-- Follow existing patterns from `displayables.js` and `models.js`
-
-### When Writing Tests
-
-- Create test files in `test/unit/` mirroring source structure
-- Use `.test.js` extension
-- Import from source: `import { Thing } from '../../../../assets/js/path/to/file.js';`
-- Use Jest syntax: `describe()`, `test()`, `expect()`
-- Run tests before committing: `npm test -- --watchAll=false`
-
-**Template:**
+### Tests
 ```javascript
-import { myFunction } from '../../../../assets/js/base/example.js';
+// File: test/unit/assets/js/path/to/file.test.js
+// Add @jest-environment jsdom if DOM testing needed
+import { myFunction } from '../../../../assets/js/path/to/file.js';
 
 describe('myFunction', () => {
   test('should perform expected behavior', () => {
+    // Arrange → Act → Assert
     expect(myFunction(input)).toBe(expectedOutput);
   });
 });
 ```
+**Always run before commit**: `npm test -- --watchAll=false`
 
-### When Modifying Layouts/Includes
-
-- **Layouts**: Use Liquid templating with `{{ page.variable }}` and `{% include file.html %}`
-- **Includes**: Small, reusable components (header, footer, navigation)
-- **CSS**: Responsive styles in separate files (responsive-default.css, responsive-post.css, etc.)
-- All layouts inherit from Jekyll theme but can override
-
-### When Working with Configuration
-
-- **_config.yml**: Site-wide settings (title, description, theme, pagination)
-- Changes to `_config.yml` require Jekyll restart in local development
-- Navigation structure in `_data/navigation.yml`
+### Layouts & Configuration
+- **Layouts**: Liquid templating (`{{ page.variable }}`, `{% include file.html %}`)
+- **CSS**: Responsive variants in `assets/css/responsive-*.css`
+- **_config.yml**: Requires Jekyll restart to apply changes
+- **Navigation**: Managed in `_data/navigation.yml`
 
 ---
 
-## Common Tasks & Patterns
+## Workflow Checklist
 
-### Creating a New Blog Post
+### Pre-Commit
+1. ✅ Run tests: `npm test -- --watchAll=false`
+2. ✅ Verify code follows conventions (see Clean Code Standards below)
+3. ✅ Write descriptive commit message (verb + specific change)
 
-**User Intent**: "Create a new blog post about [topic]"
+### Commit Message Format
+✅ Good: "Add blog post: [title]" | "Fix search filtering in blog.js" | "Refactor yoga display logic"
+❌ Bad: "Update files" | "Fix bug" | "Changes"
 
-**Action**: 
-1. Generate filename: `_posts/YYYY-MM-DD-topic-name.md`
-2. Include proper front matter with post layout
-3. Add relevant content based on existing post style
+### Deployment
+- Push to `master` → Auto-deploys to https://dekay2001.github.io (1-5 min)
+- Verify deployment after push
+- Feature branches for major changes only
 
-### Adding JavaScript Functionality
 
-**User Intent**: "Add a new [feature] to the yoga/playground section"
-
-**Action**:
-1. Create JS file in appropriate `assets/js/` subdirectory
-2. Export functions/classes for testing
-3. Create corresponding test file in `test/unit/`
-4. Reference in HTML with `<script src="/assets/js/path/to/file.js"></script>`
-
-### Updating Packages
-
-**User Intent**: "Update packages" or "check for outdated dependencies"
-
-**Action**:
-1. Suggest: `npm outdated` to check current status
-2. Provide update commands using PowerShell syntax
-3. Recommend: `ncu -u && npm install && npm test -- --watchAll=false`
-4. Always suggest running tests after updates
-
-### Modifying Site Styling
-
-**User Intent**: "Change the [color/layout/style] of [element]"
-
-**Action**:
-1. Identify relevant CSS file in `assets/css/`
-2. Consider responsive variants (responsive-*.css files)
-3. Use existing class naming conventions
-4. Test changes across layouts (default, post, resume)
 
 ---
 
-## Testing Requirements
-
-See "Testing Standards" in the Code Organization section below for comprehensive testing guidelines including:
-- Test file structure and naming conventions
-- Test-Driven Development (TDD/BDD) approach
-- Arrange-Act-Assert pattern
-- Coverage targets and mocking strategies
-
-**Quick Reference:**
-- **Always** run tests before committing: `npm test -- --watchAll=false`
-- Test file naming: `*.test.js` in `test/unit/` mirroring source structure
-- Use descriptive test names: `test('should [expected behavior] when [condition]')`
-- Mock external dependencies (fetch, DOM, etc.)
-- Aim for >80% code coverage for critical paths
-
----
-
-## Git Workflow Preferences
-
-### Commit Messages
-
-Generate clear, descriptive commit messages:
-- ✅ "Add blog post: [title]"
-- ✅ "Update resume with [specific change]"
-- ✅ "Fix [specific issue] in [component]"
-- ✅ "Refactor [component] to [improvement]"
-- ❌ "Update files"
-- ❌ "Fix bug"
-
-### Branch Strategy
-
-- **Primary branch**: `master`
-- Feature branches for major changes
-- Always push to appropriate branch (currently on: `Githubinstructions`)
-
-### Pre-commit Checklist
-
-Before suggesting `git push`, ensure:
-1. Tests pass: `npm test -- --watchAll=false`
-2. No linting errors (if applicable)
-3. Files are properly formatted
-4. Commit message is descriptive
-
----
-
-## File Naming Conventions
-
-| Type | Pattern | Example |
-|------|---------|---------|
-| Blog Post | `YYYY-MM-DD-title.md` | `2025-11-23-copilot-instructions.md` |
-| Test File | `*.test.js` | `models.test.js` |
-| Layout | `*.html` | `default.html`, `post.html` |
-| Include | `*.html` | `footer.html`, `navheader.html` |
-| Data | `*.json` or `*.yml` | `navigation.yml`, `primary-series.json` |
-
----
-
-## Code Organization and Clean Code Standards
+## Clean Code Standards
 
 ### Public Interface First (Critical)
 **Always declare public interfaces at the top of modules and classes** to enable top-down reading without jumping around in code.
@@ -391,61 +318,53 @@ During code reviews, **always verify**:
 ## Code Style Preferences
 
 ### JavaScript
-- Use ES6+ features (arrow functions, const/let, template literals)
-- Prefer functional programming patterns
-- Export reusable functions and classes
-- Document complex logic with comments
+- ES6+ features (arrow functions, const/let, template literals)
+- Functional programming patterns preferred
+- Export reusable functions/classes for testing
+- JSDoc for complex logic
 
 ### Markdown
-- Use ATX-style headers (`#`, `##`, etc.)
-- Code blocks with language specification
-- Follow existing blog post tone and structure
+- ATX-style headers (`#`, `##`)
+- Language-specified code blocks
+- Match existing blog post tone
 
 ### HTML/Liquid
 - Semantic HTML5 elements
-- Liquid tags for dynamic content
-- Maintain accessibility (alt text, ARIA labels where needed)
+- Liquid templating for dynamic content
+- Accessibility required (alt text, ARIA labels)
 
 ### CSS
-- BEM-like naming or existing convention
+- BEM-like naming conventions
 - Mobile-first responsive design
-- Organize by component/section
+- Component-based organization
 
 ---
 
-## Important Context for Responses
+## Context & Environment
 
-### When Asked About Site Updates
-- Assume user wants changes pushed to GitHub Pages
-- Remind about deployment time (1-5 minutes)
-- Suggest verifying at https://dekay2001.github.io
+### Local Development
+- **Ruby**: 3.4.7 at C:\Ruby34-x64\bin (may need to add to PATH)
+- **Jekyll**: `bundle exec jekyll serve` → http://localhost:4000
+- **Auto-reload**: Enabled by default on file changes
+- **Gemfile**: Uses `github-pages` gem for compatibility
 
-### When Asked About Package Management
-- Use PowerShell syntax (Windows environment)
-- Recommend `npm-check-updates` (ncu) for bulk updates
-- Always suggest testing after updates
-- Consider security with `npm audit`
+### Package Management (PowerShell)
+- Check updates: `npm outdated`
+- Bulk updates: `ncu -u && npm install`
+- Security: `npm audit`
+- Always test after updates
 
-### When Asked About Local Development
-- Ruby 3.4.7 is installed at C:\Ruby34-x64\bin
-- Jekyll is set up with GitHub Pages gem via Bundler
-- Start local server: `bundle exec jekyll serve`
-- Access at: http://localhost:4000
-- Note: May need to add Ruby to PATH in new PowerShell sessions: `$env:PATH += ";C:\Ruby34-x64\bin"`
-- Gemfile includes github-pages gem for GitHub Pages compatibility
-- Jekyll auto-regenerates on file changes (watch mode enabled by default)
-
-### When Debugging
-- Check Jest tests first
-- Verify file paths (absolute vs relative)
-- Consider browser caching for CSS/JS changes
-- Check GitHub Actions for deployment issues
+### Debugging
+- Run tests first: `npm test -- --watchAll=false`
+- Check file paths (absolute vs relative)
+- Browser caching may affect CSS/JS
+- GitHub Actions for deployment issues
 
 ---
 
-## Dependencies & Versions
+## Dependencies
 
-Current package.json devDependencies:
+### Node.js (package.json)
 ```json
 {
   "@babel/core": "^7.13.10",
@@ -455,88 +374,54 @@ Current package.json devDependencies:
   "jest-environment-jsdom": "^30.0.5"
 }
 ```
+*Note: May be outdated. Suggest latest when updating.*
 
-**Note**: These versions may be outdated. When asked to update, suggest latest versions.
-
-### Ruby Dependencies (Gemfile)
-
-The project uses Bundler to manage Jekyll and GitHub Pages dependencies:
+### Ruby (Gemfile)
 ```ruby
 source "https://rubygems.org"
 gem "github-pages", group: :jekyll_plugins
 gem "webrick"
 ```
-
-The `github-pages` gem includes all dependencies needed for GitHub Pages compatibility, including Jekyll and all approved plugins.
+*The `github-pages` gem includes Jekyll and all GitHub Pages dependencies.*
 
 ---
 
-## Special Sections
+## Site Sections
 
-### Yoga Section
-- Data-driven: JSON files in `assets/data/yoga/`
-- Interactive sequences with JavaScript in `assets/js/yoga/`
-- Main files: `main.js`, `play-sequence.js`
-- Display logic in `base/displayables.js` and `base/models.js`
-
-### Playground Section
-- Experimental/demo area
-- Uses `playground.js`
-- More flexible than other sections
-
-### Blog Section
-- Standard Jekyll blog with pagination (4 posts per page)
-- Posts dating back to 2019
+### Blog
+- Jekyll blog with pagination (4 posts/page)
+- Posts from 2019 onwards
 - Topics: personal reflections, tech, yoga/philosophy
 - Layout: `post.html`
 
-### Resume Section
-- Markdown-based: `resume/index.md`
-- Custom layout: `resume.html`
-- Separate responsive CSS: `responsive-resume.css`
+### Yoga
+- Data-driven: JSON in `assets/data/yoga/`
+- Interactive sequences: `assets/js/yoga/`
+- Key files: `main.js`, `play-sequence.js`, `displayables.js`, `models.js`
 
----
+### Resume
+- Markdown: `resume/index.md`
+- Layout: `resume.html`
+- Styling: `responsive-resume.css`
 
-## Quick Command Reference
+### Playground
+- Experimental features
+- More flexible than other sections
 
-```powershell
-# Testing
-npm test -- --watchAll=false           # Run tests once
-npm test -- --coverage --watchAll=false # With coverage
 
-# Package Management
-npm outdated                           # Check outdated packages
-ncu -u                                # Update package.json to latest
-npm install                           # Install dependencies
-npm audit                             # Security check
-
-# Git
-git status                            # Check status
-git add .                             # Stage all changes
-git commit -m "message"               # Commit
-git push origin master                # Deploy to GitHub Pages
-
-# Local Jekyll Development
-$env:PATH += ";C:\Ruby34-x64\bin"     # Add Ruby to PATH (if needed)
-bundle exec jekyll serve              # Start local server at http://localhost:4000
-bundle exec jekyll serve --livereload # With live reload (requires wdm gem)
-bundle install                        # Install/update Ruby dependencies
-bundle update                         # Update all gems to latest compatible versions
-```
 
 ---
 
 ## Success Criteria
 
-When completing tasks, ensure:
-- ✅ Code follows existing patterns and conventions
-- ✅ Tests pass (if JavaScript changes)
-- ✅ Files are in correct directories
-- ✅ Commit messages are descriptive
-- ✅ Changes are appropriate for GitHub Pages deployment
-- ✅ Responsive design considered (if CSS/HTML changes)
-- ✅ No broken links or references
+✅ Code follows patterns and conventions
+✅ Tests pass (JavaScript changes)
+✅ Files in correct directories
+✅ Descriptive commit messages
+✅ GitHub Pages compatible
+✅ Responsive design (CSS/HTML changes)
+✅ No broken links
 
 ---
 
-*Last Updated: November 23, 2025*
+*Last Updated: December 26, 2025*
