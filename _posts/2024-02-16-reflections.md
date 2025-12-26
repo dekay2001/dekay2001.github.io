@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Reflections, An Inspired Song"
-categories: [Song, Inspiration, Personal]
+categories: [creative, reflection]
 tags: [Song, Inspiration, Personal]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Eight Limbs"
-categories: [yoga]
+categories: [yoga, philosophy, personal]
 tags: [yoga, ashtanga, covid-19]
 ---
 {{ page.date | date: "%m/%d/%Y" }}

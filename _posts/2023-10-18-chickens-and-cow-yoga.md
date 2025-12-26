@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Chickens and Cow Yoga: Unconventional Versioning Tales"
-categories: [work, fun]
+categories: [yoga, personal]
 tags: [Cows, Chickens, Yoga, Sofware, Versioning]
 ---
 

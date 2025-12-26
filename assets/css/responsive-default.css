@@ -115,3 +115,59 @@
     max-height: 600px;
   }
 }
+
+/* Category Filter Buttons */
+.category-filters {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 16px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-btn {
+  background: rgba(45, 50, 80, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.filter-btn:hover {
+  background: rgba(45, 50, 80, 0.8);
+  border-color: rgba(249, 115, 22, 0.6);
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(251, 146, 60, 0.2));
+  border-color: rgba(249, 115, 22, 0.8);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+}
+
+.filter-btn:active {
+  transform: translateY(0);
+}
+
+@media only screen and (max-width: 450px) {
+  .category-filters {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
