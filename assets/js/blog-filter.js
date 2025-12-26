@@ -250,12 +250,28 @@ export class BlogFilter {
             const li = document.createElement('li');
             li.setAttribute(ATTRIBUTES.DATA_CATEGORIES, post.categories.join(', '));
             
-            li.innerHTML = `
-                <a class="postlink" href="${post.url}">
-                    <span class="post-title">${post.title}</span>
-                    <span class="post-date">${post.date}</span>
-                </a>
-            `;
+            // li.innerHTML = `
+            //     <a class="postlink" href="${post.url}">
+            //         <span class="post-title">${post.title}</span>
+            //         <span class="post-date">${post.date}</span>
+            //     </a>
+            // `;
+            const link = document.createElement('a');  
+            link.className = 'postlink';  
+            link.href = post.url;  
+
+            const titleSpan = document.createElement('span');  
+            titleSpan.className = 'post-title';  
+            titleSpan.textContent = post.title;  
+
+            const dateSpan = document.createElement('span');  
+            dateSpan.className = 'post-date';  
+            dateSpan.textContent = post.date;  
+
+            link.appendChild(titleSpan);  
+            link.appendChild(dateSpan);  
+
+            li.appendChild(link);
             
             this.postList.appendChild(li);
         });
