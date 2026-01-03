@@ -26,7 +26,7 @@ tags: [optional, keywords, here]
 
 **Key points:**
 - First major insight or outcome
-- Second major insight or outcome  
+- Second major insight or outcome
 - Third major insight or outcome
 
 ## [Main Section 3 - The Bigger Pattern/Lesson]
