@@ -3,7 +3,7 @@ layout: post
 title: "Redefining Authentic"
 date: 2025-12-26
 categories: [philosophy, personal, reflection]
-tags: []
+tags: [mental-health, SSRIs, authenticity, self-reflection]
 ---
 
 {{ page.date | date: "%m/%d/%Y" }}
