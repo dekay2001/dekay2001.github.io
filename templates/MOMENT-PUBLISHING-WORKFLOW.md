@@ -173,7 +173,7 @@ Posts auto-deploy to https://dekay2001.github.io within 1-5 minutes.
 - [15 Minutes to Production](../_posts/2025-11-23-15-minutes-to-production.md) - ~1,200 words
 - [When AI Instructions Go Wrong](../_posts/2025-11-30-when-ai-instructions-backfire.md) - ~1,000 words
 
-**Narrative Example:**
+**Narrative Examples:**
 - [AI Mirrors](../_posts/2025-12-05-ai-mirrors.md) - ~2,300 words
 - [When Your System Needs AI to Fix It](../_posts/2025-11-08-when-your-system-needs-ai-to-fix-it.md) - ~1,400 words
 
