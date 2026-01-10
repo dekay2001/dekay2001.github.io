@@ -7,6 +7,8 @@ categories: [moments, tech]
 
 {{ page.date | date: "%m/%d/%Y" }}
 
+# When AI Instructions Go Wrong (And How to Fix Them)
+
 ## When Good Guidelines Create Bad Code
 
 I spent an hour crafting comprehensive coding standards for my AI assistant—clean code principles, documentation guidelines, naming conventions. The kind of stuff that makes experienced developers nod approvingly. I added these to my project's instructions file, feeling productive.

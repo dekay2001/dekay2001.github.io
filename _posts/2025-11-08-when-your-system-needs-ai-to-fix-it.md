@@ -7,6 +7,8 @@ categories: [moments, philosophy, tech]
 
 {{ page.date | date: "%m/%d/%Y" }}
 
+# When Your AI-Created System Needs AI to Fix It
+
 ## The Feedback That Changed Everything
 
 Someone looked at my project and said: "This feels scattered and unfocused."
