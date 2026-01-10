@@ -7,6 +7,8 @@ categories: [moments, tech]
 
 {{ page.date | date: "%m/%d/%Y" }}
 
+# 15 Minutes to Production: AI-Assisted Infrastructure Setup
+
 ## The Setup That Used to Take Hours
 
 I needed to run my GitHub Pages site locally. You know the drill: install dependencies, figure out the right versions, configure everything, debug the inevitable conflicts, write documentation so you remember how to do it next time.
