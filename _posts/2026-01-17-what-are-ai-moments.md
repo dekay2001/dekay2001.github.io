@@ -5,7 +5,7 @@ date: 2026-01-17
 categories: [moments, philosophy, personal]
 ---
 
-##  What Are AI Moments?
+## What Are AI Moments?
 
 I started documenting something unusual about six months ago. Not traditional blog posts—those felt too slow, too polished for what was happening. Not just notes either—these needed more structure. I call them "moments," and they're becoming a knowledge base about AI-assisted development and leadership.
 
