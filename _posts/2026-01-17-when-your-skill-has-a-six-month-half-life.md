@@ -5,6 +5,8 @@ date: 2026-01-17
 categories: [moments, tech, philosophy]
 ---
 
+## When Your Skill Has a Six-Month Half-Life
+
 I stepped away from AI development work for a few weeks. When I came back, some of my hard-won skills already felt dated. New models, shifted best practices, obsolete workflows.
 
 The question: Why master tools that might be obsolete before I can leverage that mastery?
@@ -23,11 +25,17 @@ The emotional tension: pride in emerging mastery colliding with awareness that t
 
 **Core shift**: From "How do I master this tool?" to "What patterns transfer across tool generations?"
 
-| Tool-Specific | Transfer-Pattern |
-|---------------|------------------|
-| Optimal prompt templates for GPT-4 | Principles of clear instruction |
-| Exact API parameters | How to evaluate any model's output |
-| Keyboard shortcuts | When to accept vs reject suggestions |
+Consider the difference:
+
+**Tool-Specific Skills** (short half-life):
+- Optimal prompt templates for GPT-4
+- Exact API parameters
+- Keyboard shortcuts
+
+**Transfer Patterns** (long half-life):
+- Principles of clear instruction
+- How to evaluate any model's output
+- When to accept vs reject suggestions
 
 **The pattern**: Focus on meta-skills, not specific implementations.
 
@@ -51,7 +59,7 @@ Two possible endings:
 
 **Ending 2**: AI gets good at what I do, my skills become less valuable, the tools I'm mastering lead to not needing me.
 
-I don't know which ending I'm heading toward. Both are plausible. Both would make interesting books.
+I don't know which ending I'm heading toward. Both are plausible. Both have lessons worth learning.
 
 But either way, clinging to permanent expertise in rapidly changing tools is a losing strategy.
 
@@ -63,4 +71,4 @@ Learn patterns over tools. Time-box your depth. Value adaptation speed. Embrace 
 
 ---
 
-*Part of my [Project Alpha](https://github.com/dekay2001/ai-prompts-library) series. I'm figuring this out as I go, and I don't know where it ends. But the journey is worth documenting regardless.*
+*Part of my ongoing AI collaboration research. I'm figuring this out as I go, and I don't know where it ends. But the journey is worth documenting regardless.*
