@@ -343,4 +343,121 @@ describe('PlaybackEngine', () => {
       expect(lineChangedCallback).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('skipToNext', () => {
+    test('should skip to next line when paused', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100); // Advance to line 1
+      engine.pause();
+      
+      engine.skipToNext();
+      
+      expect(engine.getCurrentLineIndex()).toBe(1);
+      expect(lineChangedCallback).toHaveBeenCalledTimes(2);
+    });
+
+    test('should skip to next line during playback', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      
+      engine.skipToNext();
+      
+      expect(engine.getCurrentLineIndex()).toBe(1);
+      expect(engine.isPlaying()).toBe(true);
+    });
+
+    test('should emit completed when skipping past last line', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      const completedCallback = jest.fn();
+      engine.on('completed', completedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.skipToNext(); // line 1
+      engine.skipToNext(); // line 2
+      engine.skipToNext(); // line 3
+      engine.skipToNext(); // past end
+      
+      expect(completedCallback).toHaveBeenCalled();
+      expect(engine.isPlaying()).toBe(false);
+    });
+
+    test('should do nothing when not started', () => {
+      engine = new PlaybackEngine(mockLyrics);
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.skipToNext();
+      
+      expect(engine.getCurrentLineIndex()).toBe(-1);
+      expect(lineChangedCallback).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('skipToPrevious', () => {
+    test('should skip to previous line when paused', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.skipToNext();
+      engine.pause();
+      
+      engine.skipToPrevious();
+      
+      expect(engine.getCurrentLineIndex()).toBe(0);
+      expect(lineChangedCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ index: 0 })
+      );
+    });
+
+    test('should skip to previous line during playback', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.skipToNext();
+      
+      engine.skipToPrevious();
+      
+      expect(engine.getCurrentLineIndex()).toBe(0);
+      expect(engine.isPlaying()).toBe(true);
+    });
+
+    test('should stay at beginning when already at first line', () => {
+      engine = new PlaybackEngine(mockLyrics);
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      lineChangedCallback.mockClear();
+      
+      engine.skipToPrevious();
+      
+      expect(engine.getCurrentLineIndex()).toBe(0);
+      expect(lineChangedCallback).not.toHaveBeenCalled();
+    });
+
+    test('should do nothing when not started', () => {
+      engine = new PlaybackEngine(mockLyrics);
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.skipToPrevious();
+      
+      expect(engine.getCurrentLineIndex()).toBe(-1);
+      expect(lineChangedCallback).not.toHaveBeenCalled();
+    });
+  });
 });

@@ -20,6 +20,8 @@ export function createUIComponents() {
     playBtnId: 'playBtn',
     pauseBtnId: 'pauseBtn',
     resetBtnId: 'resetBtn',
+    skipNextBtnId: 'skipNextBtn',
+    skipPrevBtnId: 'skipPrevBtn',
     progressBarId: 'progressBar',
     currentLineId: 'currentLine',
     totalLinesId: 'totalLines'

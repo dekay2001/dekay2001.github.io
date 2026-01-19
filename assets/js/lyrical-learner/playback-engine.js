@@ -173,6 +173,68 @@ export class PlaybackEngine {
     }
   }
 
+  /**
+   * Skip to next line
+   * @public
+   */
+  skipToNext() {
+    // Only allow skipping if we've started playback
+    if (this._currentLineIndex < 0) {
+      return;
+    }
+
+    const wasPlaying = this._isPlaying;
+    this._clearTimer();
+
+    // Advance to next line
+    this._currentLineIndex++;
+
+    // Check if we've reached the end
+    if (this._currentLineIndex >= this._lyrics.length) {
+      this._isPlaying = false;
+      this._emit('completed');
+      return;
+    }
+
+    // Emit line changed event
+    this._emitLineChanged();
+
+    // Resume playback if we were playing
+    if (wasPlaying) {
+      this._scheduleNextLine();
+    }
+  }
+
+  /**
+   * Skip to previous line
+   * @public
+   */
+  skipToPrevious() {
+    // Only allow skipping if we've started playback
+    if (this._currentLineIndex < 0) {
+      return;
+    }
+
+    // Can't go before the first line
+    if (this._currentLineIndex === 0) {
+      return;
+    }
+
+    const wasPlaying = this._isPlaying;
+    this._clearTimer();
+
+    // Go back to previous line
+    this._currentLineIndex--;
+
+    // Emit line changed event
+    this._emitLineChanged();
+
+    // Resume playback if we were playing
+    if (wasPlaying) {
+      this._scheduleNextLine();
+    }
+  }
+
   // ============================================================================
   // PRIVATE IMPLEMENTATION
   // ============================================================================

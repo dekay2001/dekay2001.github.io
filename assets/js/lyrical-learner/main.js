@@ -83,6 +83,7 @@ export function cleanup() {
   }
   if (uiComponents) {
     uiComponents.removeAllEventListeners();
+    document.removeEventListener('keydown', _handleKeyboardShortcut);
     uiComponents = null;
   }
   parsedLyrics = null;
@@ -122,6 +123,17 @@ function _setupEventListeners() {
   uiComponents.addEventListener('resetBtnId', 'click', () => {
     _handleReset();
   });
+
+  uiComponents.addEventListener('skipNextBtnId', 'click', () => {
+    _handleSkipNext();
+  });
+
+  uiComponents.addEventListener('skipPrevBtnId', 'click', () => {
+    _handleSkipPrevious();
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', _handleKeyboardShortcut);
 }
 
 /**
@@ -192,17 +204,82 @@ function _handlePause() {
 
 /**
  * Handle reset button click
+ * @param {boolean} clearLyrics - Whether to clear lyrics text (default: true)
  * @private
  */
-function _handleReset() {
+function _handleReset(clearLyrics = true) {
   if (playbackEngine) {
     playbackEngine.stop();
     playbackEngine = null;
   }
   
-  uiComponents.resetControls();
-  uiComponents.setLyricsText('');
-  parsedLyrics = null;
+  if (clearLyrics) {
+    uiComponents.resetControls();
+    uiComponents.setLyricsText('');
+    parsedLyrics = null;
+  } else {
+    // Keyboard shortcut reset - keep lyrics but stop playback
+    uiComponents.clearKaraokeDisplay();
+    uiComponents.updateProgress(0, 0);
+    uiComponents.setButtonEnabled('playBtnId', true);
+    uiComponents.setButtonEnabled('pauseBtnId', false);
+    uiComponents.setButtonEnabled('resetBtnId', true);
+  }
+}
+
+/**
+ * Handle skip to next line
+ * @private
+ */
+function _handleSkipNext() {
+  if (!playbackEngine) return;
+  playbackEngine.skipToNext();
+}
+
+/**
+ * Handle skip to previous line
+ * @private
+ */
+function _handleSkipPrevious() {
+  if (!playbackEngine) return;
+  playbackEngine.skipToPrevious();
+}
+
+/**
+ * Handle keyboard shortcuts
+ * @param {KeyboardEvent} event - Keyboard event
+ * @private
+ */
+function _handleKeyboardShortcut(event) {
+  // Don't trigger shortcuts when typing in input fields
+  const target = event.target;
+  if (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT') {
+    return;
+  }
+
+  switch (event.key) {
+    case ' ': // Spacebar - play/pause
+      event.preventDefault();
+      if (!parsedLyrics || parsedLyrics.length === 0) return;
+      if (playbackEngine && playbackEngine.isPlaying()) {
+        _handlePause();
+      } else {
+        _handlePlay();
+      }
+      break;
+    case 'ArrowRight': // Right arrow - skip next
+      event.preventDefault();
+      _handleSkipNext();
+      break;
+    case 'ArrowLeft': // Left arrow - skip previous
+      event.preventDefault();
+      _handleSkipPrevious();
+      break;
+    case 'Escape': // Escape - reset without clearing lyrics
+      event.preventDefault();
+      _handleReset(false);
+      break;
+  }
 }
 
 /**

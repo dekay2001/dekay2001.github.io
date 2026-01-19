@@ -18,6 +18,8 @@ describe('Lyrical Learner Main', () => {
       <button id="playBtn">Play</button>
       <button id="pauseBtn">Pause</button>
       <button id="resetBtn">Reset</button>
+      <button id="skipNextBtn">Next</button>
+      <button id="skipPrevBtn">Previous</button>
       <div id="progressBar"></div>
       <span id="currentLine">0</span>
       <span id="totalLines">0</span>
@@ -503,6 +505,163 @@ describe('Lyrical Learner Main', () => {
       expect(display.textContent).toContain('completed');
       expect(playBtn.disabled).toBe(true);
       expect(pauseBtn.disabled).toBe(true);
+    });
+  });
+
+  describe('skip functionality', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    test('should skip to next line when skip-next button clicked', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+      const skipNextBtn = document.getElementById('skipNextBtn');
+      const display = document.getElementById('karaokeDisplay');
+
+      textarea.value = 'Line 1\nLine 2\nLine 3';
+      loadBtn.click();
+      playBtn.click();
+      jest.advanceTimersByTime(100);
+
+      skipNextBtn.click();
+      jest.runOnlyPendingTimers(); // Flush any pending timers
+
+      expect(display.textContent).toContain('Line 2');
+    });
+
+    test('should skip to previous line when skip-prev button clicked', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+      const skipNextBtn = document.getElementById('skipNextBtn');
+      const skipPrevBtn = document.getElementById('skipPrevBtn');
+      const display = document.getElementById('karaokeDisplay');
+
+      textarea.value = 'Line 1\nLine 2\nLine 3';
+      loadBtn.click();
+      playBtn.click();
+      jest.advanceTimersByTime(100);
+      skipNextBtn.click();
+
+      skipPrevBtn.click();
+
+      expect(display.textContent).toContain('Line 1');
+    });
+  });
+
+  describe('keyboard shortcuts', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    test('should play/pause with spacebar', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+
+      textarea.value = 'Line 1\nLine 2';
+      loadBtn.click();
+
+      // Press spacebar to play
+      const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
+      document.dispatchEvent(spaceEvent);
+
+      expect(playBtn.disabled).toBe(true);
+
+      // Press spacebar again to pause
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+
+      expect(playBtn.disabled).toBe(false);
+    });
+
+    test('should skip to next line with right arrow', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+      const display = document.getElementById('karaokeDisplay');
+
+      textarea.value = 'Line 1\nLine 2\nLine 3';
+      loadBtn.click();
+      playBtn.click();
+      jest.advanceTimersByTime(100);
+
+      const rightArrowEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      document.dispatchEvent(rightArrowEvent);
+
+      expect(display.textContent).toContain('Line 2');
+    });
+
+    test('should skip to previous line with left arrow', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+      const display = document.getElementById('karaokeDisplay');
+
+      textarea.value = 'Line 1\nLine 2\nLine 3';
+      loadBtn.click();
+      playBtn.click();
+      jest.advanceTimersByTime(100);
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+
+      const leftArrowEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      document.dispatchEvent(leftArrowEvent);
+
+      expect(display.textContent).toContain('Line 1');
+    });
+
+    test('should reset with escape key', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+      const display = document.getElementById('karaokeDisplay');
+
+      textarea.value = 'Line 1\nLine 2';
+      loadBtn.click();
+      playBtn.click();
+      jest.advanceTimersByTime(100);
+
+      const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+      document.dispatchEvent(escapeEvent);
+
+      expect(display.textContent).toContain('Load lyrics to begin');
+      expect(playBtn.disabled).toBe(false);
+    });
+
+    test('should not trigger shortcuts when typing in textarea', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+
+      textarea.value = 'Line 1\nLine 2';
+      loadBtn.click();
+      playBtn.click();
+      jest.advanceTimersByTime(100);
+
+      // Focus textarea and press spacebar
+      textarea.focus();
+      const spaceEvent = new KeyboardEvent('keydown', { key: ' ', target: textarea });
+      Object.defineProperty(spaceEvent, 'target', { value: textarea, enumerable: true });
+      document.dispatchEvent(spaceEvent);
+
+      // Should still be playing
+      expect(playBtn.disabled).toBe(true);
     });
   });
 });
