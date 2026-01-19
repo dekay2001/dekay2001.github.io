@@ -271,4 +271,48 @@ describe('Lyrical Learner Main', () => {
       expect(() => cleanup()).not.toThrow();
     });
   });
+
+  describe('getParsedLyrics', () => {
+    test('should return null when no lyrics loaded', () => {
+      const { getParsedLyrics } = require('../../../../../assets/js/lyrical-learner/main.js');
+      initializeLyricalLearner();
+      
+      const parsed = getParsedLyrics();
+      
+      expect(parsed).toBeNull();
+    });
+
+    test('should return parsed lyrics after loading', () => {
+      const { getParsedLyrics } = require('../../../../../assets/js/lyrical-learner/main.js');
+      initializeLyricalLearner();
+      
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      
+      textarea.value = 'Line 1\nLine 2\n[CHORUS]\nLine 3';
+      loadBtn.click();
+      
+      const parsed = getParsedLyrics();
+      
+      expect(parsed).toHaveLength(4);
+      expect(parsed[0].text).toBe('Line 1');
+      expect(parsed[2].isSection).toBe(true);
+      expect(parsed[2].text).toBe('[CHORUS]');
+    });
+
+    test('should handle empty lines during parsing', () => {
+      const { getParsedLyrics } = require('../../../../../assets/js/lyrical-learner/main.js');
+      initializeLyricalLearner();
+      
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      
+      textarea.value = 'Line 1\n\n\nLine 2\n\nLine 3';
+      loadBtn.click();
+      
+      const parsed = getParsedLyrics();
+      
+      expect(parsed).toHaveLength(3);
+    });
+  });
 });

@@ -5,6 +5,7 @@
  */
 
 import { createUIComponents } from './ui-components.js';
+import { parseLyrics } from './lyrics-parser.js';
 
 // ============================================================================
 // MODULE STATE
@@ -15,6 +16,12 @@ import { createUIComponents } from './ui-components.js';
  * @private
  */
 let uiComponents = null;
+
+/**
+ * Parsed lyrics lines
+ * @private
+ */
+let parsedLyrics = null;
 
 // ============================================================================
 // PUBLIC INTERFACE
@@ -41,6 +48,15 @@ export function getUIComponents() {
 }
 
 /**
+ * Get the parsed lyrics
+ * @returns {Array|null} The parsed lyrics or null if not loaded
+ * @public
+ */
+export function getParsedLyrics() {
+  return parsedLyrics;
+}
+
+/**
  * Cleanup function for application shutdown
  * @public
  */
@@ -49,6 +65,7 @@ export function cleanup() {
     uiComponents.removeAllEventListeners();
     uiComponents = null;
   }
+  parsedLyrics = null;
 }
 
 // ============================================================================
@@ -101,13 +118,13 @@ function _handleLoadLyrics() {
     return;
   }
 
-  const lines = lyricsText.split('\n').filter(line => line.trim());
+  parsedLyrics = parseLyrics(lyricsText);
   
   uiComponents.updateKaraokeDisplay(
-    `<p class="ll-placeholder-text">Lyrics loaded: ${lines.length} lines ready</p>`
+    `<p class="ll-placeholder-text">Lyrics loaded: ${parsedLyrics.length} lines ready</p>`
   );
   
-  uiComponents.updateProgress(0, lines.length);
+  uiComponents.updateProgress(0, parsedLyrics.length);
   uiComponents.setButtonEnabled('playBtnId', true);
   uiComponents.setButtonEnabled('resetBtnId', true);
 }
@@ -145,9 +162,10 @@ function _handlePause() {
 function _handleReset() {
   uiComponents.resetControls();
   uiComponents.setLyricsText('');
+  parsedLyrics = null;
 }
 
 // CommonJS compatibility for Jest
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { initializeLyricalLearner, getUIComponents, cleanup };
+  module.exports = { initializeLyricalLearner, getUIComponents, getParsedLyrics, cleanup };
 }
