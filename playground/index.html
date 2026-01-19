@@ -4,32 +4,119 @@
 <html lang="en">
 
 <head>
-    <title>{{ page.title }}</title>
+    <title>Lyrical Learner - Playground</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-default.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-lyrical-learner.css">
 
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
     <![endif]-->
     <meta charset="UTF-8">
-    <meta name="description" content="Blog">
-    <meta name="keywords" content="Blog">
+    <meta name="description" content="Lyrical Learner - Practice rap lyrics at your own pace">
+    <meta name="keywords" content="Lyrics, Karaoke, Rap, Practice">
     <meta name="author" content="Dan Kimball">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- <script type="text/javascript" src="/assets/js/play.js"></script> -->
     <script type="module" src="/assets/js/playground.js"></script>
 </head>
 
 <body>
     {% include navheader.html %}
-    <main id="home_content" class="content">
-        <h2 id="dynamictitle">
-            Yoga Sequence...
-        </h2>
-        <div id="dynamicdiv">
-            Get ready...
-        </div>
+    <main id="home_content" class="content lyrical-learner-content">
+        <h1 class="ll-title">Lyrical Learner</h1>
+        <p class="ll-subtitle">Master your favorite rap lyrics one line at a time</p>
+        
+        <!-- Lyrics Input Section -->
+        <section class="ll-input-section">
+            <h2>Paste Your Lyrics</h2>
+            <textarea 
+                id="lyricsInput" 
+                class="ll-lyrics-textarea"
+                placeholder="Paste your lyrics here...&#10;&#10;Tip: Add [VERSE], [CHORUS], [BRIDGE] markers to organize sections"
+                aria-label="Lyrics input textarea"
+            ></textarea>
+            <button id="loadLyricsBtn" class="ll-btn ll-btn-primary" aria-label="Load lyrics">
+                Load Lyrics
+            </button>
+        </section>
+
+        <!-- Player Controls Section -->
+        <section class="ll-player-section" id="playerSection">
+            <h2>Player Controls</h2>
+            
+            <div class="ll-controls-container">
+                <!-- Speed Control -->
+                <div class="ll-control-group">
+                    <label for="speedSlider">
+                        Speed: <span id="speedValue">1.0</span>x
+                    </label>
+                    <input 
+                        type="range" 
+                        id="speedSlider" 
+                        class="ll-speed-slider"
+                        min="0.5" 
+                        max="2.0" 
+                        step="0.1" 
+                        value="1.0"
+                        aria-label="Playback speed control"
+                    />
+                    <div class="ll-speed-markers">
+                        <span>0.5x</span>
+                        <span>1.0x</span>
+                        <span>1.5x</span>
+                        <span>2.0x</span>
+                    </div>
+                </div>
+
+                <!-- Line Delay Control -->
+                <div class="ll-control-group">
+                    <label for="delaySlider">
+                        Line Delay: <span id="delayValue">2.0</span>s
+                    </label>
+                    <input 
+                        type="range" 
+                        id="delaySlider" 
+                        class="ll-delay-slider"
+                        min="0.5" 
+                        max="5.0" 
+                        step="0.5" 
+                        value="2.0"
+                        aria-label="Line delay control"
+                    />
+                </div>
+
+                <!-- Playback Controls -->
+                <div class="ll-playback-controls">
+                    <button id="playBtn" class="ll-btn ll-btn-success" aria-label="Play">
+                        ▶ Play
+                    </button>
+                    <button id="pauseBtn" class="ll-btn ll-btn-warning" disabled aria-label="Pause">
+                        ⏸ Pause
+                    </button>
+                    <button id="resetBtn" class="ll-btn ll-btn-secondary" aria-label="Reset">
+                        ⏹ Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Karaoke Display Section -->
+        <section class="ll-display-section">
+            <h2>Karaoke Display</h2>
+            <div id="karaokeDisplay" class="ll-karaoke-display" aria-live="polite" aria-atomic="true">
+                <p class="ll-placeholder-text">Load lyrics to begin practicing</p>
+            </div>
+            
+            <!-- Progress Indicator -->
+            <div class="ll-progress-container">
+                <div class="ll-progress-bar">
+                    <div id="progressBar" class="ll-progress-fill"></div>
+                </div>
+                <p class="ll-progress-text">
+                    <span id="currentLine">0</span> / <span id="totalLines">0</span> lines
+                </p>
+            </div>
+        </section>
     </main>
     {% include footer.html %}
 </body>

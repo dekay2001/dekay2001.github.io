@@ -1,23 +1,17 @@
 /**
  * @file Playground Main Entry Point
- * @description Experimental/demo area for yoga sequence player.
- * Used for testing and development of yoga sequence features.
+ * @description Entry point for Lyrical Learner application.
+ * Experimental/demo area for learning rap lyrics at adjustable speeds.
  */
 
-import { startApp } from './yoga/play-sequence.js';
+import { initializeLyricalLearner } from './lyrical-learner/main.js';
 
 /**
  * Main entry point for playground
- * @description Initializes yoga sequence player with demo configuration
+ * @description Initializes the Lyrical Learner application
  */
 function main() {
-    const config = {
-        secondsInterval: 5,
-        displayInDivId: "dynamicdiv",
-        resourceUrl: "../assets/data/yoga/suryanamaskara-a.json",
-        titleDivId: "dynamictitle"
-    };
-    startApp(config);
+    initializeLyricalLearner();
 }
 
 // Initialize on page load
