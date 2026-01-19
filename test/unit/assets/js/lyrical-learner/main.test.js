@@ -532,7 +532,7 @@ describe('Lyrical Learner Main', () => {
       jest.advanceTimersByTime(100);
 
       skipNextBtn.click();
-      jest.runOnlyPendingTimers(); // Flush any pending timers
+      // Skip is synchronous, no timer advance needed
 
       expect(display.textContent).toContain('Line 2');
     });
