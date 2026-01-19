@@ -62,14 +62,6 @@ describe('Lyrical Learner Main', () => {
       expect(display.innerHTML).toContain('Load lyrics to begin practicing');
       expect(playBtn.disabled).toBe(true);
     });
-
-    test('should log initialization message', () => {
-      initializeLyricalLearner();
-      
-      expect(console.log).toHaveBeenCalledWith(
-        expect.stringContaining('Lyrical Learner initialized')
-      );
-    });
   });
 
   describe('Speed slider interaction', () => {

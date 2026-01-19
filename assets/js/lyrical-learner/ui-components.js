@@ -5,6 +5,33 @@
  */
 
 /**
+ * Create and initialize a UIComponents instance with default element IDs
+ * @returns {UIComponents} Initialized UIComponents instance
+ */
+export function createUIComponents() {
+  const config = {
+    lyricsInputId: 'lyricsInput',
+    loadBtnId: 'loadLyricsBtn',
+    karaokeDisplayId: 'karaokeDisplay',
+    speedSliderId: 'speedSlider',
+    speedValueId: 'speedValue',
+    delaySliderId: 'delaySlider',
+    delayValueId: 'delayValue',
+    playBtnId: 'playBtn',
+    pauseBtnId: 'pauseBtn',
+    resetBtnId: 'resetBtn',
+    progressBarId: 'progressBar',
+    currentLineId: 'currentLine',
+    totalLinesId: 'totalLines'
+  };
+
+  const uiComponents = new UIComponents(config);
+  uiComponents.initializeElements();
+  
+  return uiComponents;
+}
+
+/**
  * UIComponents class - Manages all UI elements for the Lyrical Learner application
  * @class
  */
@@ -61,7 +88,6 @@ export class UIComponents {
       const element = document.getElementById(elementId);
       
       if (!element) {
-        console.warn(`Element with ID '${elementId}' not found`);
         allFound = false;
       }
       
@@ -99,13 +125,11 @@ export class UIComponents {
     const element = this.getElement(elementKey);
     
     if (!element) {
-      console.warn(`Cannot attach listener: element '${elementKey}' not found`);
       return false;
     }
 
     element.addEventListener(eventType, handler);
     
-    // Track listeners for cleanup
     const key = `${elementKey}_${eventType}`;
     if (!this._eventListeners.has(key)) {
       this._eventListeners.set(key, []);
@@ -272,33 +296,6 @@ export class UIComponents {
       resetEnabled: !this.getElement('resetBtnId')?.disabled
     };
   }
-}
-
-/**
- * Create and initialize a UIComponents instance with default element IDs
- * @returns {UIComponents} Initialized UIComponents instance
- */
-export function createUIComponents() {
-  const config = {
-    lyricsInputId: 'lyricsInput',
-    loadBtnId: 'loadLyricsBtn',
-    karaokeDisplayId: 'karaokeDisplay',
-    speedSliderId: 'speedSlider',
-    speedValueId: 'speedValue',
-    delaySliderId: 'delaySlider',
-    delayValueId: 'delayValue',
-    playBtnId: 'playBtn',
-    pauseBtnId: 'pauseBtn',
-    resetBtnId: 'resetBtn',
-    progressBarId: 'progressBar',
-    currentLineId: 'currentLine',
-    totalLinesId: 'totalLines'
-  };
-
-  const uiComponents = new UIComponents(config);
-  uiComponents.initializeElements();
-  
-  return uiComponents;
 }
 
 // CommonJS compatibility for Jest

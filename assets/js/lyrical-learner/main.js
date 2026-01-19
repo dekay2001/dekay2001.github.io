@@ -16,135 +16,9 @@ let uiComponents = null;
  * @description Sets up UI components and event listeners
  */
 export function initializeLyricalLearner() {
-  // Create and initialize UI components
   uiComponents = createUIComponents();
-  
-  // Set up event listeners for UI controls
-  setupEventListeners();
-  
-  // Initialize UI to default state
+  _setupEventListeners();
   uiComponents.resetControls();
-  
-  console.log('Lyrical Learner initialized (UI only - no playback functionality yet)');
-}
-
-/**
- * Set up event listeners for all UI controls
- * @private
- */
-function setupEventListeners() {
-  // Speed slider - update display value
-  uiComponents.addEventListener('speedSliderId', 'input', (event) => {
-    const speed = parseFloat(event.target.value);
-    uiComponents.updateSpeedDisplay(speed);
-  });
-
-  // Delay slider - update display value
-  uiComponents.addEventListener('delaySliderId', 'input', (event) => {
-    const delay = parseFloat(event.target.value);
-    uiComponents.updateDelayDisplay(delay);
-  });
-
-  // Load lyrics button - enable player controls when lyrics are loaded
-  uiComponents.addEventListener('loadBtnId', 'click', () => {
-    handleLoadLyrics();
-  });
-
-  // Play button - placeholder for future functionality
-  uiComponents.addEventListener('playBtnId', 'click', () => {
-    handlePlay();
-  });
-
-  // Pause button - placeholder for future functionality
-  uiComponents.addEventListener('pauseBtnId', 'click', () => {
-    handlePause();
-  });
-
-  // Reset button - clear and reset UI
-  uiComponents.addEventListener('resetBtnId', 'click', () => {
-    handleReset();
-  });
-}
-
-/**
- * Handle load lyrics button click
- * @private
- */
-function handleLoadLyrics() {
-  const lyricsText = uiComponents.getLyricsText();
-  
-  if (!lyricsText.trim()) {
-    console.log('No lyrics to load');
-    uiComponents.updateKaraokeDisplay(
-      '<p class="ll-placeholder-text">Please paste lyrics before loading</p>'
-    );
-    return;
-  }
-
-  // Parse lyrics into lines (simple split for now)
-  const lines = lyricsText.split('\n').filter(line => line.trim());
-  
-  // Update UI to show lyrics loaded
-  uiComponents.updateKaraokeDisplay(
-    `<p class="ll-placeholder-text">Lyrics loaded: ${lines.length} lines ready</p>`
-  );
-  
-  // Update progress
-  uiComponents.updateProgress(0, lines.length);
-  
-  // Enable player controls
-  uiComponents.setButtonEnabled('playBtnId', true);
-  uiComponents.setButtonEnabled('resetBtnId', true);
-  
-  console.log(`Loaded ${lines.length} lines of lyrics`);
-}
-
-/**
- * Handle play button click (placeholder)
- * @private
- */
-function handlePlay() {
-  console.log('Play clicked (functionality not implemented yet)');
-  
-  // Toggle button states
-  uiComponents.setButtonEnabled('playBtnId', false);
-  uiComponents.setButtonEnabled('pauseBtnId', true);
-  
-  // Update display
-  uiComponents.updateKaraokeDisplay(
-    '<p class="ll-placeholder-text">▶ Playback functionality coming soon...</p>'
-  );
-}
-
-/**
- * Handle pause button click (placeholder)
- * @private
- */
-function handlePause() {
-  console.log('Pause clicked (functionality not implemented yet)');
-  
-  // Toggle button states
-  uiComponents.setButtonEnabled('playBtnId', true);
-  uiComponents.setButtonEnabled('pauseBtnId', false);
-  
-  // Update display
-  uiComponents.updateKaraokeDisplay(
-    '<p class="ll-placeholder-text">⏸ Paused</p>'
-  );
-}
-
-/**
- * Handle reset button click
- * @private
- */
-function handleReset() {
-  console.log('Reset clicked');
-  
-  // Reset UI to initial state
-  uiComponents.resetControls();
-  uiComponents.setLyricsText('');
-  
-  console.log('UI reset complete');
 }
 
 /**
@@ -163,6 +37,98 @@ export function cleanup() {
     uiComponents.removeAllEventListeners();
     uiComponents = null;
   }
+}
+
+/**
+ * Set up event listeners for all UI controls
+ * @private
+ */
+function _setupEventListeners() {
+  uiComponents.addEventListener('speedSliderId', 'input', (event) => {
+    const speed = parseFloat(event.target.value);
+    uiComponents.updateSpeedDisplay(speed);
+  });
+
+  uiComponents.addEventListener('delaySliderId', 'input', (event) => {
+    const delay = parseFloat(event.target.value);
+    uiComponents.updateDelayDisplay(delay);
+  });
+
+  uiComponents.addEventListener('loadBtnId', 'click', () => {
+    _handleLoadLyrics();
+  });
+
+  uiComponents.addEventListener('playBtnId', 'click', () => {
+    _handlePlay();
+  });
+
+  uiComponents.addEventListener('pauseBtnId', 'click', () => {
+    _handlePause();
+  });
+
+  uiComponents.addEventListener('resetBtnId', 'click', () => {
+    _handleReset();
+  });
+}
+
+/**
+ * Handle load lyrics button click
+ * @private
+ */
+function _handleLoadLyrics() {
+  const lyricsText = uiComponents.getLyricsText();
+  
+  if (!lyricsText.trim()) {
+    uiComponents.updateKaraokeDisplay(
+      '<p class="ll-placeholder-text">Please paste lyrics before loading</p>'
+    );
+    return;
+  }
+
+  const lines = lyricsText.split('\n').filter(line => line.trim());
+  
+  uiComponents.updateKaraokeDisplay(
+    `<p class="ll-placeholder-text">Lyrics loaded: ${lines.length} lines ready</p>`
+  );
+  
+  uiComponents.updateProgress(0, lines.length);
+  uiComponents.setButtonEnabled('playBtnId', true);
+  uiComponents.setButtonEnabled('resetBtnId', true);
+}
+
+/**
+ * Handle play button click (placeholder)
+ * @private
+ */
+function _handlePlay() {
+  uiComponents.setButtonEnabled('playBtnId', false);
+  uiComponents.setButtonEnabled('pauseBtnId', true);
+  
+  uiComponents.updateKaraokeDisplay(
+    '<p class="ll-placeholder-text">▶ Playback functionality coming soon...</p>'
+  );
+}
+
+/**
+ * Handle pause button click (placeholder)
+ * @private
+ */
+function _handlePause() {
+  uiComponents.setButtonEnabled('playBtnId', true);
+  uiComponents.setButtonEnabled('pauseBtnId', false);
+  
+  uiComponents.updateKaraokeDisplay(
+    '<p class="ll-placeholder-text">⏸ Paused</p>'
+  );
+}
+
+/**
+ * Handle reset button click
+ * @private
+ */
+function _handleReset() {
+  uiComponents.resetControls();
+  uiComponents.setLyricsText('');
 }
 
 // CommonJS compatibility for Jest
