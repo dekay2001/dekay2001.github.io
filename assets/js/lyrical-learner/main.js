@@ -6,14 +6,24 @@
 
 import { createUIComponents } from './ui-components.js';
 
+// ============================================================================
+// MODULE STATE
+// ============================================================================
+
 /**
  * Main application instance
+ * @private
  */
 let uiComponents = null;
+
+// ============================================================================
+// PUBLIC INTERFACE
+// ============================================================================
 
 /**
  * Initialize the Lyrical Learner application
  * @description Sets up UI components and event listeners
+ * @public
  */
 export function initializeLyricalLearner() {
   uiComponents = createUIComponents();
@@ -24,6 +34,7 @@ export function initializeLyricalLearner() {
 /**
  * Get the current UI components instance
  * @returns {UIComponents|null} The UI components instance
+ * @public
  */
 export function getUIComponents() {
   return uiComponents;
@@ -31,6 +42,7 @@ export function getUIComponents() {
 
 /**
  * Cleanup function for application shutdown
+ * @public
  */
 export function cleanup() {
   if (uiComponents) {
@@ -38,6 +50,10 @@ export function cleanup() {
     uiComponents = null;
   }
 }
+
+// ============================================================================
+// PRIVATE IMPLEMENTATION
+// ============================================================================
 
 /**
  * Set up event listeners for all UI controls

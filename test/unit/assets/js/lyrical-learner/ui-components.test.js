@@ -122,6 +122,84 @@ describe('UIComponents', () => {
       
       expect(result).toBe(false);
     });
+
+    test('should handle element keys with underscores', () => {
+      // Add an element with underscores in its ID
+      const customElement = document.createElement('button');
+      customElement.id = 'custom_button_id';
+      document.body.appendChild(customElement);
+
+      // Create a config with an element key containing underscores
+      const customConfig = {
+        ...mockConfig,
+        custom_element_key: 'custom_button_id'
+      };
+      
+      const customUI = new UIComponents(customConfig);
+      customUI._elements['custom_element_key'] = customElement;
+      
+      const handler = jest.fn();
+      const result = customUI.addEventListener('custom_element_key', 'click', handler);
+      
+      expect(result).toBe(true);
+      customElement.click();
+      expect(handler).toHaveBeenCalledTimes(1);
+      
+      // Cleanup should work correctly with underscore-containing keys
+      customUI.removeAllEventListeners();
+      customElement.click();
+      expect(handler).toHaveBeenCalledTimes(1); // Should not be called again
+      
+      document.body.removeChild(customElement);
+    });
+  });
+
+  describe('removeAllEventListeners', () => {
+    test('should remove all event listeners', () => {
+      uiComponents.initializeElements();
+      const handler1 = jest.fn();
+      const handler2 = jest.fn();
+      
+      uiComponents.addEventListener('playBtnId', 'click', handler1);
+      uiComponents.addEventListener('pauseBtnId', 'click', handler2);
+      
+      // Verify listeners work
+      document.getElementById('playBtn').click();
+      document.getElementById('pauseBtn').click();
+      expect(handler1).toHaveBeenCalledTimes(1);
+      expect(handler2).toHaveBeenCalledTimes(1);
+      
+      // Remove all listeners
+      uiComponents.removeAllEventListeners();
+      
+      // Verify listeners are removed
+      document.getElementById('playBtn').click();
+      document.getElementById('pauseBtn').click();
+      expect(handler1).toHaveBeenCalledTimes(1); // Not called again
+      expect(handler2).toHaveBeenCalledTimes(1); // Not called again
+    });
+
+    test('should handle element keys with multiple underscores in cleanup', () => {
+      const testElement = document.createElement('div');
+      testElement.id = 'test_element_with_many_underscores';
+      document.body.appendChild(testElement);
+
+      const customConfig = { test_key_with_underscores: 'test_element_with_many_underscores' };
+      const customUI = new UIComponents(customConfig);
+      customUI._elements['test_key_with_underscores'] = testElement;
+      
+      const handler = jest.fn();
+      customUI.addEventListener('test_key_with_underscores', 'click', handler);
+      
+      testElement.click();
+      expect(handler).toHaveBeenCalledTimes(1);
+      
+      customUI.removeAllEventListeners();
+      testElement.click();
+      expect(handler).toHaveBeenCalledTimes(1); // Should not increment
+      
+      document.body.removeChild(testElement);
+    });
   });
 
   describe('getLyricsText', () => {
@@ -232,6 +310,91 @@ describe('UIComponents', () => {
       
       const display = document.getElementById('karaokeDisplay');
       expect(display.innerHTML).toBe('<p>Test content</p>');
+    });
+  });
+
+  describe('displayLyricsLine', () => {
+    test('should safely display user text without HTML injection', () => {
+      uiComponents.initializeElements();
+      const display = document.getElementById('karaokeDisplay');
+      
+      const maliciousText = '<script>alert("XSS")</script>';
+      uiComponents.displayLyricsLine(maliciousText);
+      
+      expect(display.innerHTML).not.toContain('<script>');
+      expect(display.textContent).toBe(maliciousText);
+    });
+
+    test('should create paragraph element with default class', () => {
+      uiComponents.initializeElements();
+      const display = document.getElementById('karaokeDisplay');
+      
+      uiComponents.displayLyricsLine('Test lyrics');
+      
+      const paragraph = display.querySelector('p');
+      expect(paragraph).toBeTruthy();
+      expect(paragraph.className).toBe('ll-lyrics-line');
+      expect(paragraph.textContent).toBe('Test lyrics');
+    });
+
+    test('should use custom CSS class when provided', () => {
+      uiComponents.initializeElements();
+      const display = document.getElementById('karaokeDisplay');
+      
+      uiComponents.displayLyricsLine('Test lyrics', 'custom-class');
+      
+      const paragraph = display.querySelector('p');
+      expect(paragraph.className).toBe('custom-class');
+    });
+
+    test('should escape special HTML characters', () => {
+      uiComponents.initializeElements();
+      const display = document.getElementById('karaokeDisplay');
+      
+      const textWithSpecialChars = 'Lyrics with <tags> & "quotes" & \'apostrophes\'';
+      uiComponents.displayLyricsLine(textWithSpecialChars);
+      
+      expect(display.textContent).toBe(textWithSpecialChars);
+      expect(display.innerHTML).not.toContain('<tags>');
+    });
+
+    test('should replace existing content', () => {
+      uiComponents.initializeElements();
+      const display = document.getElementById('karaokeDisplay');
+      display.innerHTML = '<p>Old content</p>';
+      
+      uiComponents.displayLyricsLine('New lyrics');
+      
+      expect(display.textContent).toBe('New lyrics');
+      expect(display.innerHTML).not.toContain('Old content');
+    });
+  });
+
+  describe('_escapeHtml', () => {
+    test('should escape ampersands', () => {
+      uiComponents.initializeElements();
+      expect(uiComponents._escapeHtml('Rock & Roll')).toBe('Rock &amp; Roll');
+    });
+
+    test('should escape less than and greater than', () => {
+      uiComponents.initializeElements();
+      expect(uiComponents._escapeHtml('<script>')).toBe('&lt;script&gt;');
+    });
+
+    test('should escape quotes', () => {
+      uiComponents.initializeElements();
+      expect(uiComponents._escapeHtml('"double" and \'single\'')).toBe('&quot;double&quot; and &#39;single&#39;');
+    });
+
+    test('should escape multiple special characters', () => {
+      uiComponents.initializeElements();
+      expect(uiComponents._escapeHtml('<div class="test">A & B</div>'))
+        .toBe('&lt;div class=&quot;test&quot;&gt;A &amp; B&lt;/div&gt;');
+    });
+
+    test('should not modify safe text', () => {
+      uiComponents.initializeElements();
+      expect(uiComponents._escapeHtml('Safe lyrics text')).toBe('Safe lyrics text');
     });
   });
 

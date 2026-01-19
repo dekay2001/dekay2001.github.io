@@ -130,7 +130,7 @@ export class UIComponents {
 
     element.addEventListener(eventType, handler);
     
-    const key = `${elementKey}_${eventType}`;
+    const key = `${elementKey}::${eventType}`;
     if (!this._eventListeners.has(key)) {
       this._eventListeners.set(key, []);
     }
@@ -144,7 +144,7 @@ export class UIComponents {
    */
   removeAllEventListeners() {
     this._eventListeners.forEach((handlers, key) => {
-      const [elementKey, eventType] = key.split('_');
+      const [elementKey, eventType] = key.split('::');
       const element = this.getElement(elementKey);
       
       if (element) {
@@ -232,12 +232,47 @@ export class UIComponents {
   /**
    * Update the karaoke display content
    * @param {string} content - HTML content to display
+   * @warning This method uses innerHTML. Only use with trusted static HTML.
+   *          For user-provided content, use displayLyricsLine() instead.
    */
   updateKaraokeDisplay(content) {
     const element = this.getElement('karaokeDisplayId');
     if (element) {
       element.innerHTML = content;
     }
+  }
+
+  /**
+   * Safely display user-provided lyrics line with HTML escaping
+   * @param {string} lyricsText - User-provided lyrics text to display
+   * @param {string} [className='ll-lyrics-line'] - CSS class for the line element
+   */
+  displayLyricsLine(lyricsText, className = 'll-lyrics-line') {
+    const element = this.getElement('karaokeDisplayId');
+    if (element) {
+      const p = document.createElement('p');
+      p.className = className;
+      p.textContent = lyricsText;
+      element.innerHTML = '';
+      element.appendChild(p);
+    }
+  }
+
+  /**
+   * Escape HTML special characters to prevent XSS attacks
+   * @param {string} text - Text to escape
+   * @returns {string} Escaped text safe for HTML display
+   * @private
+   */
+  _escapeHtml(text) {
+    const escapeMap = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return text.replace(/[&<>"']/g, char => escapeMap[char]);
   }
 
   /**
