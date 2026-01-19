@@ -24,7 +24,8 @@ export class PlaybackEngine {
     this._lyrics = lyrics;
     this._settings = {
       speed: settings.speed || 1.0,
-      lineDelay: settings.lineDelay || 2000
+      lineDelay: settings.lineDelay || 2000,
+      loop: settings.loop || false
     };
 
     this._currentLineIndex = -1;
@@ -92,6 +93,9 @@ export class PlaybackEngine {
   /**
    * Update playback settings
    * @param {Object} settings - New settings to apply
+   * @param {number} settings.speed - Playback speed multiplier
+   * @param {number} settings.lineDelay - Delay between lines in ms
+   * @param {boolean} settings.loop - Whether to loop playback
    * @public
    */
   updateSettings(settings) {
@@ -100,6 +104,9 @@ export class PlaybackEngine {
     }
     if (settings.lineDelay !== undefined) {
       this._settings.lineDelay = settings.lineDelay;
+    }
+    if (settings.loop !== undefined) {
+      this._settings.loop = settings.loop;
     }
   }
 
@@ -235,6 +242,42 @@ export class PlaybackEngine {
     }
   }
 
+  /**
+   * Seek to a specific line index
+   * @param {number} lineIndex - Target line index (0-based)
+   * @public
+   */
+  seekToLine(lineIndex) {
+    // Do nothing if not started
+    if (this._currentLineIndex < 0) {
+      return;
+    }
+
+    // Clear existing timer
+    this._clearTimer();
+
+    // Clamp index to valid range
+    const clampedIndex = Math.max(0, Math.min(lineIndex, this._lyrics.length));
+
+    // Check if seeking beyond last line
+    if (clampedIndex >= this._lyrics.length) {
+      this._isPlaying = false;
+      this._emit('completed');
+      return;
+    }
+
+    // Update current line
+    this._currentLineIndex = clampedIndex;
+
+    // Emit line changed event
+    this._emitLineChanged();
+
+    // Resume scheduling if playing
+    if (this._isPlaying) {
+      this._scheduleNextLine();
+    }
+  }
+
   // ============================================================================
   // PRIVATE IMPLEMENTATION
   // ============================================================================
@@ -268,8 +311,16 @@ export class PlaybackEngine {
 
     if (this._currentLineIndex >= this._lyrics.length) {
       // Reached end of lyrics
-      this._isPlaying = false;
-      this._emit('completed');
+      if (this._settings.loop) {
+        // Restart from beginning when loop enabled
+        this._currentLineIndex = 0;
+        this._emitLineChanged();
+        this._scheduleNextLine();
+      } else {
+        // Stop playback when loop disabled
+        this._isPlaying = false;
+        this._emit('completed');
+      }
       return;
     }
 

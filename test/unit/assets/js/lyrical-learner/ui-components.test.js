@@ -21,6 +21,9 @@ describe('UIComponents', () => {
       <button id="playBtn">Play</button>
       <button id="pauseBtn">Pause</button>
       <button id="resetBtn">Reset</button>
+      <button id="skipNextBtn">Next</button>
+      <button id="skipPrevBtn">Previous</button>
+      <button id="loopBtn">Loop</button>
       <div id="progressBar"></div>
       <span id="currentLine">0</span>
       <span id="totalLines">0</span>
@@ -37,6 +40,9 @@ describe('UIComponents', () => {
       playBtnId: 'playBtn',
       pauseBtnId: 'pauseBtn',
       resetBtnId: 'resetBtn',
+      skipNextBtnId: 'skipNextBtn',
+      skipPrevBtnId: 'skipPrevBtn',
+      loopBtnId: 'loopBtn',
       progressBarId: 'progressBar',
       currentLineId: 'currentLine',
       totalLinesId: 'totalLines'

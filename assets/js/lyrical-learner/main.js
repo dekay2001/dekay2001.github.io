@@ -132,6 +132,10 @@ function _setupEventListeners() {
     _handleSkipPrevious();
   });
 
+  uiComponents.addEventListener('loopBtnId', 'click', () => {
+    _handleLoopToggle();
+  });
+
   // Keyboard shortcuts
   document.addEventListener('keydown', _handleKeyboardShortcut);
 }
@@ -174,10 +178,13 @@ function _handlePlay() {
   if (!playbackEngine) {
     const speed = uiComponents.getSpeed();
     const delay = uiComponents.getDelay() * 1000; // Convert to ms
+    const loopBtn = uiComponents.getElement('loopBtnId');
+    const isLoopEnabled = loopBtn ? loopBtn.classList.contains('active') : false;
     
     playbackEngine = new PlaybackEngine(parsedLyrics, {
       speed: speed,
-      lineDelay: delay
+      lineDelay: delay,
+      loop: isLoopEnabled
     });
 
     _setupPlaybackListeners();
@@ -243,6 +250,22 @@ function _handleSkipNext() {
 function _handleSkipPrevious() {
   if (!playbackEngine) return;
   playbackEngine.skipToPrevious();
+}
+
+/**
+ * Handle loop button toggle
+ * @private
+ */
+function _handleLoopToggle() {
+  const loopBtn = uiComponents.getElement('loopBtnId');
+  if (!loopBtn) return;
+  
+  const isLoopEnabled = loopBtn.classList.toggle('active');
+  
+  // Update engine setting if engine exists
+  if (playbackEngine) {
+    playbackEngine.updateSettings({ loop: isLoopEnabled });
+  }
 }
 
 /**

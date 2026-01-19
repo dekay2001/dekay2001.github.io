@@ -20,6 +20,7 @@ describe('Lyrical Learner Main', () => {
       <button id="resetBtn">Reset</button>
       <button id="skipNextBtn">Next</button>
       <button id="skipPrevBtn">Previous</button>
+      <button id="loopBtn">Loop</button>
       <div id="progressBar"></div>
       <span id="currentLine">0</span>
       <span id="totalLines">0</span>
@@ -662,6 +663,54 @@ describe('Lyrical Learner Main', () => {
 
       // Should still be playing
       expect(playBtn.disabled).toBe(true);
+    });
+  });
+
+  describe('loop functionality', () => {
+    test('should toggle loop mode with loop button', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const loopBtn = document.getElementById('loopBtn');
+
+      textarea.value = 'Line 1\nLine 2';
+      loadBtn.click();
+
+      // Initially not looping
+      expect(loopBtn.classList.contains('active')).toBe(false);
+
+      // Click to enable loop
+      loopBtn.click();
+      expect(loopBtn.classList.contains('active')).toBe(true);
+
+      // Click to disable loop
+      loopBtn.click();
+      expect(loopBtn.classList.contains('active')).toBe(false);
+    });
+
+    test('should auto-restart playback when loop enabled', () => {
+      initializeLyricalLearner();
+      const textarea = document.getElementById('lyricsInput');
+      const loadBtn = document.getElementById('loadLyricsBtn');
+      const playBtn = document.getElementById('playBtn');
+      const loopBtn = document.getElementById('loopBtn');
+      const display = document.getElementById('karaokeDisplay');
+
+      textarea.value = 'Line 1\nLine 2';
+      loadBtn.click();
+      
+      // Enable loop
+      loopBtn.click();
+      
+      // Start playback
+      playBtn.click();
+      
+      // Advance past both lines (should restart)
+      jest.advanceTimersByTime(5000);
+
+      // Should still be playing and showing content
+      expect(playBtn.disabled).toBe(true);
+      expect(display.textContent).not.toContain('Load lyrics to begin');
     });
   });
 });

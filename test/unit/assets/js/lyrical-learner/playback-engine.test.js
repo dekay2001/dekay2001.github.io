@@ -460,4 +460,122 @@ describe('PlaybackEngine', () => {
       expect(lineChangedCallback).not.toHaveBeenCalled();
     });
   });
+
+  describe('seekToLine', () => {
+    test('should seek to specific line when paused', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.pause();
+      
+      engine.seekToLine(2);
+      
+      expect(engine.getCurrentLineIndex()).toBe(2);
+      expect(lineChangedCallback).toHaveBeenCalledWith(
+        expect.objectContaining({ 
+          index: 2, 
+          line: expect.objectContaining({ text: 'Line 2' })
+        })
+      );
+    });
+
+    test('should seek during playback and continue playing', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 1000 });
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.seekToLine(2);
+      
+      expect(engine.getCurrentLineIndex()).toBe(2);
+      expect(engine.isPlaying()).toBe(true);
+    });
+
+    test('should clamp negative index to 0', () => {
+      engine = new PlaybackEngine(mockLyrics);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.seekToLine(-5);
+      
+      expect(engine.getCurrentLineIndex()).toBe(0);
+    });
+
+    test('should clamp index beyond last line', () => {
+      engine = new PlaybackEngine(mockLyrics);
+      const completedCallback = jest.fn();
+      engine.on('completed', completedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(100);
+      engine.seekToLine(999);
+      
+      expect(completedCallback).toHaveBeenCalled();
+    });
+
+    test('should do nothing when not started', () => {
+      engine = new PlaybackEngine(mockLyrics);
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.seekToLine(1);
+      
+      expect(engine.getCurrentLineIndex()).toBe(-1);
+      expect(lineChangedCallback).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('loop mode', () => {
+    test('should auto-restart playback when loop enabled and completed', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 100, loop: true });
+      const lineChangedCallback = jest.fn();
+      engine.on('lineChanged', lineChangedCallback);
+      
+      engine.play();
+      
+      // Advance through all lines (4 lines * 100ms delay = 400ms minimum)
+      // Plus time to restart
+      jest.advanceTimersByTime(600);
+      
+      // Should be back at beginning or have advanced from restart
+      expect(engine.getCurrentLineIndex()).toBeGreaterThanOrEqual(0);
+      expect(engine.isPlaying()).toBe(true);
+    });
+
+    test('should not restart when loop disabled', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 100, loop: false });
+      const completedCallback = jest.fn();
+      engine.on('completed', completedCallback);
+      
+      engine.play();
+      jest.advanceTimersByTime(500);
+      
+      expect(engine.isPlaying()).toBe(false);
+      expect(completedCallback).toHaveBeenCalled();
+    });
+
+    test('should update loop setting dynamically', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 100, loop: false });
+      
+      engine.updateSettings({ loop: true });
+      engine.play();
+      jest.advanceTimersByTime(600);
+      
+      expect(engine.getCurrentLineIndex()).toBeGreaterThanOrEqual(0);
+      expect(engine.isPlaying()).toBe(true);
+    });
+
+    test('should stop looping when stop is called', () => {
+      engine = new PlaybackEngine(mockLyrics, { lineDelay: 100, loop: true });
+      
+      engine.play();
+      jest.advanceTimersByTime(200);
+      engine.stop();
+      
+      expect(engine.getCurrentLineIndex()).toBe(-1);
+      expect(engine.isPlaying()).toBe(false);
+    });
+  });
 });

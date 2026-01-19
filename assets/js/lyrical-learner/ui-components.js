@@ -22,6 +22,7 @@ export function createUIComponents() {
     resetBtnId: 'resetBtn',
     skipNextBtnId: 'skipNextBtn',
     skipPrevBtnId: 'skipPrevBtn',
+    loopBtnId: 'loopBtn',
     progressBarId: 'progressBar',
     currentLineId: 'currentLine',
     totalLinesId: 'totalLines'
@@ -78,6 +79,9 @@ export class UIComponents {
       'playBtnId',
       'pauseBtnId',
       'resetBtnId',
+      'skipNextBtnId',
+      'skipPrevBtnId',
+      'loopBtnId',
       'progressBarId',
       'currentLineId',
       'totalLinesId'
