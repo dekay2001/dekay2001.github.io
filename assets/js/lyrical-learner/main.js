@@ -6,6 +6,7 @@
 
 import { createUIComponents } from './ui-components.js';
 import { parseLyrics } from './lyrics-parser.js';
+import { PlaybackEngine } from './playback-engine.js';
 
 // ============================================================================
 // MODULE STATE
@@ -22,6 +23,12 @@ let uiComponents = null;
  * @private
  */
 let parsedLyrics = null;
+
+/**
+ * Playback engine instance
+ * @private
+ */
+let playbackEngine = null;
 
 // ============================================================================
 // PUBLIC INTERFACE
@@ -57,10 +64,23 @@ export function getParsedLyrics() {
 }
 
 /**
+ * Get the playback engine instance
+ * @returns {PlaybackEngine|null} The playback engine or null if not created
+ * @public
+ */
+export function getPlaybackEngine() {
+  return playbackEngine;
+}
+
+/**
  * Cleanup function for application shutdown
  * @public
  */
 export function cleanup() {
+  if (playbackEngine) {
+    playbackEngine.stop();
+    playbackEngine = null;
+  }
   if (uiComponents) {
     uiComponents.removeAllEventListeners();
     uiComponents = null;
@@ -130,29 +150,44 @@ function _handleLoadLyrics() {
 }
 
 /**
- * Handle play button click (placeholder)
+ * Handle play button click
  * @private
  */
 function _handlePlay() {
+  if (!parsedLyrics || parsedLyrics.length === 0) {
+    return;
+  }
+
+  // Create engine if doesn't exist
+  if (!playbackEngine) {
+    const speed = uiComponents.getSpeed();
+    const delay = uiComponents.getDelay() * 1000; // Convert to ms
+    
+    playbackEngine = new PlaybackEngine(parsedLyrics, {
+      speed: speed,
+      lineDelay: delay
+    });
+
+    _setupPlaybackListeners();
+  }
+
+  playbackEngine.play();
   uiComponents.setButtonEnabled('playBtnId', false);
   uiComponents.setButtonEnabled('pauseBtnId', true);
-  
-  uiComponents.updateKaraokeDisplay(
-    '<p class="ll-placeholder-text">▶ Playback functionality coming soon...</p>'
-  );
 }
 
 /**
- * Handle pause button click (placeholder)
+ * Handle pause button click
  * @private
  */
 function _handlePause() {
+  if (!playbackEngine) {
+    return;
+  }
+
+  playbackEngine.pause();
   uiComponents.setButtonEnabled('playBtnId', true);
   uiComponents.setButtonEnabled('pauseBtnId', false);
-  
-  uiComponents.updateKaraokeDisplay(
-    '<p class="ll-placeholder-text">⏸ Paused</p>'
-  );
 }
 
 /**
@@ -160,12 +195,64 @@ function _handlePause() {
  * @private
  */
 function _handleReset() {
+  if (playbackEngine) {
+    playbackEngine.stop();
+    playbackEngine = null;
+  }
+  
   uiComponents.resetControls();
   uiComponents.setLyricsText('');
   parsedLyrics = null;
 }
 
+/**
+ * Setup playback engine event listeners
+ * @private
+ */
+function _setupPlaybackListeners() {
+  playbackEngine.on('lineChanged', (data) => {
+    const { line, index, total } = data;
+    
+    // Display the line safely using textContent
+    if (line.isSection) {
+      uiComponents.updateKaraokeDisplay(
+        `<p class="ll-section-marker">${_escapeHtml(line.text)}</p>`
+      );
+    } else {
+      uiComponents.displayLyricsLine(line.text, 'll-lyrics-line');
+    }
+    
+    // Update progress
+    uiComponents.updateProgress(index + 1, total);
+  });
+
+  playbackEngine.on('completed', () => {
+    uiComponents.updateKaraokeDisplay(
+      '<p class="ll-placeholder-text">✓ Lyrics completed! Click Reset to start over.</p>'
+    );
+    uiComponents.setButtonEnabled('playBtnId', false);
+    uiComponents.setButtonEnabled('pauseBtnId', false);
+  });
+}
+
+/**
+ * Escape HTML special characters
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped text
+ * @private
+ */
+function _escapeHtml(text) {
+  const escapeMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+  return text.replace(/[&<>"']/g, char => escapeMap[char]);
+}
+
 // CommonJS compatibility for Jest
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { initializeLyricalLearner, getUIComponents, getParsedLyrics, cleanup };
+  module.exports = { initializeLyricalLearner, getUIComponents, getParsedLyrics, getPlaybackEngine, cleanup };
 }
