@@ -14,6 +14,7 @@ export class PlaybackEngine {
    * @param {Object} settings - Playback settings
    * @param {number} settings.speed - Playback speed multiplier (default: 1.0)
    * @param {number} settings.lineDelay - Delay between lines in ms (default: 2000)
+   * @param {boolean} settings.loop - Enable auto-restart when playback completes (default: false)
    * @public
    */
   constructor(lyrics, settings = {}) {

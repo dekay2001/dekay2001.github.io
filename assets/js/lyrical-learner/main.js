@@ -136,7 +136,8 @@ function _setupEventListeners() {
     _handleLoopToggle();
   });
 
-  // Keyboard shortcuts
+  // Keyboard shortcuts - remove existing listener first to prevent duplicates
+  document.removeEventListener('keydown', _handleKeyboardShortcut);
   document.addEventListener('keydown', _handleKeyboardShortcut);
 }
 
@@ -188,6 +189,14 @@ function _handlePlay() {
     });
 
     _setupPlaybackListeners();
+  } else {
+    // Update settings if engine already exists (e.g., after pause)
+    const speed = uiComponents.getSpeed();
+    const delay = uiComponents.getDelay() * 1000; // Convert to ms
+    playbackEngine.updateSettings({
+      speed: speed,
+      lineDelay: delay
+    });
   }
 
   playbackEngine.play();
@@ -315,9 +324,7 @@ function _setupPlaybackListeners() {
     
     // Display the line safely using textContent
     if (line.isSection) {
-      uiComponents.updateKaraokeDisplay(
-        `<p class="ll-section-marker">${_escapeHtml(line.text)}</p>`
-      );
+      uiComponents.displayLyricsLine(line.text, 'll-section-marker');
     } else {
       uiComponents.displayLyricsLine(line.text, 'll-lyrics-line');
     }
@@ -333,23 +340,6 @@ function _setupPlaybackListeners() {
     uiComponents.setButtonEnabled('playBtnId', false);
     uiComponents.setButtonEnabled('pauseBtnId', false);
   });
-}
-
-/**
- * Escape HTML special characters
- * @param {string} text - Text to escape
- * @returns {string} Escaped text
- * @private
- */
-function _escapeHtml(text) {
-  const escapeMap = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  };
-  return text.replace(/[&<>"']/g, char => escapeMap[char]);
 }
 
 // CommonJS compatibility for Jest

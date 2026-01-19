@@ -667,6 +667,14 @@ describe('Lyrical Learner Main', () => {
   });
 
   describe('loop functionality', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     test('should toggle loop mode with loop button', () => {
       initializeLyricalLearner();
       const textarea = document.getElementById('lyricsInput');
