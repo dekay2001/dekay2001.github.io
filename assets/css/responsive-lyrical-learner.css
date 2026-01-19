@@ -223,6 +223,43 @@
   min-width: 100px;
 }
 
+/* Navigation Controls */
+.ll-navigation-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+.ll-btn-nav {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Loop Control */
+.ll-loop-control {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+.ll-btn-toggle {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+  min-width: 150px;
+}
+
+.ll-btn-toggle.active {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+}
+
+.ll-btn-toggle.active:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.6);
+}
+
 /* Karaoke Display */
 .ll-karaoke-display {
   min-height: 300px;
