@@ -61,7 +61,6 @@ main #left i {
 
   /* Show nav links by default on tablet and above */
   .nav-links {
-    display: flex !important;
     flex-direction: row;
   }
   

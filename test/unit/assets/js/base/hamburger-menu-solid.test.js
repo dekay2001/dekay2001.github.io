@@ -7,8 +7,10 @@ import { createHamburgerMenu, initHamburgerMenu } from '../../../../../assets/js
 
 describe('Hamburger Menu (SOLID Implementation)', () => {
   let menuInstance;
+  let originalMatchMedia;
 
   beforeEach(() => {
+    originalMatchMedia = global.matchMedia;
     // Set up DOM structure for testing
     document.body.innerHTML = `
       <nav class="navbar_div">
@@ -31,6 +33,10 @@ describe('Hamburger Menu (SOLID Implementation)', () => {
     if (menuInstance && menuInstance.destroy) {
       menuInstance.destroy();
       menuInstance = null;
+    }
+    // Restore matchMedia if it was mocked
+    if (originalMatchMedia) {
+      global.matchMedia = originalMatchMedia;
     }
     document.body.innerHTML = '';
   });

@@ -248,6 +248,14 @@ nav {
     display: flex;
 }
 
+/* Show nav links by default on tablet and above */
+@media (min-width: 451px) {
+    .nav-links {
+        display: flex !important;
+        flex-direction: row;
+    }
+}
+
 nav a {
     display: block;
     padding: var(--spacing-md);
