@@ -2,9 +2,16 @@
     <h1 class="title_text">Think Clearly</h1>
 </header>
 <nav class="navbar_div">
-    {% for item in site.data.navigation.docs %}
-    <a href="{{ item.url }}"
-        class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
-    </a>
-    {% endfor %}
+    <button class="hamburger" id="hamburger-menu" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+        {% for item in site.data.navigation.docs %}
+        <a href="{{ item.url }}"
+            class="{% if item.url == page.url %}current{% else %}navbarlink{% endif %}">{{ item.title }}
+        </a>
+        {% endfor %}
+    </div>
 </nav>

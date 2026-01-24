@@ -8,6 +8,11 @@
     width: 100%;
   }
 
+  /* Hide hamburger menu on tablet and above */
+  .hamburger {
+    display: none;
+  }
+
   nav a {
     display: inline-block;
     flex: 1;
@@ -15,6 +20,7 @@
   
   nav {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
   }
