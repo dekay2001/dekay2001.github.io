@@ -7,6 +7,14 @@
 import { createUIComponents } from './ui-components.js';
 import { parseLyrics } from './lyrics-parser.js';
 import { PlaybackEngine } from './playback-engine.js';
+import {
+    saveLyrics,
+    loadLyrics,
+    clearLyrics,
+    saveSettings,
+    loadSettings,
+    hasSavedLyrics
+} from './storage.js';
 
 // ============================================================================
 // MODULE STATE
@@ -42,7 +50,7 @@ let playbackEngine = null;
 export function initializeLyricalLearner() {
   uiComponents = createUIComponents();
   _setupEventListeners();
-  uiComponents.resetControls();
+  _loadSavedData();
 }
 
 /**
@@ -101,11 +109,13 @@ function _setupEventListeners() {
   uiComponents.addEventListener('speedSliderId', 'input', (event) => {
     const speed = parseFloat(event.target.value);
     uiComponents.updateSpeedDisplay(speed);
+    saveSettings({ speed });
   });
 
   uiComponents.addEventListener('delaySliderId', 'input', (event) => {
     const delay = parseFloat(event.target.value);
     uiComponents.updateDelayDisplay(delay);
+    saveSettings({ delay });
   });
 
   uiComponents.addEventListener('loadBtnId', 'click', () => {
@@ -136,6 +146,12 @@ function _setupEventListeners() {
     _handleLoopToggle();
   });
 
+  // Clear saved lyrics button (if exists)
+  const clearSavedBtn = document.getElementById('clearSavedBtn');
+  if (clearSavedBtn) {
+    clearSavedBtn.addEventListener('click', _handleClearSaved);
+  }
+
   // Keyboard shortcuts - remove existing listener first to prevent duplicates
   document.removeEventListener('keydown', _handleKeyboardShortcut);
   document.addEventListener('keydown', _handleKeyboardShortcut);
@@ -155,6 +171,9 @@ function _handleLoadLyrics() {
     return;
   }
 
+  // Save lyrics to localStorage
+  saveLyrics(lyricsText);
+
   parsedLyrics = parseLyrics(lyricsText);
   
   uiComponents.updateKaraokeDisplay(
@@ -164,6 +183,7 @@ function _handleLoadLyrics() {
   uiComponents.updateProgress(0, parsedLyrics.length);
   uiComponents.setButtonEnabled('playBtnId', true);
   uiComponents.setButtonEnabled('resetBtnId', true);
+  _updateClearSavedButton();
 }
 
 /**
@@ -271,9 +291,76 @@ function _handleLoopToggle() {
   
   const isLoopEnabled = loopBtn.classList.toggle('active');
   
+  // Save loop setting
+  saveSettings({ loop: isLoopEnabled });
+  
   // Update engine setting if engine exists
   if (playbackEngine) {
     playbackEngine.updateSettings({ loop: isLoopEnabled });
+  }
+}
+
+/**
+ * Handle clear saved lyrics button click
+ * @private
+ */
+function _handleClearSaved() {
+  if (confirm('Clear saved lyrics and settings? This cannot be undone.')) {
+    clearLyrics();
+    uiComponents.setLyricsText('');
+    _handleReset();
+    _updateClearSavedButton();
+  }
+}
+
+/**
+ * Load saved data from localStorage
+ * @private
+ */
+function _loadSavedData() {
+  // Load saved settings
+  const settings = loadSettings();
+  
+  // Apply saved settings to UI
+  const speedSlider = uiComponents.getElement('speedSliderId');
+  if (speedSlider) {
+    speedSlider.value = settings.speed;
+    uiComponents.updateSpeedDisplay(settings.speed);
+  }
+  
+  const delaySlider = uiComponents.getElement('delaySliderId');
+  if (delaySlider) {
+    delaySlider.value = settings.delay;
+    uiComponents.updateDelayDisplay(settings.delay);
+  }
+  
+  const loopBtn = uiComponents.getElement('loopBtnId');
+  if (loopBtn && settings.loop) {
+    loopBtn.classList.add('active');
+  }
+  
+  // Load saved lyrics
+  const savedLyrics = loadLyrics();
+  if (savedLyrics) {
+    uiComponents.setLyricsText(savedLyrics);
+    uiComponents.updateKaraokeDisplay(
+      '<p class="ll-placeholder-text">Saved lyrics loaded. Click "Load Lyrics" to begin practicing.</p>'
+    );
+  } else {
+    uiComponents.resetControls();
+  }
+  
+  _updateClearSavedButton();
+}
+
+/**
+ * Update the clear saved button visibility/state
+ * @private
+ */
+function _updateClearSavedButton() {
+  const clearSavedBtn = document.getElementById('clearSavedBtn');
+  if (clearSavedBtn) {
+    clearSavedBtn.style.display = hasSavedLyrics() ? 'inline-block' : 'none';
   }
 }
 

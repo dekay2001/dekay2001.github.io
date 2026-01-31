@@ -36,9 +36,14 @@
                 placeholder="Paste your lyrics here...&#10;&#10;Tip: Add [VERSE], [CHORUS], [BRIDGE] markers to organize sections"
                 aria-label="Lyrics input textarea"
             ></textarea>
-            <button id="loadLyricsBtn" class="ll-btn ll-btn-primary" aria-label="Load lyrics">
-                Load Lyrics
-            </button>
+            <div class="ll-input-buttons">
+                <button id="loadLyricsBtn" class="ll-btn ll-btn-primary" aria-label="Load lyrics">
+                    Load Lyrics
+                </button>
+                <button id="clearSavedBtn" class="ll-btn ll-btn-danger" aria-label="Clear saved lyrics" style="display: none;">
+                    🗑️ Clear Saved
+                </button>
+            </div>
         </section>
 
         <!-- Player Controls Section -->
