@@ -92,10 +92,8 @@ export function saveSettings(settings) {
 
 /**
  * Load playback settings from localStorage
- * @returns {Object} Settings object with saved values or defaults
- * @returns {number} return.speed - Playback speed (default: 1.0)
- * @returns {number} return.delay - Line delay in seconds (default: 2.0)
- * @returns {boolean} return.loop - Loop mode enabled (default: false)
+ * @returns {{speed: number, delay: number, loop: boolean}} Settings object with saved values
+ *          or defaults (speed: 1.0, delay: 2.0, loop: false)
  * @public
  */
 export function loadSettings() {

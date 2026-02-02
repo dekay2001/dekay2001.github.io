@@ -146,11 +146,10 @@ function _setupEventListeners() {
     _handleLoopToggle();
   });
 
-  // Clear saved lyrics button (if exists)
-  const clearSavedBtn = document.getElementById('clearSavedBtn');
-  if (clearSavedBtn) {
-    clearSavedBtn.addEventListener('click', _handleClearSaved);
-  }
+  // Clear saved lyrics button
+  uiComponents.addEventListener('clearSavedBtn', 'click', () => {
+    _handleClearSaved();
+  });
 
   // Keyboard shortcuts - remove existing listener first to prevent duplicates
   document.removeEventListener('keydown', _handleKeyboardShortcut);
@@ -340,9 +339,11 @@ function _loadSavedData() {
   }
   
   // Load saved lyrics
-  const savedLyrics = loadLyrics();
-  if (savedLyrics) {
-    uiComponents.setLyricsText(savedLyrics);
+  if (hasSavedLyrics()) {
+    const savedLyrics = loadLyrics();
+    if (savedLyrics != null) {
+      uiComponents.setLyricsText(savedLyrics);
+    }
     uiComponents.updateKaraokeDisplay(
       '<p class="ll-placeholder-text">Saved lyrics loaded. Click "Load Lyrics" to begin practicing.</p>'
     );
