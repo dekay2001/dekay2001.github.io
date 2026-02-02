@@ -75,6 +75,13 @@
   opacity: 0.6;
 }
 
+/* Input Button Container */
+.ll-input-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
 /* Buttons */
 .ll-btn {
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -105,6 +112,11 @@
 
 .ll-btn-primary {
   background: linear-gradient(135deg, var(--color-accent), #d97706);
+  color: white;
+}
+
+.ll-btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
 }
 
