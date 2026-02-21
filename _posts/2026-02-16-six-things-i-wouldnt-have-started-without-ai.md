@@ -11,7 +11,7 @@ categories: [tech, personal, moments, ai]
 
 There's a certain kind of task I used to avoid—not because it was impossible, but because the friction felt too high. Drafting legal documents, untangling financial statements, navigating emotional spirals. These weren't things I *couldn't* do, they were things I *wouldn't* start.
 
-AI changed that calculus. Not by doing the work for me, but by making the starting line feel achievable. Here are six things I tackled this past 6 months that I probably would have delayed indefinitely without AI as a thought partner.
+AI changed that calculus. Not by doing the work for me, but by making the starting line feel achievable. Here are six things I tackled over the past six months that I probably would have delayed indefinitely without AI as a thought partner.
 
 ### Drafting a Will
 
@@ -23,7 +23,7 @@ AI helped me work through how to split my assets in a way that actually made sen
 
 When I wanted to create a community website for a local running club, the old me would have spent weeks researching themes, hosting options, and Jekyll configurations. Or more likely, I would have talked about doing it someday.
 
-Instead, I had a working prototype in minutes. AI helped me think through structure, content, and even generated the initial markdown files. What used to feel like a weekend project became an evening experiment. The barrier dropped from "I need to learn this" to "let's try this now." After three coding sessions, less than two hours each, I have a production ready site.
+Instead, I had a working prototype in minutes. AI helped me think through structure, content, and even generated the initial markdown files. What used to feel like a weekend project became an evening experiment. The barrier dropped from "I need to learn this" to "let's try this now." After three coding sessions, less than two hours each, I have a production-ready site.
 
 ### Talking Me Off a Ledge
 
