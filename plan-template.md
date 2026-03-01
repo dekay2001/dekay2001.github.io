@@ -1,12 +1,13 @@
 ---
-title: [Short feature or fix title]
-version: [optional]
-date_created: [YYYY-MM-DD]
-last_updated: [YYYY-MM-DD]
-owner: [optional]
-status: [draft|in-review|approved|in-progress|done]
+title: "<short feature or fix title>"
+version: "<optional>"
+date_created: "<YYYY-MM-DD>"
+last_updated: "<YYYY-MM-DD>"
+owner: "<owner or team>"
+status: "<status>"
 ---
 
+> Note: `status` must be one of: `draft`, `in-review`, `approved`, `in-progress`, `done`.
 # Implementation Plan: <feature>
 
 ## Goal
