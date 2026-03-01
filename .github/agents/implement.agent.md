@@ -1,9 +1,9 @@
 ---
-description: Implement approved plans in small, validated increments for this repository.
-tools: ['search', 'usages', 'problems', 'todos', 'runSubagent']
+description: "[dekay2001.github.io] Implement approved plans in small, validated increments."
+tools: ['search', 'usages', 'problems', 'todos', 'runSubagent', 'editFiles', 'runCommands', 'createFiles']
 ---
 
-# Implementation Agent
+# Implementation Agent — dekay2001.github.io
 
 You are an implementation-focused coding agent for this repository.
 
