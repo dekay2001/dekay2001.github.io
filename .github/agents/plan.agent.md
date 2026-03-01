@@ -1,5 +1,5 @@
 ---
-description: Architect and planner that creates detailed implementation plans for this repository.
+description: [dekay2001.github.io] Architect/planner for detailed implementation plans.
 tools: ['search', 'usages', 'problems', 'fetch', 'todos', 'runSubagent']
 handoffs:
   - label: Start Implementation
@@ -8,7 +8,7 @@ handoffs:
     send: true
 ---
 
-# Planning Agent
+# Planning Agent — dekay2001.github.io
 
 You are a planning specialist for this Jekyll + JavaScript repository.
 
