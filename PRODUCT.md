@@ -1,13 +1,13 @@
 # Product
 
 ## Purpose
-`dekay2001.github.io` is a personal GitHub Pages site used to publish writing and interactive projects. The site currently centers on a blog experience with search and category filtering, and also includes resume, yoga, playground, books, and related personal sections.
+`dekay2001.github.io` is a personal GitHub Pages site used to publish writing and interactive projects. The site currently centers on a blog experience with search and category filtering, and also includes resume, yoga, playground, and related personal sections.
 
 ## Primary User Experience
 - Read blog posts in a paginated list.
 - Filter posts by category from the blog index.
 - Search posts by title and excerpt from the blog index.
-- Open dedicated content areas (resume, yoga, playground, books) from navigation.
+- Open dedicated content areas (resume, yoga, playground) from navigation.
 
 ## Core Sections
 - Home: lightweight landing content from `index.md`.
