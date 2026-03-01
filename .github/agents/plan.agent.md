@@ -1,5 +1,5 @@
 ---
-description: [dekay2001.github.io] Architect/planner for detailed implementation plans.
+description: "[dekay2001.github.io] Architect/planner for detailed implementation plans."
 tools: ['search', 'usages', 'problems', 'fetch', 'todos', 'runSubagent']
 handoffs:
   - label: Start Implementation

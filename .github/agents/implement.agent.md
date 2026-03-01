@@ -1,5 +1,5 @@
 ---
-description: [dekay2001.github.io] Implement approved plans in small, validated increments.
+description: "[dekay2001.github.io] Implement approved plans in small, validated increments."
 tools: ['search', 'usages', 'problems', 'todos', 'runSubagent', 'editFiles', 'runCommands', 'createFiles']
 ---
 
