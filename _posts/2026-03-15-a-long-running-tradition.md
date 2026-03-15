@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "A Long Running Tradition"
+date: 2026-03-15
 categories: [dover-run-club]
 tags: [community, running, personal-growth, leadership, reflection, resilience, decision-making, self-awareness]
 ---
@@ -13,7 +14,7 @@ A lot of things unfolded this week. For years I've been a member of the Six03 En
 
 ### The Early Days
 
-The image above is my first group photo with the group. There I am looking like a new runner on the right with the red shorts. The guy in the middle wearing a white shirt is the first person I talked to when I arrived and I engaged with him and another woman about the pace and distance I planned to run as I tried to get a feeling for how this run group integration would work. When I told him I was looking for sub 8ish pace, he pointed to the guys sitting in front of me, saying I should stick with the fast guys. It would turn out that I could only hang with them for the first couple miles and ultimately they got faster and my only goal was to keep them in sight so I wouldn't get lost. This was my first running crew with the group, before I knew what the group was about. They are still guys I'm happy to run with from time to time, 7 years later, though I have slowed down a lot, and now I have the privilige of seeing outside of this group.
+The image above is my first group photo with the group. There I am looking like a new runner on the right with the red shorts. The guy in the middle wearing a white shirt is the first person I talked to when I arrived and I engaged with him and another woman about the pace and distance I planned to run as I tried to get a feeling for how this run group integration would work. When I told him I was looking for sub 8ish pace, he pointed to the guys sitting in front of me, saying I should stick with the fast guys. It would turn out that I could only hang with them for the first couple miles and ultimately they got faster and my only goal was to keep them in sight so I wouldn't get lost. This was my first running crew with the group, before I knew what the group was about. They are still guys I'm happy to run with from time to time, 7 years later, though I have slowed down a lot, and now I have the privilege of seeing outside of this group.
 
 ### Growth and Evolution
 
