@@ -4,53 +4,52 @@ title:  "Resume"
 categories: [professional]
 tags: []
 ---
-Last updated: 2025-11-23
+Last updated: 2026-03-29
  
  
 # Professional Summary
-Innovative and highly skilled leader of developer teams with over fifteen years of experience, specializing in object
-oriented design and programming, database design, and software development. Utilizes research skills,
-excellent communication, and adoption of new technologies and programming languages to continually grow
-the department and foster a healthy team environment. Possesses extensive knowledge of the development
-process from gathering requirements, prioritization, feature design, build automation, test, and deploy while participating and providing the team with support to deliver production ready software on time with quality.
+Innovative engineering leader with over twenty years of experience in software design, team leadership, and full-stack delivery. Specializes in object-oriented design, API architecture, database systems, and AI-augmented development workflows. Actively researches and applies prompt engineering, agentic AI systems, and AI collaboration patterns to achieve measurable velocity improvements. Combines deep technical expertise with a passion for mentorship, continuous learning, and building scalable, well-tested systems.
  
 ## Technical Skills
  
 | Skill                                | Estimated Years Experience | Skill Level 1-10 |
 |--------------------------------------|----------------------------|------------------|
-| PowerBuilder 9, 10.5, 12, 2019, 2022 | 2005-2025                  | 10               |
-| SQL / Relational Database Designs    | 2005-2025                  | 9                |
-| Query Writing and Optimization       | 2005-2025                  | 9                |
-| AI Tools & Prompt Engineering        | 2024-2025                  | 7                |
-| GitHub Copilot                       | 2024-2025                  | 8                |
-| Microsoft Graph API                  | 2025                       | 4                |
-| Object Oriented Design               | 2005-2025                  | 8                |
-| Sybase Adaptive Server Anywhere 12/17| 2005-2025                  | 8                |
-| Python 2.7, 3+                       | 2016-2025                  | 9                |
-| UX / UI Design                       | 2005-2025                  | 8                |
-| Test Driven Development              | 2017-2025                  | 8                |
-| SOLID Principles                     | 2017-2025                  | 7                |
-| Design Patterns                      | 2005-2025                  | 7                |
-| Behavior Driven Development          | 2017-2025                  | 7                |
-| REST API Design and Implementation   | 2020-2025                  | 7                |
-| Agile Product Development            | 2016-2025                  | 8                |
-| HTML / CSS                           | 2012-2018                  | 6                |
+| PowerBuilder 9, 10.5, 12, 2019, 2022 | 2005-2026                  | 10               |
+| SQL / Relational Database Designs    | 2005-2026                  | 9                |
+| Query Writing and Optimization       | 2005-2026                  | 9                |
+| AI Tools & Prompt Engineering        | 2024-2026                  | 9                |
+| GitHub Copilot                       | 2024-2026                  | 9                |
+| Agentic AI Workflows                 | 2025-2026                  | 8                |
+| Jekyll / GitHub Pages / Liquid       | 2019-2026                  | 7                |
+| Jest / JavaScript Testing            | 2025-2026                  | 6                |
+| Microsoft Graph API                  | 2025-2026                  | 5                |
+| Object Oriented Design               | 2005-2026                  | 8                |
+| Sybase Adaptive Server Anywhere 12/17| 2005-2026                  | 8                |
+| Python 2.7, 3+                       | 2016-2026                  | 9                |
+| UX / UI Design                       | 2005-2026                  | 8                |
+| Test Driven Development              | 2017-2026                  | 8                |
+| SOLID Principles                     | 2017-2026                  | 7                |
+| Design Patterns                      | 2005-2026                  | 7                |
+| Behavior Driven Development          | 2017-2026                  | 7                |
+| REST API Design and Implementation   | 2020-2026                  | 7                |
+| Agile Product Development            | 2016-2026                  | 8                |
+| HTML / CSS                           | 2012-2026                  | 7                |
 | Business Intelligence (SiSense)      | 2016-2019                  | 6                |
-| PostgreSQL                           | 2019-2025                  | 6                |
-| LaunchDarkly                         | 2022-2025                  | 6                |
-| AWS S3                               | 2018-2025                  | 6                |
-| AWS EC2                              | 2018-2025                  | 6                |
-| AWS SQS                              | 2020-2025                  | 6                |
-| AWS API Gateway                      | 2018-2025                  | 6                |
-| AWS Route 53                         | 2024-2025                  | 7                |
-| AWS Cloudwatch                       | 2022-2025                  | 7                |
-| AWS Lambda                           | 2018-2025                  | 6                |
-| AWS Xray                             | 2022-2025                  | 7                |
-| Artifactory                          | 2018-2025                  | 7                |
-| JavaScript                           | 2017-2020                  | 6                |
-| WiX Toolset                          | 2024-2025                  | 5                |
+| PostgreSQL                           | 2019-2026                  | 6                |
+| LaunchDarkly                         | 2022-2026                  | 6                |
+| AWS S3                               | 2018-2026                  | 6                |
+| AWS EC2                              | 2018-2026                  | 6                |
+| AWS SQS                              | 2020-2026                  | 6                |
+| AWS API Gateway                      | 2018-2026                  | 6                |
+| AWS Route 53                         | 2024-2026                  | 7                |
+| AWS Cloudwatch                       | 2022-2026                  | 7                |
+| AWS Lambda                           | 2018-2026                  | 6                |
+| AWS Xray                             | 2022-2026                  | 7                |
+| Artifactory                          | 2018-2026                  | 7                |
+| JavaScript                           | 2017-2026                  | 7                |
+| WiX Toolset                          | 2024-2026                  | 5                |
 | TypeScript                           | 2017-2020                  | 5                |
-| C# / .NET                            | 2023, 2025                 | 4                |
+| C# / .NET                            | 2023-2026                  | 5                |
 | Vuetify                              | 2024                       | 4                |
 | Bootstrap.Vue                        | 2017-2018                  | 4                |
 | Vue.js, Vuex                         | 2017, 2018, 2024           | 4                |
@@ -59,8 +58,8 @@ process from gathering requirements, prioritization, feature design, build autom
 | Java                                 | 2017                       | 3                |
 | Jenkins CICD                         | 2017-2019                  | 3                |
 | AWS Cognito                          | 2017-2020                  | 3                |
-| Android Development                  | 2017                       | 2                |
-| C / C++                              | 2005                       | 1                |
+
+_Also familiar with: Android Development, C/C++_
  
 # Professional Experience
 
@@ -69,6 +68,8 @@ process from gathering requirements, prioritization, feature design, build autom
 
 
  ### Responsibilities, Projects, and Accomplishments  
+
+- 2026 Designed and developed a comprehensive prompt engineering research lab (Project Alpha) documenting reusable AI collaboration patterns, governance frameworks, and case studies. Created a validated catalog of 5+ prompt patterns applied across multiple projects, achieving 40-60x velocity multipliers on bounded technical tasks — including delivery of 3 major pull requests in 6 days (traditional estimate: 4 weeks). Built custom VS Code agent workflows for planning, implementation, and verification. Independently built and maintained two Jekyll-based GitHub Pages sites with production-grade engineering practices including Jest-tested JavaScript, data-driven content, responsive design, and TDD workflows.
 
 - 2025 As Lead Senior Software Engineer, mentored and guided engineering team members in software development best practices, code reviews, and professional growth. Led the critical migration of the Profit Tools application to use updated Sybase database components, ensuring compatibility and improved performance. Modernized the WinSCP functionality to support modern encryption algorithms, enhancing security for file transfers. Implemented Microsoft 365 secure email functionality through Microsoft Graph API, enabling seamless integration with modern authentication and security protocols.
 
@@ -127,39 +128,55 @@ _Product Owner, 2017-2019_
 - Designed and delivered a solution for the configuration of a critical Profit Tools EDI system to satisfy enterprise level requirements.  Growing companies were having a poor user experience as they implemented more EDI trading partners.  The solution involved narrowing the scope of the configuration process to optimize performance as well as simplify the process for administrative staff.
  
 - Implemented solutions for a business intelligence application that could be used by large and small trucking companies.  Acted as the solo developer maintaining the product and working with the product owner to understand the application data to deliver a highly valued business data solution involving costing and revenue business models.
- 
- 
-### Accomplishments
- 
-**Profit Tools Inc.** Lee, New Hampshire  
-_Lead Software Developer 2010 - Present_
+
+> **Note:** Profit Tools Inc. was acquired by Valsoft (2017), rebranded as Envase Technologies (2020), then acquired by WiseTech Global (2023). The entries below reflect the same core product team under successive ownership.
+
+**Profit Tools Inc.** Lee, New Hampshire
+_Lead Software Developer 2010 - 2017_
 _Software Developer 2005 - 2010_
  
-- Lead team to use AGILE methods to improve processes.
- 
-- Lead team to participate in UX topics and discussions.
- 
-- Participated in the design and implementation of a route optimization application.
- 
-- Participated in the design and deployment of pt-cloud-services.
- 
-- Participated in designing and implementing a business intelligence model for the Profit Tools application.
- 
-- Designed and created a system to allow integration to Profit Tools application
- 
-- Designed and implemented an invoice import and auditing module
- 
-- Migrated Profit Tools application to newer versions of PowerBuilder.
- 
-- Designed and implemented an EDI dashboard solution and improved the current design and data storage models.
- 
-- Designed and created Track and Trace web scraping application
- 
-- Implemented a customizable dispatch dashboard solution for managing trucks, drivers, and shipments
+- Designed and delivered the Track and Trace web scraping application and EDI dashboard, core systems used daily by trucking companies for container tracking and electronic data interchange with trading partners.
+
+- Architected and implemented integration systems, invoice import/auditing modules, and a customizable dispatch dashboard for managing trucks, drivers, and shipments — improving operational efficiency for logistics customers.
+
+- Led adoption of AGILE methodologies and UX-focused design practices across the development team. Participated in architecture design for route optimization, cloud services, and business intelligence platforms.
+
+- Migrated the Profit Tools application across multiple PowerBuilder versions (9 → 2022), maintaining backward compatibility while modernizing the codebase over 12+ years.
  
  
  
 # Education
 **University of New Hampshire**, Durham, New Hampshire  
 Bachelor of Science in Computer Science, 2005
+
+# Personal & Open Source Projects
+
+**Project Alpha — AI Prompt Engineering Research Lab** (2024-present)
+- Methodical exploration of prompt engineering with documented patterns, case studies, and governance frameworks
+- Developed 5 reusable prompt pattern templates (System Role Framing, Iterative Refinement, Constraint-Driven Prompts, Evaluation Self-Check, Pivot Summary Compression) validated across 3+ projects
+- Created a three-tier documentation system (Versions → Moments → Chapters) for converting technical work into teachable content
+- Authored book chapters on AI prompting fundamentals, organizational drift recognition, and AI-assisted self-reflection
+- Established ethical boundaries, success metrics, model-fallback continuity strategies, and portfolio management frameworks for AI-driven workflows
+
+**dekay2001.github.io — Personal Blog & Portfolio** (2019-present)
+- Jekyll site with dark animated gradient theme, responsive CSS, and multiple content sections (blog, resume, yoga, playground)
+- Jest/Babel-tested JavaScript modules: cross-post search with JSON indexing, category filtering with URL state management, and XSS-safe rendering
+- Custom VS Code agent workflows (plan → implement) with SOLID review gates and TDD expectations
+
+**Dover Run Club Website** (2025-present)
+- Community website built from scratch using Jekyll + GitHub Pages for a local running club
+- Data-driven route display using YAML with responsive image optimization (3-size variants via PowerShell utility)
+- Four-agent development workflow (idea → plan → implement → verify) with canonical backlog tracking in design roadmap
+
+# Thought Leadership & Writing
+
+- Authoring a book on AI-driven engineering leadership covering prompt engineering fundamentals, organizational drift recognition, and AI-assisted self-understanding (in progress, 3 chapters outlined with narrative drafts)
+- Documented 17+ leadership moments and insights on AI collaboration, velocity multipliers, instruction engineering, and meta-learning
+- Developed original frameworks: Multi-Model Triangulation, Portfolio Intake Ledger, Lean Governance Model, Velocity Pattern Recognition, and Model Fallback Continuity
+
+# Continuous Learning
+
+- Applied research from "The AI-Driven Leader" to real-world engineering workflows
+- Hands-on evaluation of multiple AI models: Claude, GPT, Gemini, Llama, Mistral, and Ollama for local deployment
+- Built agentic AI systems including custom VS Code agents, instruction engineering patterns, and graduated rollout strategies
  

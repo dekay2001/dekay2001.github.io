@@ -38,7 +38,7 @@
 
 ## Roadmap
 
-### Deferred
+### Done
 
 - **Title:** Resume Page Overhaul — Showcase AI Leadership & Personal Projects
 - **Why:** Resume hasn't been updated since November 2025. Significant work on Project Alpha (prompt engineering research lab), two Jekyll sites, and continued WiseTech Global lead engineer role are not reflected.
@@ -46,4 +46,4 @@
 - **Scope (out):** Layout or styling changes to resume template. New resume page URL or navigation changes.
 - **Priority:** P3
 - **Effort:** M
-- **Status:** Deferred
+- **Status:** Done
