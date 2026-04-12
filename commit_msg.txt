@@ -1,0 +1,13 @@
+Move Lyrical Learner to permanent home; add Financial Runway to playground
+
+- Move Lyrical Learner from /playground/ to /lyrical-learner/ with its own permanent URL
+- Create lyrical-learner-app.js entry point (replaces playground.js)
+- Add project cards to home page (Lyrical Learner + Financial Runway)
+- Add .project-cards-grid CSS to site stylesheet
+- Replace /playground/ with production-ready Financial Runway calculator
+- Extract life-money JS into ES6 modules: compute.js, chart.js, main.js
+- Create responsive-life-money.css scoped to .lm-container
+- Add Jest tests for life-money compute and chart modules (57 tests total passing)
+- Delete standalone life-money.html proof-of-concept
+
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>

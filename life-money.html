@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Financial Runway</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: #222222;
+    --text: #e8e4dc;
+    --muted: #666;
+    --need: #c0392b;
+    --have: #27ae60;
+    --accent: #f39c12;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+  }
+
+  .subtitle {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .control-group label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .control-group .value-display {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 2px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .metric {
+    background: var(--surface);
+    padding: 1.25rem;
+  }
+
+  .metric-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-value {
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .metric-value.need { color: var(--need); }
+  .metric-value.have { color: var(--have); }
+  .metric-value.accent { color: var(--accent); }
+  .metric-value.neutral { color: var(--text); }
+
+  .metric-sub {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 0.35rem;
+  }
+
+  .chart-wrap {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .chart-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+  }
+
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-bar {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 0.72rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .status-bar span { color: var(--text); }
+  .status-bar .good { color: var(--have); }
+  .status-bar .warn { color: var(--accent); }
+  .status-bar .bad { color: var(--need); }
+
+  .crossover-label {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Your financial runway</h1>
+<p class="subtitle">Every day of the rest of your life — what you need vs. what you have</p>
+
+<div class="controls">
+  <div class="control-group">
+    <label>Current age</label>
+    <div class="value-display" id="age-val">43</div>
+    <input type="range" id="age" min="30" max="70" value="43" step="1">
+  </div>
+  <div class="control-group">
+    <label>Live to age</label>
+    <div class="value-display" id="life-val">95</div>
+    <input type="range" id="life" min="70" max="100" value="95" step="1">
+  </div>
+  <div class="control-group">
+    <label>Current savings / investments</label>
+    <div class="value-display" id="savings-val">$675,000</div>
+    <input type="range" id="savings" min="100000" max="2000000" value="675000" step="5000">
+  </div>
+  <div class="control-group">
+    <label>Monthly expenses needed</label>
+    <div class="value-display" id="expenses-val">$5,954</div>
+    <input type="range" id="expenses" min="2000" max="15000" value="5954" step="100">
+  </div>
+  <div class="control-group">
+    <label>Monthly income (job / consulting)</label>
+    <div class="value-display" id="income-val">$0</div>
+    <input type="range" id="income" min="0" max="20000" value="0" step="100">
+  </div>
+  <div class="control-group">
+    <label>Annual investment return</label>
+    <div class="value-display" id="return-val">7.0%</div>
+    <input type="range" id="return" min="0" max="12" value="7" step="0.5">
+  </div>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-label">Days remaining</div>
+    <div class="metric-value neutral" id="m-days">—</div>
+    <div class="metric-sub" id="m-years">— years</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Cost per day needed</div>
+    <div class="metric-value need" id="m-cost">—</div>
+    <div class="metric-sub">to cover expenses</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Savings per day available</div>
+    <div class="metric-value have" id="m-savings-day">—</div>
+    <div class="metric-sub">if spent linearly</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Portfolio generates / day</div>
+    <div class="metric-value accent" id="m-gen">—</div>
+    <div class="metric-sub">at current return rate</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Monthly gap</div>
+    <div class="metric-value" id="m-gap">—</div>
+    <div class="metric-sub" id="m-gap-sub">—</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Portfolio lasts until</div>
+    <div class="metric-value accent" id="m-until">—</div>
+    <div class="metric-sub" id="m-until-sub">—</div>
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <div class="chart-title">Portfolio balance over time — with investment growth</div>
+  <canvas id="chart" height="300"></canvas>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Portfolio balance</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>Cumulative need</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f39c12; opacity:0.5"></div>Crossover point</div>
+  </div>
+</div>
+
+<div class="status-bar" id="status-bar">—</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + Math.round(n).toLocaleString();
+const fmtD = n => '$' + n.toFixed(2);
+
+function compute() {
+  const age = +$('age').value;
+  const life = +$('life').value;
+  const savings = +$('savings').value;
+  const monthlyExpenses = +$('expenses').value;
+  const monthlyIncome = +$('income').value;
+  const annualReturn = +$('return').value / 100;
+
+  $('age-val').textContent = age;
+  $('life-val').textContent = life;
+  $('savings-val').textContent = fmt(savings);
+  $('expenses-val').textContent = fmt(monthlyExpenses);
+  $('income-val').textContent = fmt(monthlyIncome);
+  $('return-val').textContent = $('return').value + '.0%'.replace(/\.0([^%])/, '$1');
+  $('return-val').textContent = parseFloat($('return').value).toFixed(1) + '%';
+
+  const yearsLeft = Math.max(life - age, 0);
+  const daysLeft = Math.round(yearsLeft * 365.25);
+  const monthlyNet = monthlyExpenses - monthlyIncome;
+  const dailyCost = monthlyExpenses / 30.44;
+  const dailyGen = (savings * annualReturn) / 365;
+
+  $('m-days').textContent = daysLeft.toLocaleString();
+  $('m-years').textContent = yearsLeft + ' years';
+  $('m-cost').textContent = fmtD(dailyCost);
+  $('m-savings-day').textContent = fmtD(savings / daysLeft);
+  $('m-gen').textContent = fmtD(dailyGen);
+
+  const gap = monthlyNet;
+  const gapEl = $('m-gap');
+  if (gap <= 0) {
+    gapEl.textContent = fmt(Math.abs(gap)) + '/mo surplus';
+    gapEl.className = 'metric-value have';
+    $('m-gap-sub').textContent = 'income covers expenses';
+  } else {
+    gapEl.textContent = fmt(gap) + '/mo shortfall';
+    gapEl.className = 'metric-value need';
+    $('m-gap-sub').textContent = 'drawing from portfolio';
+  }
+
+  // Simulate month by month
+  const monthlyReturn = annualReturn / 12;
+  let balance = savings;
+  let depleted = false;
+  let depletedAge = null;
+  const balances = [balance];
+  const needs = [0];
+  let cumNeed = 0;
+
+  for (let m = 1; m <= yearsLeft * 12; m++) {
+    balance = balance * (1 + monthlyReturn) - monthlyNet;
+    cumNeed += monthlyExpenses;
+    balances.push(Math.max(balance, 0));
+    needs.push(cumNeed);
+    if (balance <= 0 && !depleted) {
+      depleted = true;
+      depletedAge = age + m / 12;
+    }
+  }
+
+  if (depleted) {
+    $('m-until').textContent = 'Age ' + Math.round(depletedAge);
+    $('m-until').className = 'metric-value need';
+    $('m-until-sub').textContent = 'portfolio depleted';
+  } else {
+    const finalBal = balances[balances.length - 1];
+    $('m-until').textContent = fmt(finalBal);
+    $('m-until').className = 'metric-value have';
+    $('m-until-sub').textContent = 'remaining at age ' + life;
+  }
+
+  // Status bar
+  const statusEl = $('status-bar');
+  const dailyNeed = monthlyExpenses / 30.44;
+  const dailyHave = savings / daysLeft;
+  const portfolioDaily = (savings * annualReturn) / 365;
+
+  let statusHTML = '';
+  if (!depleted) {
+    statusHTML = `Your portfolio <span class="good">outlasts you</span> — ending at <span>${fmt(balances[balances.length-1])}</span> at age ${life}. `;
+    statusHTML += `Your investments generate <span class="good">${fmtD(portfolioDaily)}/day</span> vs your ${fmtD(dailyNeed)}/day need. `;
+    if (monthlyIncome > 0) statusHTML += `The ${fmt(monthlyIncome)}/mo income is doing heavy lifting. `;
+    statusHTML += `You have more than enough — the question is what to do with the surplus.`;
+  } else {
+    const yearsShort = life - Math.round(depletedAge);
+    statusHTML = `At this rate, your portfolio runs out at <span class="bad">age ${Math.round(depletedAge)}</span> — <span class="bad">${yearsShort} years short</span> of age ${life}. `;
+    const neededSavings = monthlyNet / monthlyReturn;
+    statusHTML += `To never touch principal, you'd need <span class="warn">${fmt(neededSavings)}</span> invested. `;
+    const incomeNeeded = monthlyNet;
+    statusHTML += `Or generate an extra <span class="warn">${fmt(incomeNeeded)}/mo</span> in income. `;
+    statusHTML += `Your ${fmt(savings)} portfolio generates <span class="warn">${fmtD(portfolioDaily)}/day</span> — your need is ${fmtD(dailyNeed)}/day.`;
+  }
+  statusEl.innerHTML = statusHTML;
+
+  drawChart(age, life, yearsLeft, balances, needs, savings, depleted);
+}
+
+function drawChart(age, life, yearsLeft, balances, needs, savings, depleted) {
+  const canvas = $('chart');
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth - 48;
+  const H = 280;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const pad = { top: 20, right: 20, bottom: 40, left: 70 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const maxVal = Math.max(...balances, ...needs, savings * 2);
+  const points = balances.length;
+
+  const xScale = i => pad.left + (i / (points - 1)) * w;
+  const yScale = v => pad.top + h - (Math.max(v, 0) / maxVal) * h;
+
+  // Grid
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + (i / 4) * h;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(pad.left + w, y);
+    ctx.stroke();
+    const val = maxVal * (1 - i / 4);
+    ctx.fillStyle = '#444';
+    ctx.font = '10px DM Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('$' + Math.round(val / 1000) + 'k', pad.left - 8, y + 4);
+  }
+
+  // X axis labels
+  ctx.fillStyle = '#444';
+  ctx.font = '10px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  const labelCount = Math.min(yearsLeft, 8);
+  for (let i = 0; i <= labelCount; i++) {
+    const yearIdx = Math.round((i / labelCount) * (points - 1));
+    const x = xScale(yearIdx);
+    const labelAge = age + Math.round((yearIdx / (points - 1)) * yearsLeft);
+    ctx.fillText('Age ' + labelAge, x, H - 8);
+  }
+
+  // Cumulative need line
+  ctx.beginPath();
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 4]);
+  for (let i = 0; i < points; i++) {
+    const x = xScale(i);
+    const y = yScale(needs[i]);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Portfolio balance area
+  ctx.beginPath();
+  for (let i = 0; i < points; i++) {
+    const x = xScale(i);
+    const y = yScale(balances[i]);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = '#27ae60';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Fill under portfolio
+  ctx.beginPath();
+  for (let i = 0; i < points; i++) {
+    const x = xScale(i);
+    const y = yScale(balances[i]);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.lineTo(xScale(points - 1), pad.top + h);
+  ctx.lineTo(xScale(0), pad.top + h);
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + h);
+  grad.addColorStop(0, 'rgba(39,174,96,0.15)');
+  grad.addColorStop(1, 'rgba(39,174,96,0)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Crossover / depletion marker
+  if (depleted) {
+    for (let i = 1; i < points; i++) {
+      if (balances[i] <= 0) {
+        const x = xScale(i);
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(243,156,18,0.6)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.moveTo(x, pad.top);
+        ctx.lineTo(x, pad.top + h);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#f39c12';
+        ctx.font = '10px DM Mono, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('depleted', x + 4, pad.top + 14);
+        break;
+      }
+    }
+  }
+}
+
+['age','life','savings','expenses','income','return'].forEach(id => {
+  $(id).addEventListener('input', compute);
+});
+
+window.addEventListener('resize', compute);
+compute();
+</script>
+</body>
+</html>

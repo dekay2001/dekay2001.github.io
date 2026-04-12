@@ -644,3 +644,49 @@ footer {
     font-size: 0.9rem;
     margin: 0;
 }
+
+/* Project Cards Grid */
+.project-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card:hover {
+    color: inherit;
+    text-shadow: none;
+}
+
+.project-card-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: var(--spacing-sm);
+}
+
+.project-card-heading {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-xs);
+    border-bottom: none;
+    padding-bottom: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.project-card-description {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
