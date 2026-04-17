@@ -18,6 +18,13 @@ Restart Jekyll after `_config.yml` changes.
 - Run unit tests before submitting changes: `npm test -- --watchAll=false`
 - Optional coverage run: `npm test -- --coverage --watchAll=false`
 
+> **Windows/PowerShell note:** Jest produces large verbose output (~75KB) that can stall the
+> PowerShell terminal buffer, making the run appear to hang even when all tests pass.
+> Use this command to avoid the stall:
+> ```
+> npx jest --forceExit 2>&1 | Out-String
+> ```
+
 ## File and Naming Conventions
 - Blog posts: `_posts/YYYY-MM-DD-title-with-dashes.md`
 - Tests: `test/unit/**` mirroring source paths where practical
