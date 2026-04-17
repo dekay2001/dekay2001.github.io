@@ -22,9 +22,11 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
 
   const maxVal = Math.max(...balances, ...needs, savings * 2);
   const points = balances.length;
+  const xDivisor = points > 1 ? points - 1 : 1;
+  const yDivisor = maxVal > 0 ? maxVal : 1;
 
-  const xScale = i => pad.left + (i / (points - 1)) * w;
-  const yScale = v => pad.top + h - (Math.max(v, 0) / maxVal) * h;
+  const xScale = i => pad.left + (i / xDivisor) * w;
+  const yScale = v => pad.top + h - (Math.max(v, 0) / yDivisor) * h;
 
   // Grid
   ctx.strokeStyle = '#1a1a1a';
