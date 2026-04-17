@@ -42,33 +42,38 @@
             <div class="controls">
               <div class="control-group">
                 <label>Current age</label>
-                <div class="value-display" id="age-val">43</div>
-                <input type="range" id="age" min="30" max="70" value="43" step="1">
+                <div class="value-display" id="age-val">35</div>
+                <input type="range" id="age" min="30" max="70" value="35" step="1">
               </div>
               <div class="control-group">
                 <label>Live to age</label>
-                <div class="value-display" id="life-val">95</div>
-                <input type="range" id="life" min="70" max="100" value="95" step="1">
+                <div class="value-display" id="life-val">90</div>
+                <input type="range" id="life" min="70" max="100" value="90" step="1">
               </div>
               <div class="control-group">
                 <label>Current savings / investments</label>
-                <div class="value-display" id="savings-val">$675,000</div>
-                <input type="range" id="savings" min="100000" max="2000000" value="675000" step="5000">
+                <div class="value-display" id="savings-val">$250,000</div>
+                <input type="range" id="savings" min="0" max="2000000" value="250000" step="5000">
               </div>
               <div class="control-group">
                 <label>Monthly expenses needed</label>
-                <div class="value-display" id="expenses-val">$5,954</div>
-                <input type="range" id="expenses" min="2000" max="15000" value="5954" step="100">
+                <div class="value-display" id="expenses-val">$5,000</div>
+                <input type="range" id="expenses" min="2000" max="15000" value="5000" step="100">
               </div>
               <div class="control-group">
                 <label>Monthly income (job / consulting)</label>
-                <div class="value-display" id="income-val">$0</div>
-                <input type="range" id="income" min="0" max="20000" value="0" step="100">
+                <div class="value-display" id="income-val">$3,500</div>
+                <input type="range" id="income" min="0" max="20000" value="3500" step="100">
               </div>
               <div class="control-group">
                 <label>Annual investment return</label>
-                <div class="value-display" id="return-val">7.0%</div>
-                <input type="range" id="return" min="0" max="12" value="7" step="0.5">
+                <div class="value-display" id="return-val">6.0%</div>
+                <input type="range" id="return" min="0" max="12" value="6" step="0.5">
+              </div>
+              <div class="control-group">
+                <label>Annual inflation rate</label>
+                <div class="value-display" id="inflation-val">3.0%</div>
+                <input type="range" id="inflation" min="0" max="10" value="3" step="0.5">
               </div>
             </div>
 
@@ -81,7 +86,7 @@
               <div class="metric">
                 <div class="metric-label">Cost per day needed</div>
                 <div class="metric-value need" id="m-cost">—</div>
-                <div class="metric-sub">to cover expenses</div>
+                <div class="metric-sub" id="m-cost-sub">to cover expenses</div>
               </div>
               <div class="metric">
                 <div class="metric-label">Savings per day available</div>
@@ -137,7 +142,7 @@
       return '$' + value.toFixed(2);
     }
 
-    function computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn }) {
+    function computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation }) {
       const yearsLeft      = Math.max(life - age, 0);
       const daysLeft       = Math.round(yearsLeft * 365.25);
       const monthlyReturn  = annualReturn / 12;
@@ -147,6 +152,9 @@
       const dailyGeneration = (savings * annualReturn) / 365;
       const savingsPerDay  = daysLeft > 0 ? savings / daysLeft : 0;
 
+      const monthlyInflation = Math.pow(1 + annualInflation, 1/12) - 1;
+      let currentExpenses = monthlyExpenses;
+
       let balance    = savings;
       let depleted   = false;
       let depletedAge = null;
@@ -155,14 +163,15 @@
       let cumNeed     = 0;
 
       for (let m = 1; m <= yearsLeft * 12; m++) {
-        balance   = balance * (1 + monthlyReturn) - monthlyNet;
-        cumNeed  += monthlyExpenses;
+        balance   = balance * (1 + monthlyReturn) - (currentExpenses - monthlyIncome);
+        cumNeed  += currentExpenses;
         balances.push(Math.max(balance, 0));
         needs.push(cumNeed);
         if (balance <= 0 && !depleted) {
           depleted    = true;
           depletedAge = age + m / 12;
         }
+        currentExpenses *= (1 + monthlyInflation);
       }
 
       return {
@@ -170,18 +179,23 @@
         gap: { amount: Math.abs(monthlyNet), isSurplus: monthlyNet <= 0 },
         depleted, depletedAge,
         finalBalance: balances[balances.length - 1],
+        finalMonthlyExpenses: currentExpenses,
         balances, needs,
       };
     }
 
     function generateStatusMessage({ depleted, depletedAge, finalBalance, dailyGeneration,
-                                     dailyCost, gap, monthlyIncome, monthlyReturn, life, savings }) {
+                                     dailyCost, gap, monthlyIncome, monthlyReturn, annualInflation,
+                                     finalMonthlyExpenses, monthlyExpenses, life, savings }) {
       let html = '';
       if (!depleted) {
         html  = `Your portfolio <span class="good">outlasts you</span> — ending at <span>${formatCurrency(finalBalance)}</span> at age ${life}. `;
         html += `Your investments generate <span class="good">${formatDailyRate(dailyGeneration)}/day</span> vs your ${formatDailyRate(dailyCost)}/day need. `;
         if (monthlyIncome > 0) html += `The ${formatCurrency(monthlyIncome)}/mo income is doing heavy lifting. `;
         html += `You have more than enough — the question is what to do with the surplus.`;
+        if (annualInflation > 0) {
+          html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
+        }
       } else {
         const yearsShort    = life - Math.round(depletedAge);
         const neededSavings = monthlyReturn > 0 ? gap.amount / monthlyReturn : 0;
@@ -189,6 +203,9 @@
         html += `To never touch principal, you'd need <span class="warn">${formatCurrency(neededSavings)}</span> invested. `;
         html += `Or generate an extra <span class="warn">${formatCurrency(gap.amount)}/mo</span> in income. `;
         html += `Your ${formatCurrency(savings)} portfolio generates <span class="warn">${formatDailyRate(dailyGeneration)}/day</span> — your need is ${formatDailyRate(dailyCost)}/day.`;
+        if (annualInflation > 0) {
+          html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
+        }
       }
       return { html };
     }
@@ -281,6 +298,7 @@
       const sliderExpenses = document.getElementById('expenses');
       const sliderIncome   = document.getElementById('income');
       const sliderReturn   = document.getElementById('return');
+      const sliderInflation = document.getElementById('inflation');
 
       // Value-display references
       const valAge      = document.getElementById('age-val');
@@ -289,11 +307,13 @@
       const valExpenses = document.getElementById('expenses-val');
       const valIncome   = document.getElementById('income-val');
       const valReturn   = document.getElementById('return-val');
+      const valInflation = document.getElementById('inflation-val');
 
       // Metric references
       const mDays      = document.getElementById('m-days');
       const mYears     = document.getElementById('m-years');
       const mCost      = document.getElementById('m-cost');
+      const mCostSub   = document.getElementById('m-cost-sub');
       const mSavingsDay = document.getElementById('m-savings-day');
       const mGen       = document.getElementById('m-gen');
       const mGap       = document.getElementById('m-gap');
@@ -311,6 +331,7 @@
         const monthlyExpenses = +sliderExpenses.value;
         const monthlyIncome  = +sliderIncome.value;
         const annualReturn   = +sliderReturn.value / 100;
+        const annualInflation = +sliderInflation.value / 100;
 
         // Update value displays
         valAge.textContent      = age;
@@ -319,8 +340,9 @@
         valExpenses.textContent = formatCurrency(monthlyExpenses);
         valIncome.textContent   = formatCurrency(monthlyIncome);
         valReturn.textContent   = parseFloat(sliderReturn.value).toFixed(1) + '%';
+        valInflation.textContent = parseFloat(sliderInflation.value).toFixed(1) + '%';
 
-        const metrics = computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn });
+        const metrics = computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation });
 
         // Metrics panel
         mDays.textContent      = metrics.daysLeft.toLocaleString();
@@ -329,15 +351,23 @@
         mSavingsDay.textContent = formatDailyRate(metrics.savingsPerDay);
         mGen.textContent       = formatDailyRate(metrics.dailyGeneration);
 
+        // Inflation-aware cost sub-label
+        if (annualInflation > 0) {
+          const finalDaily = metrics.finalMonthlyExpenses / 30.44;
+          mCostSub.textContent = 'rising to ' + formatDailyRate(finalDaily) + '/day by age ' + life;
+        } else {
+          mCostSub.textContent = 'to cover expenses';
+        }
+
         // Monthly gap
         if (metrics.gap.isSurplus) {
           mGap.textContent  = formatCurrency(metrics.gap.amount) + '/mo surplus';
           mGap.className    = 'metric-value have';
-          mGapSub.textContent = 'income covers expenses';
+          mGapSub.textContent = annualInflation > 0 ? 'initially, before inflation' : 'income covers expenses';
         } else {
           mGap.textContent  = formatCurrency(metrics.gap.amount) + '/mo shortfall';
           mGap.className    = 'metric-value need';
-          mGapSub.textContent = 'drawing from portfolio';
+          mGapSub.textContent = annualInflation > 0 ? 'initially, before inflation' : 'drawing from portfolio';
         }
 
         // Portfolio longevity
@@ -354,8 +384,10 @@
         // Status bar
         const { html } = generateStatusMessage({
           ...metrics,
+          monthlyExpenses,
           monthlyIncome,
           monthlyReturn: annualReturn / 12,
+          annualInflation,
           life,
           savings,
         });
@@ -372,7 +404,7 @@
         });
       }
 
-      ['age', 'life', 'savings', 'expenses', 'income', 'return'].forEach(id => {
+      ['age', 'life', 'savings', 'expenses', 'income', 'return', 'inflation'].forEach(id => {
         document.getElementById(id).addEventListener('input', update);
       });
       window.addEventListener('resize', update);

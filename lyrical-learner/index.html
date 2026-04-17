@@ -1,0 +1,128 @@
+---
+---
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Lyrical Learner</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-default.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-lyrical-learner.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="description" content="Lyrical Learner — Practice rap and song lyrics line by line at your own pace">
+    <meta name="keywords" content="Lyrics, Karaoke, Practice, Rap, Music">
+    <meta name="author" content="Dan Kimball">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    {% include navheader.html %}
+    <main id="home_content" class="content">
+        <div class="lyrical-learner-content">
+
+            <h1 class="ll-title">Lyrical Learner</h1>
+            <p class="ll-subtitle">Practice rap and song lyrics line by line — at your pace</p>
+
+            <!-- Input Section -->
+            <div class="ll-input-section">
+                <h2>Paste Your Lyrics</h2>
+                <textarea
+                    id="lyricsInput"
+                    class="ll-lyrics-textarea"
+                    placeholder="Paste your lyrics here...&#10;&#10;Use [VERSE], [CHORUS] etc. to mark sections.&#10;Empty lines are ignored."
+                ></textarea>
+                <div class="ll-input-buttons">
+                    <button id="loadLyricsBtn" class="ll-btn ll-btn-primary">Load Lyrics</button>
+                    <button id="clearSavedBtn" class="ll-btn ll-btn-danger" style="display:none">Clear Saved</button>
+                </div>
+            </div>
+
+            <!-- Player Controls Section -->
+            <div class="ll-player-section">
+                <h2>Playback Controls</h2>
+                <div class="ll-controls-container">
+
+                    <div class="ll-control-group">
+                        <label>Playback speed <span id="speedValue">1.0</span>x</label>
+                        <input
+                            type="range"
+                            id="speedSlider"
+                            class="ll-speed-slider"
+                            min="0.5"
+                            max="2.0"
+                            value="1.0"
+                            step="0.1"
+                        >
+                        <div class="ll-speed-markers">
+                            <span>0.5×</span>
+                            <span>1×</span>
+                            <span>1.5×</span>
+                            <span>2×</span>
+                        </div>
+                    </div>
+
+                    <div class="ll-control-group">
+                        <label>Line delay <span id="delayValue">2.0</span>s</label>
+                        <input
+                            type="range"
+                            id="delaySlider"
+                            class="ll-delay-slider"
+                            min="0.5"
+                            max="5.0"
+                            value="2.0"
+                            step="0.1"
+                        >
+                    </div>
+
+                    <div class="ll-playback-controls">
+                        <button id="playBtn"  class="ll-btn ll-btn-success" disabled>▶ Play</button>
+                        <button id="pauseBtn" class="ll-btn ll-btn-warning" disabled>⏸ Pause</button>
+                        <button id="resetBtn" class="ll-btn ll-btn-danger"  disabled>↺ Reset</button>
+                    </div>
+
+                    <div class="ll-navigation-controls">
+                        <button id="skipPrevBtn" class="ll-btn ll-btn-nav">← Prev</button>
+                        <button id="skipNextBtn" class="ll-btn ll-btn-nav">Next →</button>
+                    </div>
+
+                    <div class="ll-loop-control">
+                        <button id="loopBtn" class="ll-btn ll-btn-toggle">↻ Loop</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Karaoke Display Section -->
+            <div class="ll-display-section">
+                <h2>Now Playing</h2>
+                <div id="karaokeDisplay" class="ll-karaoke-display">
+                    <p class="ll-placeholder-text">Paste lyrics above and click "Load Lyrics" to begin</p>
+                </div>
+                <div class="ll-progress-container">
+                    <div class="ll-progress-bar">
+                        <div id="progressBar" class="ll-progress-fill"></div>
+                    </div>
+                    <p class="ll-progress-text">
+                        Line <span id="currentLine">0</span> of <span id="totalLines">0</span>
+                    </p>
+                </div>
+            </div>
+
+            <p style="text-align:center; color: var(--color-text-light); opacity:0.6; font-size:0.85rem; margin-top:0;">
+                Keyboard: <strong>Space</strong> play/pause &nbsp;·&nbsp; <strong>← →</strong> skip lines &nbsp;·&nbsp; <strong>Esc</strong> stop
+            </p>
+
+        </div><!-- /.lyrical-learner-content -->
+    </main>
+    {% include footer.html %}
+
+    <script type="module">
+        import { initializeLyricalLearner } from '/assets/js/lyrical-learner/main.js';
+        window.addEventListener('DOMContentLoaded', () => initializeLyricalLearner());
+    </script>
+    <script type="module" src="/assets/js/base/hamburger-menu.js"></script>
+</body>
+
+</html>

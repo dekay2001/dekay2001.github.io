@@ -6,6 +6,9 @@ const { drawChart } = require('../../../../assets/js/life-money/chart.js');
 
 function makeCanvas() {
   const canvas = document.createElement('canvas');
+  const parent = document.createElement('div');
+  Object.defineProperty(parent, 'clientWidth', { value: 648 });
+  parent.appendChild(canvas);
   const calls = [];
   const ctx = {
     scale: jest.fn(),
@@ -28,23 +31,22 @@ function makeCanvas() {
     textAlign: '',
   };
   canvas.getContext = jest.fn(() => ctx);
-  canvas.parentElement = { clientWidth: 648 };
   canvas.style = {};
   return { canvas, ctx };
 }
 
 function makeData(overrides = {}) {
-  const yearsLeft = 52;
+  const yearsLeft = 50;
   const months = yearsLeft * 12;
-  const balances = Array.from({ length: months + 1 }, (_, i) => Math.max(675000 - i * 100, 0));
-  const needs = Array.from({ length: months + 1 }, (_, i) => i * 5954);
+  const balances = Array.from({ length: months + 1 }, (_, i) => Math.max(500000 - i * 100, 0));
+  const needs = Array.from({ length: months + 1 }, (_, i) => i * 4000);
   return {
-    age: 43,
-    life: 95,
+    age: 40,
+    life: 90,
     yearsLeft,
     balances,
     needs,
-    savings: 675000,
+    savings: 500000,
     depleted: false,
     ...overrides,
   };
@@ -115,7 +117,7 @@ describe('drawChart', () => {
   it('handles single data point without throwing', () => {
     const { canvas } = makeCanvas();
     expect(() =>
-      drawChart(canvas, { age: 43, life: 43, yearsLeft: 0, balances: [675000], needs: [0], savings: 675000, depleted: false })
+      drawChart(canvas, { age: 40, life: 40, yearsLeft: 0, balances: [500000], needs: [0], savings: 500000, depleted: false })
     ).not.toThrow();
   });
 });
