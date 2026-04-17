@@ -70,8 +70,13 @@ function update() {
   } else {
     const yearsShort = life - Math.round(depletedAge);
     statusHTML = `At this rate, your portfolio runs out at <span class="bad">age ${Math.round(depletedAge)}</span> — <span class="bad">${yearsShort} years short</span> of age ${life}. `;
-    const neededSavings = monthlyNet / monthlyReturn;
-    statusHTML += `To never touch principal, you'd need <span class="warn">${fmt(neededSavings)}</span> invested. `;
+    const minMonthlyReturn = 1e-9;
+    if (Number.isFinite(monthlyReturn) && Math.abs(monthlyReturn) > minMonthlyReturn) {
+      const neededSavings = monthlyNet / monthlyReturn;
+      statusHTML += `To never touch principal, you'd need <span class="warn">${fmt(neededSavings)}</span> invested. `;
+    } else {
+      statusHTML += `At a ${parseFloat($('return').value).toFixed(1)}% return, investment gains alone won't cover your monthly shortfall without touching principal. `;
+    }
     const incomeNeeded = monthlyNet;
     statusHTML += `Or generate an extra <span class="warn">${fmt(incomeNeeded)}/mo</span> in income. `;
     statusHTML += `Your ${fmt(savings)} portfolio generates <span class="warn">${fmtD(portfolioDaily)}/day</span> — your need is ${fmtD(dailyNeed)}/day.`;
