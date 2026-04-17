@@ -58,7 +58,6 @@ function update() {
 
   const monthlyReturn = annualReturn / 12;
   const dailyNeed = monthlyExpenses / 30.44;
-  const dailyHave = savings / daysLeft;
   const portfolioDaily = (savings * annualReturn) / 365;
   const statusEl = $('status-bar');
 
