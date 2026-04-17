@@ -217,11 +217,13 @@
       const h      = H - pad.top  - pad.bottom;
       const points = balances.length;
       const maxVal = Math.max(...balances, ...needs, savings * 2);
+      const xDenominator = Math.max(points - 1, 1);
+      const yDivisor = maxVal > 0 ? maxVal : 1;
 
       ctx.clearRect(0, 0, W, H);
 
-      const xScale = i => pad.left + (i / (points - 1)) * w;
-      const yScale = v => pad.top + h - (Math.max(v, 0) / maxVal) * h;
+      const xScale = i => pad.left + (i / xDenominator) * w;
+      const yScale = v => pad.top + h - (Math.max(v, 0) / yDivisor) * h;
 
       // Grid lines
       ctx.strokeStyle = '#1a1a1a';

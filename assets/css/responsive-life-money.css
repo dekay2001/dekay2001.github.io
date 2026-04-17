@@ -4,9 +4,6 @@
    Variables bridge into the site's existing design tokens where possible.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap');
-
-
 /* --------------------------------------------------------------------------
    Container — scoped CSS variables + layout base
    -------------------------------------------------------------------------- */

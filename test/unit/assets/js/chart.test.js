@@ -9,7 +9,6 @@ function makeCanvas() {
   const parent = document.createElement('div');
   Object.defineProperty(parent, 'clientWidth', { value: 648 });
   parent.appendChild(canvas);
-  const calls = [];
   const ctx = {
     scale: jest.fn(),
     clearRect: jest.fn(),
