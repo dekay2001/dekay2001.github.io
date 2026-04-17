@@ -74,11 +74,11 @@ assets\js\
 Test files import from relative paths:
 ```javascript
 // compute.test.js (at: test/unit/assets/js/)
-require('../../../../../assets/js/life-money/compute.js')
+require('../../../../assets/js/life-money/compute.js')
 // Resolves to: assets/js/life-money/compute.js
 
 // chart.test.js (at: test/unit/assets/js/)
-require('../../../../../assets/js/life-money/chart.js')
+require('../../../../assets/js/life-money/chart.js')
 // Resolves to: assets/js/life-money/chart.js
 ```
 

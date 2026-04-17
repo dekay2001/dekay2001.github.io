@@ -20,15 +20,6 @@
     <meta name="author" content="Dan Kimball">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!--
-        TODO: replace inline script below with the external module once the
-        assets/js/life-money/ directory is created on disk:
-
-        <script type="module" src="/assets/js/life-money/main.js"></script>
-
-        The three modules that belong in that directory are listed at the
-        bottom of this file in a comment block ready to copy-paste.
-    -->
 </head>
 
 <body>
@@ -41,37 +32,37 @@
 
             <div class="controls">
               <div class="control-group">
-                <label>Current age</label>
+                <label for="age">Current age</label>
                 <div class="value-display" id="age-val">35</div>
                 <input type="range" id="age" min="30" max="70" value="35" step="1">
               </div>
               <div class="control-group">
-                <label>Live to age</label>
+                <label for="life">Live to age</label>
                 <div class="value-display" id="life-val">90</div>
                 <input type="range" id="life" min="70" max="100" value="90" step="1">
               </div>
               <div class="control-group">
-                <label>Current savings / investments</label>
+                <label for="savings">Current savings / investments</label>
                 <div class="value-display" id="savings-val">$250,000</div>
                 <input type="range" id="savings" min="0" max="2000000" value="250000" step="5000">
               </div>
               <div class="control-group">
-                <label>Monthly expenses needed</label>
+                <label for="expenses">Monthly expenses needed</label>
                 <div class="value-display" id="expenses-val">$5,000</div>
                 <input type="range" id="expenses" min="2000" max="15000" value="5000" step="100">
               </div>
               <div class="control-group">
-                <label>Monthly income (job / consulting)</label>
+                <label for="income">Monthly income (job / consulting)</label>
                 <div class="value-display" id="income-val">$3,500</div>
                 <input type="range" id="income" min="0" max="20000" value="3500" step="100">
               </div>
               <div class="control-group">
-                <label>Annual investment return</label>
+                <label for="return">Annual investment return</label>
                 <div class="value-display" id="return-val">6.0%</div>
                 <input type="range" id="return" min="0" max="12" value="6" step="0.5">
               </div>
               <div class="control-group">
-                <label>Annual inflation rate</label>
+                <label for="inflation">Annual inflation rate</label>
                 <div class="value-display" id="inflation-val">3.0%</div>
                 <input type="range" id="inflation" min="0" max="10" value="3" step="0.5">
               </div>
@@ -161,10 +152,12 @@
       const balances  = [balance];
       const needs     = [0];
       let cumNeed     = 0;
+      let finalMonthlyExpenses = currentExpenses;
 
       for (let m = 1; m <= yearsLeft * 12; m++) {
         balance   = balance * (1 + monthlyReturn) - (currentExpenses - monthlyIncome);
         cumNeed  += currentExpenses;
+        finalMonthlyExpenses = currentExpenses;
         balances.push(Math.max(balance, 0));
         needs.push(cumNeed);
         if (balance <= 0 && !depleted) {
@@ -179,7 +172,7 @@
         gap: { amount: Math.abs(monthlyNet), isSurplus: monthlyNet <= 0 },
         depleted, depletedAge,
         finalBalance: balances[balances.length - 1],
-        finalMonthlyExpenses: currentExpenses,
+        finalMonthlyExpenses,
         balances, needs,
       };
     }
@@ -248,11 +241,15 @@
 
       // X-axis age labels
       ctx.fillStyle = '#444'; ctx.font = '10px DM Mono, monospace'; ctx.textAlign = 'center';
-      const labelCount = Math.min(yearsLeft, 8);
-      for (let i = 0; i <= labelCount; i++) {
-        const yearIdx  = Math.round((i / labelCount) * (points - 1));
-        const labelAge = age + Math.round((yearIdx / (points - 1)) * yearsLeft);
-        ctx.fillText('Age ' + labelAge, xScale(yearIdx), H - 8);
+      if (yearsLeft === 0 || points <= 1) {
+        ctx.fillText('Age ' + age, pad.left, H - 8);
+      } else {
+        const labelCount = Math.min(yearsLeft, 8);
+        for (let i = 0; i <= labelCount; i++) {
+          const yearIdx  = Math.round((i / labelCount) * (points - 1));
+          const labelAge = age + Math.round((yearIdx / (points - 1)) * yearsLeft);
+          ctx.fillText('Age ' + labelAge, xScale(yearIdx), H - 8);
+        }
       }
 
       // Cumulative-need line (dashed red)

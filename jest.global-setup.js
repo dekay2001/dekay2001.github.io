@@ -1,7 +1,7 @@
 'use strict';
 /**
  * Jest globalSetup — runs once before test discovery.
- * Creates directories and test files needed for the life-money module.
+ * Ensures the source directory needed for the life-money module exists.
  */
 const fs = require('fs');
 const path = require('path');

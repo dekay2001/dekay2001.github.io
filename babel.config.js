@@ -1,4 +1,4 @@
-﻿// babel.config.js
+// babel.config.js
 'use strict';
 
 module.exports = {

@@ -1,6 +1,5 @@
 {
     "scripts": {
-        "pretest": "node jest.global-setup.js",
         "test": "jest --watchAll=false"
     },
     "jest": {
