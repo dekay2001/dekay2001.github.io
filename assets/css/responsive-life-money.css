@@ -1,0 +1,243 @@
+/* ==========================================================================
+   Life Money — Scoped Component Styles
+   All rules are scoped to .lm-container to avoid polluting the site's globals.
+   Variables bridge into the site's existing design tokens where possible.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Container — scoped CSS variables + layout base
+   -------------------------------------------------------------------------- */
+
+.lm-container {
+  /* Color tokens — mapped to site vars where semantically close */
+  --lm-bg:      var(--color-dark);           /* #0f1117 ≈ original #0a0a0a  */
+  --lm-surface: var(--color-secondary);      /* #2d3250 ≈ original #111111  */
+  --lm-border:  #222222;
+  --lm-text:    var(--color-text-light);     /* #e5e7eb ≈ original #e8e4dc  */
+  --lm-muted:   var(--color-text-muted);     /* #9ca3af ≈ original #666     */
+  --lm-need:    #c0392b;
+  --lm-have:    #27ae60;
+  --lm-accent:  var(--color-accent);         /* #f97316 ≈ original #f39c12  */
+
+  /* Typography tokens */
+  --mono:  'DM Mono', monospace;
+  --serif: 'Playfair Display', serif;
+
+  /* Container layout */
+  font-family: var(--mono);
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: left;
+}
+
+
+/* --------------------------------------------------------------------------
+   Heading — override site's global h1 (Bebas Neue / uppercase / accent)
+   within the life-money container only
+   -------------------------------------------------------------------------- */
+
+.lm-container h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  text-shadow: none;
+  color: var(--lm-text);
+  margin-bottom: 0.25rem;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.lm-container .subtitle {
+  font-size: 0.72rem;
+  color: var(--lm-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   Controls panel
+   -------------------------------------------------------------------------- */
+
+.lm-container .controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--lm-border);
+  background: var(--lm-surface);
+}
+
+.lm-container .control-group label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lm-muted);
+  margin-bottom: 0.4rem;
+}
+
+.lm-container .control-group .value-display {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--lm-text);
+  margin-bottom: 0.4rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   Range inputs — scoped so site's button styles don't bleed in
+   -------------------------------------------------------------------------- */
+
+.lm-container input[type=range] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: var(--lm-border);
+  outline: none;
+  cursor: pointer;
+}
+
+.lm-container input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--lm-accent);
+  cursor: pointer;
+}
+
+.lm-container input[type=range]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--lm-accent);
+  cursor: pointer;
+  border: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   Metrics grid
+   -------------------------------------------------------------------------- */
+
+.lm-container .metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--lm-border);
+  margin-bottom: 2rem;
+}
+
+.lm-container .metric {
+  background: var(--lm-surface);
+  padding: 1.25rem;
+}
+
+.lm-container .metric-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lm-muted);
+  margin-bottom: 0.5rem;
+}
+
+.lm-container .metric-value {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.lm-container .metric-value.need    { color: var(--lm-need); }
+.lm-container .metric-value.have    { color: var(--lm-have); }
+.lm-container .metric-value.accent  { color: var(--lm-accent); }
+.lm-container .metric-value.neutral { color: var(--lm-text); }
+
+.lm-container .metric-sub {
+  font-size: 0.65rem;
+  color: var(--lm-muted);
+  margin-top: 0.35rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   Chart
+   -------------------------------------------------------------------------- */
+
+.lm-container .chart-wrap {
+  border: 1px solid var(--lm-border);
+  background: var(--lm-surface);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.lm-container .chart-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lm-muted);
+  margin-bottom: 1.25rem;
+}
+
+.lm-container canvas {
+  display: block;
+  width: 100%;
+}
+
+
+/* --------------------------------------------------------------------------
+   Legend
+   -------------------------------------------------------------------------- */
+
+.lm-container .legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.lm-container .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  color: var(--lm-muted);
+  letter-spacing: 0.06em;
+}
+
+/* Suppress the site's global li::before arrow inside the legend */
+.lm-container .legend-item::before {
+  content: none;
+}
+
+.lm-container .legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   Status bar
+   -------------------------------------------------------------------------- */
+
+.lm-container .status-bar {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--lm-border);
+  background: var(--lm-surface);
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--lm-muted);
+}
+
+.lm-container .status-bar span      { color: var(--lm-text);   }
+.lm-container .status-bar .good     { color: var(--lm-have);   }
+.lm-container .status-bar .warn     { color: var(--lm-accent); }
+.lm-container .status-bar .bad      { color: var(--lm-need);   }

@@ -12,6 +12,12 @@ vendor/
 .bundle/
 Gemfile.lock
 
+# Generated test artifacts
+test/unit/assets/js/life-money/
+
+# Test coverage
+coverage/
+
 # OS
 .DS_Store
 Thumbs.db

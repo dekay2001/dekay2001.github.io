@@ -4,144 +4,411 @@
 <html lang="en">
 
 <head>
-    <title>Lyrical Learner - Playground</title>
+    <title>Financial Runway — Playground</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/responsive-default.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-lyrical-learner.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-life-money.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
     <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
     <![endif]-->
     <meta charset="UTF-8">
-    <meta name="description" content="Lyrical Learner - Practice rap lyrics at your own pace">
-    <meta name="keywords" content="Lyrics, Karaoke, Rap, Practice">
+    <meta name="description" content="Financial Runway Calculator - Visualize how long your savings will last">
+    <meta name="keywords" content="Finance, Retirement, Calculator, Savings, Runway">
     <meta name="author" content="Dan Kimball">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script type="module" src="/assets/js/playground.js"></script>
 </head>
 
 <body>
     {% include navheader.html %}
-    <main id="home_content" class="content lyrical-learner-content">
-        <h1 class="ll-title">Lyrical Learner</h1>
-        <p class="ll-subtitle">Master your favorite rap lyrics one line at a time</p>
-        
-        <!-- Lyrics Input Section -->
-        <section class="ll-input-section">
-            <h2>Paste Your Lyrics</h2>
-            <textarea 
-                id="lyricsInput" 
-                class="ll-lyrics-textarea"
-                placeholder="Paste your lyrics here...&#10;&#10;Tip: Add [VERSE], [CHORUS], [BRIDGE] markers to organize sections"
-                aria-label="Lyrics input textarea"
-            ></textarea>
-            <div class="ll-input-buttons">
-                <button id="loadLyricsBtn" class="ll-btn ll-btn-primary" aria-label="Load lyrics">
-                    Load Lyrics
-                </button>
-                <button id="clearSavedBtn" class="ll-btn ll-btn-danger" aria-label="Clear saved lyrics" style="display: none;">
-                    🗑️ Clear Saved
-                </button>
+    <main id="home_content" class="content">
+        <div class="lm-container">
+
+            <h1>Your financial runway</h1>
+            <p class="subtitle">Every day of the rest of your life — what you need vs. what you have</p>
+
+            <div class="controls">
+              <div class="control-group">
+                <label for="age">Current age</label>
+                <div class="value-display" id="age-val">35</div>
+                <input type="range" id="age" min="30" max="70" value="35" step="1">
+              </div>
+              <div class="control-group">
+                <label for="life">Live to age</label>
+                <div class="value-display" id="life-val">90</div>
+                <input type="range" id="life" min="70" max="100" value="90" step="1">
+              </div>
+              <div class="control-group">
+                <label for="savings">Current savings / investments</label>
+                <div class="value-display" id="savings-val">$250,000</div>
+                <input type="range" id="savings" min="0" max="2000000" value="250000" step="5000">
+              </div>
+              <div class="control-group">
+                <label for="expenses">Monthly expenses needed</label>
+                <div class="value-display" id="expenses-val">$5,000</div>
+                <input type="range" id="expenses" min="2000" max="15000" value="5000" step="100">
+              </div>
+              <div class="control-group">
+                <label for="income">Monthly income (job / consulting)</label>
+                <div class="value-display" id="income-val">$3,500</div>
+                <input type="range" id="income" min="0" max="20000" value="3500" step="100">
+              </div>
+              <div class="control-group">
+                <label for="return">Annual investment return</label>
+                <div class="value-display" id="return-val">6.0%</div>
+                <input type="range" id="return" min="0" max="12" value="6" step="0.5">
+              </div>
+              <div class="control-group">
+                <label for="inflation">Annual inflation rate</label>
+                <div class="value-display" id="inflation-val">3.0%</div>
+                <input type="range" id="inflation" min="0" max="10" value="3" step="0.5">
+              </div>
             </div>
-        </section>
 
-        <!-- Player Controls Section -->
-        <section class="ll-player-section" id="playerSection">
-            <h2>Player Controls</h2>
-            
-            <div class="ll-controls-container">
-                <!-- Speed Control -->
-                <div class="ll-control-group">
-                    <label for="speedSlider">
-                        Speed: <span id="speedValue">1.0</span>x
-                    </label>
-                    <input 
-                        type="range" 
-                        id="speedSlider" 
-                        class="ll-speed-slider"
-                        min="0.5" 
-                        max="2.0" 
-                        step="0.1" 
-                        value="1.0"
-                        aria-label="Playback speed control"
-                    />
-                    <div class="ll-speed-markers">
-                        <span>0.5x</span>
-                        <span>1.0x</span>
-                        <span>1.5x</span>
-                        <span>2.0x</span>
-                    </div>
-                </div>
-
-                <!-- Line Delay Control -->
-                <div class="ll-control-group">
-                    <label for="delaySlider">
-                        Line Delay: <span id="delayValue">2.0</span>s
-                    </label>
-                    <input 
-                        type="range" 
-                        id="delaySlider" 
-                        class="ll-delay-slider"
-                        min="0.5" 
-                        max="5.0" 
-                        step="0.5" 
-                        value="2.0"
-                        aria-label="Line delay control"
-                    />
-                </div>
-
-                <!-- Playback Controls -->
-                <div class="ll-playback-controls">
-                    <button id="playBtn" class="ll-btn ll-btn-success" aria-label="Play">
-                        ▶ Play
-                    </button>
-                    <button id="pauseBtn" class="ll-btn ll-btn-warning" disabled aria-label="Pause">
-                        ⏸ Pause
-                    </button>
-                    <button id="resetBtn" class="ll-btn ll-btn-secondary" aria-label="Reset">
-                        ⏹ Reset
-                    </button>
-                </div>
-
-                <!-- Navigation Controls -->
-                <div class="ll-navigation-controls">
-                    <button id="skipPrevBtn" class="ll-btn ll-btn-nav" aria-label="Skip to previous line">
-                        ⏮ Previous
-                    </button>
-                    <button id="skipNextBtn" class="ll-btn ll-btn-nav" aria-label="Skip to next line">
-                        Next ⏭
-                    </button>
-                </div>
-
-                <!-- Loop Control -->
-                <div class="ll-loop-control">
-                    <button id="loopBtn" class="ll-btn ll-btn-toggle" aria-label="Toggle loop mode" title="Enable loop mode to automatically restart when finished">
-                        🔁 Loop
-                    </button>
-                </div>
+            <div class="metrics">
+              <div class="metric">
+                <div class="metric-label">Days remaining</div>
+                <div class="metric-value neutral" id="m-days">—</div>
+                <div class="metric-sub" id="m-years">— years</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Cost per day needed</div>
+                <div class="metric-value need" id="m-cost">—</div>
+                <div class="metric-sub" id="m-cost-sub">to cover expenses</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Savings per day available</div>
+                <div class="metric-value have" id="m-savings-day">—</div>
+                <div class="metric-sub">if spent linearly</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Portfolio generates / day</div>
+                <div class="metric-value accent" id="m-gen">—</div>
+                <div class="metric-sub">at current return rate</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Monthly gap</div>
+                <div class="metric-value" id="m-gap">—</div>
+                <div class="metric-sub" id="m-gap-sub">—</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Portfolio lasts until</div>
+                <div class="metric-value accent" id="m-until">—</div>
+                <div class="metric-sub" id="m-until-sub">—</div>
+              </div>
             </div>
-        </section>
 
-        <!-- Karaoke Display Section -->
-        <section class="ll-display-section">
-            <h2>Karaoke Display</h2>
-            <div id="karaokeDisplay" class="ll-karaoke-display" aria-live="polite" aria-atomic="true">
-                <p class="ll-placeholder-text">Load lyrics to begin practicing</p>
+            <div class="chart-wrap">
+              <div class="chart-title">Portfolio balance over time — with investment growth</div>
+              <canvas id="chart" height="300"></canvas>
+              <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Portfolio balance</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>Cumulative need</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#f39c12; opacity:0.5"></div>Crossover point</div>
+              </div>
             </div>
-            
-            <!-- Progress Indicator -->
-            <div class="ll-progress-container">
-                <div class="ll-progress-bar">
-                    <div id="progressBar" class="ll-progress-fill"></div>
-                </div>
-                <p class="ll-progress-text">
-                    <span id="currentLine">0</span> / <span id="totalLines">0</span> lines
-                </p>
-            </div>
-        </section>
+
+            <div class="status-bar" id="status-bar">—</div>
+
+        </div><!-- /.lm-container -->
     </main>
     {% include footer.html %}
+
+    <!-- Inline controller for the playground page. -->
+    <script type="module">
+    // ── compute.js ──────────────────────────────────────────────────────────
+
+    function formatCurrency(value) {
+      return '$' + Math.round(value).toLocaleString();
+    }
+
+    function formatDailyRate(value) {
+      return '$' + value.toFixed(2);
+    }
+
+    function computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation }) {
+      const yearsLeft      = Math.max(life - age, 0);
+      const daysLeft       = Math.round(yearsLeft * 365.25);
+      const monthlyReturn  = annualReturn / 12;
+      const monthlyNet     = monthlyExpenses - monthlyIncome; // positive = shortfall
+
+      const dailyCost      = monthlyExpenses / 30.44;
+      const dailyGeneration = (savings * annualReturn) / 365;
+      const savingsPerDay  = daysLeft > 0 ? savings / daysLeft : 0;
+
+      const monthlyInflation = Math.pow(1 + annualInflation, 1/12) - 1;
+      let currentExpenses = monthlyExpenses;
+
+      let balance    = savings;
+      let depleted   = false;
+      let depletedAge = null;
+      const balances  = [balance];
+      const needs     = [0];
+      let cumNeed     = 0;
+      let finalMonthlyExpenses = currentExpenses;
+
+      for (let m = 1; m <= yearsLeft * 12; m++) {
+        balance   = balance * (1 + monthlyReturn) - (currentExpenses - monthlyIncome);
+        cumNeed  += currentExpenses;
+        finalMonthlyExpenses = currentExpenses;
+        balances.push(Math.max(balance, 0));
+        needs.push(cumNeed);
+        if (balance <= 0 && !depleted) {
+          depleted    = true;
+          depletedAge = age + m / 12;
+        }
+        currentExpenses *= (1 + monthlyInflation);
+      }
+
+      return {
+        yearsLeft, daysLeft, dailyCost, dailyGeneration, savingsPerDay,
+        gap: { amount: Math.abs(monthlyNet), isSurplus: monthlyNet <= 0 },
+        depleted, depletedAge,
+        finalBalance: balances[balances.length - 1],
+        finalMonthlyExpenses,
+        balances, needs,
+      };
+    }
+
+    function generateStatusMessage({ depleted, depletedAge, finalBalance, dailyGeneration,
+                                     dailyCost, gap, monthlyIncome, monthlyReturn, annualInflation,
+                                     finalMonthlyExpenses, monthlyExpenses, life, savings }) {
+      let html = '';
+      if (!depleted) {
+        html  = `Your portfolio <span class="good">outlasts you</span> — ending at <span>${formatCurrency(finalBalance)}</span> at age ${life}. `;
+        html += `Your investments generate <span class="good">${formatDailyRate(dailyGeneration)}/day</span> vs your ${formatDailyRate(dailyCost)}/day need. `;
+        if (monthlyIncome > 0) html += `The ${formatCurrency(monthlyIncome)}/mo income is doing heavy lifting. `;
+        html += `You have more than enough — the question is what to do with the surplus.`;
+        if (annualInflation > 0) {
+          html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
+        }
+      } else {
+        const yearsShort    = life - Math.round(depletedAge);
+        const neededSavings = monthlyReturn > 0 ? gap.amount / monthlyReturn : 0;
+        html  = `At this rate, your portfolio runs out at <span class="bad">age ${Math.round(depletedAge)}</span> — <span class="bad">${yearsShort} years short</span> of age ${life}. `;
+        html += `To never touch principal, you'd need <span class="warn">${formatCurrency(neededSavings)}</span> invested. `;
+        html += `Or generate an extra <span class="warn">${formatCurrency(gap.amount)}/mo</span> in income. `;
+        html += `Your ${formatCurrency(savings)} portfolio generates <span class="warn">${formatDailyRate(dailyGeneration)}/day</span> — your need is ${formatDailyRate(dailyCost)}/day.`;
+        if (annualInflation > 0) {
+          html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
+        }
+      }
+      return { html };
+    }
+
+    // ── chart.js ─────────────────────────────────────────────────────────────
+
+    function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, depleted }) {
+      const dpr = window.devicePixelRatio || 1;
+      const W   = canvas.parentElement.clientWidth - 48;
+      const H   = 280;
+      canvas.width        = W * dpr;
+      canvas.height       = H * dpr;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const pad    = { top: 20, right: 20, bottom: 40, left: 70 };
+      const w      = W - pad.left - pad.right;
+      const h      = H - pad.top  - pad.bottom;
+      const points = balances.length;
+      const maxVal = Math.max(...balances, ...needs, savings * 2);
+      const xDenominator = Math.max(points - 1, 1);
+      const yDivisor = maxVal > 0 ? maxVal : 1;
+
+      ctx.clearRect(0, 0, W, H);
+
+      const xScale = i => pad.left + (i / xDenominator) * w;
+      const yScale = v => pad.top + h - (Math.max(v, 0) / yDivisor) * h;
+
+      // Grid lines
+      ctx.strokeStyle = '#1a1a1a';
+      ctx.lineWidth   = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (i / 4) * h;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + w, y); ctx.stroke();
+        ctx.fillStyle   = '#444';
+        ctx.font        = '10px DM Mono, monospace';
+        ctx.textAlign   = 'right';
+        ctx.fillText('$' + Math.round(maxVal * (1 - i / 4) / 1000) + 'k', pad.left - 8, y + 4);
+      }
+
+      // X-axis age labels
+      ctx.fillStyle = '#444'; ctx.font = '10px DM Mono, monospace'; ctx.textAlign = 'center';
+      if (yearsLeft === 0 || points <= 1) {
+        ctx.fillText('Age ' + age, pad.left, H - 8);
+      } else {
+        const labelCount = Math.min(yearsLeft, 8);
+        for (let i = 0; i <= labelCount; i++) {
+          const yearIdx  = Math.round((i / labelCount) * (points - 1));
+          const labelAge = age + Math.round((yearIdx / (points - 1)) * yearsLeft);
+          ctx.fillText('Age ' + labelAge, xScale(yearIdx), H - 8);
+        }
+      }
+
+      // Cumulative-need line (dashed red)
+      ctx.beginPath(); ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
+      for (let i = 0; i < points; i++) { i === 0 ? ctx.moveTo(xScale(i), yScale(needs[i])) : ctx.lineTo(xScale(i), yScale(needs[i])); }
+      ctx.stroke(); ctx.setLineDash([]);
+
+      // Portfolio balance line (solid green)
+      ctx.beginPath(); ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 2.5;
+      for (let i = 0; i < points; i++) { i === 0 ? ctx.moveTo(xScale(i), yScale(balances[i])) : ctx.lineTo(xScale(i), yScale(balances[i])); }
+      ctx.stroke();
+
+      // Fill under portfolio
+      ctx.beginPath();
+      for (let i = 0; i < points; i++) { i === 0 ? ctx.moveTo(xScale(i), yScale(balances[i])) : ctx.lineTo(xScale(i), yScale(balances[i])); }
+      ctx.lineTo(xScale(points - 1), pad.top + h); ctx.lineTo(xScale(0), pad.top + h); ctx.closePath();
+      const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + h);
+      grad.addColorStop(0, 'rgba(39,174,96,0.15)'); grad.addColorStop(1, 'rgba(39,174,96,0)');
+      ctx.fillStyle = grad; ctx.fill();
+
+      // Depletion marker
+      if (depleted) {
+        for (let i = 1; i < points; i++) {
+          if (balances[i] <= 0) {
+            const x = xScale(i);
+            ctx.beginPath(); ctx.strokeStyle = 'rgba(243,156,18,0.6)'; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+            ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + h); ctx.stroke(); ctx.setLineDash([]);
+            ctx.fillStyle = '#f39c12'; ctx.font = '10px DM Mono, monospace'; ctx.textAlign = 'left';
+            ctx.fillText('depleted', x + 4, pad.top + 14);
+            break;
+          }
+        }
+      }
+    }
+
+    // ── main.js ──────────────────────────────────────────────────────────────
+
+    function initializeLifeMoney() {
+      // Slider references
+      const sliderAge      = document.getElementById('age');
+      const sliderLife     = document.getElementById('life');
+      const sliderSavings  = document.getElementById('savings');
+      const sliderExpenses = document.getElementById('expenses');
+      const sliderIncome   = document.getElementById('income');
+      const sliderReturn   = document.getElementById('return');
+      const sliderInflation = document.getElementById('inflation');
+
+      // Value-display references
+      const valAge      = document.getElementById('age-val');
+      const valLife     = document.getElementById('life-val');
+      const valSavings  = document.getElementById('savings-val');
+      const valExpenses = document.getElementById('expenses-val');
+      const valIncome   = document.getElementById('income-val');
+      const valReturn   = document.getElementById('return-val');
+      const valInflation = document.getElementById('inflation-val');
+
+      // Metric references
+      const mDays      = document.getElementById('m-days');
+      const mYears     = document.getElementById('m-years');
+      const mCost      = document.getElementById('m-cost');
+      const mCostSub   = document.getElementById('m-cost-sub');
+      const mSavingsDay = document.getElementById('m-savings-day');
+      const mGen       = document.getElementById('m-gen');
+      const mGap       = document.getElementById('m-gap');
+      const mGapSub    = document.getElementById('m-gap-sub');
+      const mUntil     = document.getElementById('m-until');
+      const mUntilSub  = document.getElementById('m-until-sub');
+
+      const canvas    = document.getElementById('chart');
+      const statusBar = document.getElementById('status-bar');
+
+      function update() {
+        const age            = +sliderAge.value;
+        const life           = +sliderLife.value;
+        const savings        = +sliderSavings.value;
+        const monthlyExpenses = +sliderExpenses.value;
+        const monthlyIncome  = +sliderIncome.value;
+        const annualReturn   = +sliderReturn.value / 100;
+        const annualInflation = +sliderInflation.value / 100;
+
+        // Update value displays
+        valAge.textContent      = age;
+        valLife.textContent     = life;
+        valSavings.textContent  = formatCurrency(savings);
+        valExpenses.textContent = formatCurrency(monthlyExpenses);
+        valIncome.textContent   = formatCurrency(monthlyIncome);
+        valReturn.textContent   = parseFloat(sliderReturn.value).toFixed(1) + '%';
+        valInflation.textContent = parseFloat(sliderInflation.value).toFixed(1) + '%';
+
+        const metrics = computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation });
+
+        // Metrics panel
+        mDays.textContent      = metrics.daysLeft.toLocaleString();
+        mYears.textContent     = metrics.yearsLeft + ' years';
+        mCost.textContent      = formatDailyRate(metrics.dailyCost);
+        mSavingsDay.textContent = formatDailyRate(metrics.savingsPerDay);
+        mGen.textContent       = formatDailyRate(metrics.dailyGeneration);
+
+        // Inflation-aware cost sub-label
+        if (annualInflation > 0) {
+          const finalDaily = metrics.finalMonthlyExpenses / 30.44;
+          mCostSub.textContent = 'rising to ' + formatDailyRate(finalDaily) + '/day by age ' + life;
+        } else {
+          mCostSub.textContent = 'to cover expenses';
+        }
+
+        // Monthly gap
+        if (metrics.gap.isSurplus) {
+          mGap.textContent  = formatCurrency(metrics.gap.amount) + '/mo surplus';
+          mGap.className    = 'metric-value have';
+          mGapSub.textContent = annualInflation > 0 ? 'initially, before inflation' : 'income covers expenses';
+        } else {
+          mGap.textContent  = formatCurrency(metrics.gap.amount) + '/mo shortfall';
+          mGap.className    = 'metric-value need';
+          mGapSub.textContent = annualInflation > 0 ? 'initially, before inflation' : 'drawing from portfolio';
+        }
+
+        // Portfolio longevity
+        if (metrics.depleted) {
+          mUntil.textContent  = 'Age ' + Math.round(metrics.depletedAge);
+          mUntil.className    = 'metric-value need';
+          mUntilSub.textContent = 'portfolio depleted';
+        } else {
+          mUntil.textContent  = formatCurrency(metrics.finalBalance);
+          mUntil.className    = 'metric-value have';
+          mUntilSub.textContent = 'remaining at age ' + life;
+        }
+
+        // Status bar
+        const { html } = generateStatusMessage({
+          ...metrics,
+          monthlyExpenses,
+          monthlyIncome,
+          monthlyReturn: annualReturn / 12,
+          annualInflation,
+          life,
+          savings,
+        });
+        statusBar.innerHTML = html;
+
+        // Chart
+        drawChart(canvas, {
+          age, life,
+          yearsLeft: metrics.yearsLeft,
+          balances:  metrics.balances,
+          needs:     metrics.needs,
+          savings,
+          depleted:  metrics.depleted,
+        });
+      }
+
+      ['age', 'life', 'savings', 'expenses', 'income', 'return', 'inflation'].forEach(id => {
+        document.getElementById(id).addEventListener('input', update);
+      });
+      window.addEventListener('resize', update);
+      update();
+    }
+
+    window.addEventListener('load', initializeLifeMoney);
+    </script>
+
     <script type="module" src="/assets/js/base/hamburger-menu.js"></script>
 </body>
 
