@@ -2,7 +2,7 @@
 layout: post
 title: "Session Orchestration: From Brain Dump to Shipped PRs"
 date: 2026-04-20
-categories: [moments, ai, workflow]
+categories: [moments, tech]
 ---
 
 ## Session Orchestration: From Brain Dump to Shipped PRs
