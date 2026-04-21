@@ -68,6 +68,54 @@
               </div>
             </div>
 
+            <details class="advanced-section">
+              <summary>Social Security</summary>
+              <div class="controls">
+                <div class="control-group">
+                  <label for="ss-amount">Monthly SS benefit</label>
+                  <div class="value-display" id="ss-amount-val">$0</div>
+                  <input type="range" id="ss-amount" min="0" max="5000" value="0" step="100">
+                </div>
+                <div class="control-group">
+                  <label for="ss-age">Starts at age</label>
+                  <div class="value-display" id="ss-age-val">67</div>
+                  <input type="range" id="ss-age" min="62" max="70" value="67" step="1">
+                </div>
+              </div>
+            </details>
+
+            <details class="advanced-section">
+              <summary>Healthcare Gap (pre-Medicare)</summary>
+              <div class="controls">
+                <div class="control-group">
+                  <label for="hc-cost">Monthly healthcare cost</label>
+                  <div class="value-display" id="hc-cost-val">$0</div>
+                  <input type="range" id="hc-cost" min="0" max="3000" value="0" step="50">
+                </div>
+                <div class="control-group">
+                  <label for="hc-until">Covered until age (Medicare)</label>
+                  <div class="value-display" id="hc-until-val">65</div>
+                  <input type="range" id="hc-until" min="60" max="70" value="65" step="1">
+                </div>
+              </div>
+            </details>
+
+            <details class="advanced-section">
+              <summary>One-Time Event (severance / windfall)</summary>
+              <div class="controls">
+                <div class="control-group">
+                  <label for="lump-amount">Amount (+windfall / −expense)</label>
+                  <div class="value-display" id="lump-amount-val">$0</div>
+                  <input type="range" id="lump-amount" min="-500000" max="500000" value="0" step="5000">
+                </div>
+                <div class="control-group">
+                  <label for="lump-age">Occurs at age</label>
+                  <div class="value-display" id="lump-age-val">35</div>
+                  <input type="range" id="lump-age" min="30" max="80" value="35" step="1">
+                </div>
+              </div>
+            </details>
+
             <div class="metrics">
               <div class="metric">
                 <div class="metric-label">Days remaining</div>
@@ -119,171 +167,12 @@
 
     <!-- Inline controller for the playground page. -->
     <script type="module">
-    // ── compute.js ──────────────────────────────────────────────────────────
+    import { computeRunway } from '/assets/js/life-money/compute.js';
+    import { drawChart } from '/assets/js/life-money/chart.js';
+    import { formatCurrency, formatDailyRate } from '/assets/js/life-money/format.js';
+    import { generateStatusMessage } from '/assets/js/life-money/status.js';
 
-    function formatCurrency(value) {
-      return '$' + Math.round(value).toLocaleString();
-    }
-
-    function formatDailyRate(value) {
-      return '$' + value.toFixed(2);
-    }
-
-    function computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation }) {
-      const yearsLeft      = Math.max(life - age, 0);
-      const daysLeft       = Math.round(yearsLeft * 365.25);
-      const monthlyReturn  = annualReturn / 12;
-      const monthlyNet     = monthlyExpenses - monthlyIncome; // positive = shortfall
-
-      const dailyCost      = monthlyExpenses / 30.44;
-      const dailyGeneration = (savings * annualReturn) / 365;
-      const savingsPerDay  = daysLeft > 0 ? savings / daysLeft : 0;
-
-      const monthlyInflation = Math.pow(1 + annualInflation, 1/12) - 1;
-      let currentExpenses = monthlyExpenses;
-
-      let balance    = savings;
-      let depleted   = false;
-      let depletedAge = null;
-      const balances  = [balance];
-      const needs     = [0];
-      let cumNeed     = 0;
-      let finalMonthlyExpenses = currentExpenses;
-
-      for (let m = 1; m <= yearsLeft * 12; m++) {
-        balance   = balance * (1 + monthlyReturn) - (currentExpenses - monthlyIncome);
-        cumNeed  += currentExpenses;
-        finalMonthlyExpenses = currentExpenses;
-        balances.push(Math.max(balance, 0));
-        needs.push(cumNeed);
-        if (balance <= 0 && !depleted) {
-          depleted    = true;
-          depletedAge = age + m / 12;
-        }
-        currentExpenses *= (1 + monthlyInflation);
-      }
-
-      return {
-        yearsLeft, daysLeft, dailyCost, dailyGeneration, savingsPerDay,
-        gap: { amount: Math.abs(monthlyNet), isSurplus: monthlyNet <= 0 },
-        depleted, depletedAge,
-        finalBalance: balances[balances.length - 1],
-        finalMonthlyExpenses,
-        balances, needs,
-      };
-    }
-
-    function generateStatusMessage({ depleted, depletedAge, finalBalance, dailyGeneration,
-                                     dailyCost, gap, monthlyIncome, monthlyReturn, annualInflation,
-                                     finalMonthlyExpenses, monthlyExpenses, life, savings }) {
-      let html = '';
-      if (!depleted) {
-        html  = `Your portfolio <span class="good">outlasts you</span> — ending at <span>${formatCurrency(finalBalance)}</span> at age ${life}. `;
-        html += `Your investments generate <span class="good">${formatDailyRate(dailyGeneration)}/day</span> vs your ${formatDailyRate(dailyCost)}/day need. `;
-        if (monthlyIncome > 0) html += `The ${formatCurrency(monthlyIncome)}/mo income is doing heavy lifting. `;
-        html += `You have more than enough — the question is what to do with the surplus.`;
-        if (annualInflation > 0) {
-          html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
-        }
-      } else {
-        const yearsShort    = life - Math.round(depletedAge);
-        const neededSavings = monthlyReturn > 0 ? gap.amount / monthlyReturn : 0;
-        html  = `At this rate, your portfolio runs out at <span class="bad">age ${Math.round(depletedAge)}</span> — <span class="bad">${yearsShort} years short</span> of age ${life}. `;
-        html += `To never touch principal, you'd need <span class="warn">${formatCurrency(neededSavings)}</span> invested. `;
-        html += `Or generate an extra <span class="warn">${formatCurrency(gap.amount)}/mo</span> in income. `;
-        html += `Your ${formatCurrency(savings)} portfolio generates <span class="warn">${formatDailyRate(dailyGeneration)}/day</span> — your need is ${formatDailyRate(dailyCost)}/day.`;
-        if (annualInflation > 0) {
-          html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
-        }
-      }
-      return { html };
-    }
-
-    // ── chart.js ─────────────────────────────────────────────────────────────
-
-    function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, depleted }) {
-      const dpr = window.devicePixelRatio || 1;
-      const W   = canvas.parentElement.clientWidth - 48;
-      const H   = 280;
-      canvas.width        = W * dpr;
-      canvas.height       = H * dpr;
-      canvas.style.width  = W + 'px';
-      canvas.style.height = H + 'px';
-      const ctx = canvas.getContext('2d');
-      ctx.scale(dpr, dpr);
-
-      const pad    = { top: 20, right: 20, bottom: 40, left: 70 };
-      const w      = W - pad.left - pad.right;
-      const h      = H - pad.top  - pad.bottom;
-      const points = balances.length;
-      const maxVal = Math.max(...balances, ...needs, savings * 2);
-      const xDenominator = Math.max(points - 1, 1);
-      const yDivisor = maxVal > 0 ? maxVal : 1;
-
-      ctx.clearRect(0, 0, W, H);
-
-      const xScale = i => pad.left + (i / xDenominator) * w;
-      const yScale = v => pad.top + h - (Math.max(v, 0) / yDivisor) * h;
-
-      // Grid lines
-      ctx.strokeStyle = '#1a1a1a';
-      ctx.lineWidth   = 1;
-      for (let i = 0; i <= 4; i++) {
-        const y = pad.top + (i / 4) * h;
-        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + w, y); ctx.stroke();
-        ctx.fillStyle   = '#444';
-        ctx.font        = '10px DM Mono, monospace';
-        ctx.textAlign   = 'right';
-        ctx.fillText('$' + Math.round(maxVal * (1 - i / 4) / 1000) + 'k', pad.left - 8, y + 4);
-      }
-
-      // X-axis age labels
-      ctx.fillStyle = '#444'; ctx.font = '10px DM Mono, monospace'; ctx.textAlign = 'center';
-      if (yearsLeft === 0 || points <= 1) {
-        ctx.fillText('Age ' + age, pad.left, H - 8);
-      } else {
-        const labelCount = Math.min(yearsLeft, 8);
-        for (let i = 0; i <= labelCount; i++) {
-          const yearIdx  = Math.round((i / labelCount) * (points - 1));
-          const labelAge = age + Math.round((yearIdx / (points - 1)) * yearsLeft);
-          ctx.fillText('Age ' + labelAge, xScale(yearIdx), H - 8);
-        }
-      }
-
-      // Cumulative-need line (dashed red)
-      ctx.beginPath(); ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
-      for (let i = 0; i < points; i++) { i === 0 ? ctx.moveTo(xScale(i), yScale(needs[i])) : ctx.lineTo(xScale(i), yScale(needs[i])); }
-      ctx.stroke(); ctx.setLineDash([]);
-
-      // Portfolio balance line (solid green)
-      ctx.beginPath(); ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 2.5;
-      for (let i = 0; i < points; i++) { i === 0 ? ctx.moveTo(xScale(i), yScale(balances[i])) : ctx.lineTo(xScale(i), yScale(balances[i])); }
-      ctx.stroke();
-
-      // Fill under portfolio
-      ctx.beginPath();
-      for (let i = 0; i < points; i++) { i === 0 ? ctx.moveTo(xScale(i), yScale(balances[i])) : ctx.lineTo(xScale(i), yScale(balances[i])); }
-      ctx.lineTo(xScale(points - 1), pad.top + h); ctx.lineTo(xScale(0), pad.top + h); ctx.closePath();
-      const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + h);
-      grad.addColorStop(0, 'rgba(39,174,96,0.15)'); grad.addColorStop(1, 'rgba(39,174,96,0)');
-      ctx.fillStyle = grad; ctx.fill();
-
-      // Depletion marker
-      if (depleted) {
-        for (let i = 1; i < points; i++) {
-          if (balances[i] <= 0) {
-            const x = xScale(i);
-            ctx.beginPath(); ctx.strokeStyle = 'rgba(243,156,18,0.6)'; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
-            ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + h); ctx.stroke(); ctx.setLineDash([]);
-            ctx.fillStyle = '#f39c12'; ctx.font = '10px DM Mono, monospace'; ctx.textAlign = 'left';
-            ctx.fillText('depleted', x + 4, pad.top + 14);
-            break;
-          }
-        }
-      }
-    }
-
-    // ── main.js ──────────────────────────────────────────────────────────────
+    // ── controller ──────────────────────────────────────────────────────────
 
     function initializeLifeMoney() {
       // Slider references
@@ -295,6 +184,14 @@
       const sliderReturn   = document.getElementById('return');
       const sliderInflation = document.getElementById('inflation');
 
+      // Advanced sliders
+      const sliderSSAmount  = document.getElementById('ss-amount');
+      const sliderSSAge     = document.getElementById('ss-age');
+      const sliderHCCost    = document.getElementById('hc-cost');
+      const sliderHCUntil   = document.getElementById('hc-until');
+      const sliderLumpAmt   = document.getElementById('lump-amount');
+      const sliderLumpAge   = document.getElementById('lump-age');
+
       // Value-display references
       const valAge      = document.getElementById('age-val');
       const valLife     = document.getElementById('life-val');
@@ -303,6 +200,14 @@
       const valIncome   = document.getElementById('income-val');
       const valReturn   = document.getElementById('return-val');
       const valInflation = document.getElementById('inflation-val');
+
+      // Advanced value displays
+      const valSSAmount  = document.getElementById('ss-amount-val');
+      const valSSAge     = document.getElementById('ss-age-val');
+      const valHCCost    = document.getElementById('hc-cost-val');
+      const valHCUntil   = document.getElementById('hc-until-val');
+      const valLumpAmt   = document.getElementById('lump-amount-val');
+      const valLumpAge   = document.getElementById('lump-age-val');
 
       // Metric references
       const mDays      = document.getElementById('m-days');
@@ -328,6 +233,18 @@
         const annualReturn   = +sliderReturn.value / 100;
         const annualInflation = +sliderInflation.value / 100;
 
+        // Advanced scenario values
+        const ssAmount  = +sliderSSAmount.value;
+        const ssAge     = +sliderSSAge.value;
+        const hcCost    = +sliderHCCost.value;
+        const hcUntil   = +sliderHCUntil.value;
+        const lumpAmt   = +sliderLumpAmt.value;
+        const lumpAge   = +sliderLumpAge.value;
+
+        const socialSecurity = ssAmount > 0 ? { monthlyAmount: ssAmount, startsAtAge: ssAge } : null;
+        const healthcareGap  = hcCost > 0 ? { monthlyCost: hcCost, coveredUntilAge: hcUntil } : null;
+        const lumpEvent      = lumpAmt !== 0 ? { amount: lumpAmt, atAge: lumpAge } : null;
+
         // Update value displays
         valAge.textContent      = age;
         valLife.textContent     = life;
@@ -337,14 +254,24 @@
         valReturn.textContent   = parseFloat(sliderReturn.value).toFixed(1) + '%';
         valInflation.textContent = parseFloat(sliderInflation.value).toFixed(1) + '%';
 
-        const metrics = computeFinancialRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation });
+        // Advanced value displays
+        valSSAmount.textContent  = formatCurrency(ssAmount);
+        valSSAge.textContent     = ssAge;
+        valHCCost.textContent    = formatCurrency(hcCost);
+        valHCUntil.textContent   = hcUntil;
+        const lumpAmtSign = lumpAmt > 0 ? '+' : (lumpAmt < 0 ? '−' : '');
+        valLumpAmt.textContent   = lumpAmtSign + formatCurrency(Math.abs(lumpAmt));
+        valLumpAge.textContent   = lumpAge;
+
+        const metrics = computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation,
+                                        socialSecurity, healthcareGap, lumpEvent });
 
         // Metrics panel
         mDays.textContent      = metrics.daysLeft.toLocaleString();
         mYears.textContent     = metrics.yearsLeft + ' years';
         mCost.textContent      = formatDailyRate(metrics.dailyCost);
         mSavingsDay.textContent = formatDailyRate(metrics.savingsPerDay);
-        mGen.textContent       = formatDailyRate(metrics.dailyGeneration);
+        mGen.textContent       = formatDailyRate(metrics.dailyGen);
 
         // Inflation-aware cost sub-label
         if (annualInflation > 0) {
@@ -354,13 +281,25 @@
           mCostSub.textContent = 'to cover expenses';
         }
 
-        // Monthly gap
-        if (metrics.gap.isSurplus) {
-          mGap.textContent  = formatCurrency(metrics.gap.amount) + '/mo surplus';
+        // Monthly gap (using the same current-age effective cashflow rules as the runway scenario)
+        const effectiveMonthlyIncome = monthlyIncome + (
+          socialSecurity.amount > 0 && age >= socialSecurity.startsAtAge
+            ? socialSecurity.amount
+            : 0
+        );
+        const effectiveMonthlyExpenses = monthlyExpenses + (
+          healthcareGap.monthlyCost > 0 && age < healthcareGap.coveredUntilAge
+            ? healthcareGap.monthlyCost
+            : 0
+        );
+        const effectiveMonthlyNet = effectiveMonthlyExpenses - effectiveMonthlyIncome;
+        const gap = { amount: Math.abs(effectiveMonthlyNet), isSurplus: effectiveMonthlyNet <= 0 };
+        if (gap.isSurplus) {
+          mGap.textContent  = formatCurrency(gap.amount) + '/mo surplus';
           mGap.className    = 'metric-value have';
           mGapSub.textContent = annualInflation > 0 ? 'initially, before inflation' : 'income covers expenses';
         } else {
-          mGap.textContent  = formatCurrency(metrics.gap.amount) + '/mo shortfall';
+          mGap.textContent  = formatCurrency(gap.amount) + '/mo shortfall';
           mGap.className    = 'metric-value need';
           mGapSub.textContent = annualInflation > 0 ? 'initially, before inflation' : 'drawing from portfolio';
         }
@@ -379,12 +318,16 @@
         // Status bar
         const { html } = generateStatusMessage({
           ...metrics,
+          gap,
           monthlyExpenses,
           monthlyIncome,
           monthlyReturn: annualReturn / 12,
           annualInflation,
           life,
           savings,
+          socialSecurity,
+          healthcareGap,
+          lumpEvent,
         });
         statusBar.innerHTML = html;
 
@@ -399,7 +342,8 @@
         });
       }
 
-      ['age', 'life', 'savings', 'expenses', 'income', 'return', 'inflation'].forEach(id => {
+      ['age', 'life', 'savings', 'expenses', 'income', 'return', 'inflation',
+       'ss-amount', 'ss-age', 'hc-cost', 'hc-until', 'lump-amount', 'lump-age'].forEach(id => {
         document.getElementById(id).addEventListener('input', update);
       });
       window.addEventListener('resize', update);
