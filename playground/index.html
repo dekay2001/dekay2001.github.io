@@ -259,7 +259,8 @@
         valSSAge.textContent     = ssAge;
         valHCCost.textContent    = formatCurrency(hcCost);
         valHCUntil.textContent   = hcUntil;
-        valLumpAmt.textContent   = (lumpAmt >= 0 ? '+' : '−') + formatCurrency(Math.abs(lumpAmt));
+        const lumpAmtSign = lumpAmt > 0 ? '+' : (lumpAmt < 0 ? '−' : '');
+        valLumpAmt.textContent   = lumpAmtSign + formatCurrency(Math.abs(lumpAmt));
         valLumpAge.textContent   = lumpAge;
 
         const metrics = computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation,
@@ -280,8 +281,19 @@
           mCostSub.textContent = 'to cover expenses';
         }
 
-        // Monthly gap (derived from monthlyNet)
-        const gap = { amount: Math.abs(metrics.monthlyNet), isSurplus: metrics.monthlyNet <= 0 };
+        // Monthly gap (using the same current-age effective cashflow rules as the runway scenario)
+        const effectiveMonthlyIncome = monthlyIncome + (
+          socialSecurity.amount > 0 && age >= socialSecurity.startsAtAge
+            ? socialSecurity.amount
+            : 0
+        );
+        const effectiveMonthlyExpenses = monthlyExpenses + (
+          healthcareGap.monthlyCost > 0 && age < healthcareGap.coveredUntilAge
+            ? healthcareGap.monthlyCost
+            : 0
+        );
+        const effectiveMonthlyNet = effectiveMonthlyExpenses - effectiveMonthlyIncome;
+        const gap = { amount: Math.abs(effectiveMonthlyNet), isSurplus: effectiveMonthlyNet <= 0 };
         if (gap.isSurplus) {
           mGap.textContent  = formatCurrency(gap.amount) + '/mo surplus';
           mGap.className    = 'metric-value have';

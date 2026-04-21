@@ -19,10 +19,14 @@ function generateStatusMessage({ depleted, depletedAge, finalBalance, dailyGen,
       html += ` With ${(annualInflation * 100).toFixed(1)}% annual inflation, expenses grow from ${formatCurrency(monthlyExpenses)}/mo to ${formatCurrency(finalMonthlyExpenses)}/mo.`;
     }
   } else {
-    const yearsShort    = life - Math.round(depletedAge);
-    const neededSavings = monthlyReturn > 0 ? gap.amount / monthlyReturn : 0;
+    const yearsShort = life - Math.round(depletedAge);
     html  = `At this rate, your portfolio runs out at <span class="bad">age ${Math.round(depletedAge)}</span> — <span class="bad">${yearsShort} years short</span> of age ${life}. `;
-    html += `To never touch principal, you'd need <span class="warn">${formatCurrency(neededSavings)}</span> invested. `;
+    if (monthlyReturn > 0) {
+      const neededSavings = gap.amount / monthlyReturn;
+      html += `To never touch principal, you'd need <span class="warn">${formatCurrency(neededSavings)}</span> invested. `;
+    } else {
+      html += `With your current monthly return, a required principal target can't be estimated from investment income alone. `;
+    }
     html += `Or generate an extra <span class="warn">${formatCurrency(gap.amount)}/mo</span> in income. `;
     html += `Your ${formatCurrency(savings)} portfolio generates <span class="warn">${formatDailyRate(dailyGen)}/day</span> — your need is ${formatDailyRate(dailyCost)}/day.`;
     if (annualInflation > 0) {
