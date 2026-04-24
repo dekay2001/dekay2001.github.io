@@ -283,12 +283,12 @@
 
         // Monthly gap (using the same current-age effective cashflow rules as the runway scenario)
         const effectiveMonthlyIncome = monthlyIncome + (
-          socialSecurity.amount > 0 && age >= socialSecurity.startsAtAge
-            ? socialSecurity.amount
+          socialSecurity && socialSecurity.monthlyAmount > 0 && age >= socialSecurity.startsAtAge
+            ? socialSecurity.monthlyAmount
             : 0
         );
         const effectiveMonthlyExpenses = monthlyExpenses + (
-          healthcareGap.monthlyCost > 0 && age < healthcareGap.coveredUntilAge
+          healthcareGap && healthcareGap.monthlyCost > 0 && age < healthcareGap.coveredUntilAge
             ? healthcareGap.monthlyCost
             : 0
         );
