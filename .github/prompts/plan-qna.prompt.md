@@ -1,5 +1,5 @@
 ---
-agent: plan
+agent: dekay-plan
 description: Create a detailed implementation plan after clarifying requirements.
 ---
 
