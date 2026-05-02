@@ -9,9 +9,9 @@ Use these files as the primary source of truth for this repository:
 ## Agent Workflow
 
 - Planning template: [plan-template.md](../plan-template.md)
-- Planning agent: [plan.agent.md](agents/plan.agent.md)
+- Planning agent: [dekay-plan.agent.md](agents/dekay-plan.agent.md)
 - Planning prompt: [plan-qna.prompt.md](prompts/plan-qna.prompt.md)
-- Implementation agent: [implement.agent.md](agents/implement.agent.md)
+- Implementation agent: [dekay-implement.agent.md](agents/dekay-implement.agent.md)
 
 Use planning-first workflow for non-trivial work:
 1. Create or refine a plan with the planning agent.
