@@ -3,7 +3,7 @@ description: "[dekay2001.github.io] Architect/planner for detailed implementatio
 tools: ['search', 'usages', 'problems', 'fetch', 'todos', 'runSubagent']
 handoffs:
   - label: Start Implementation
-    agent: implement
+    agent: dekay-implement
     prompt: Implement the approved plan in incremental steps and validate each step.
     send: true
 ---
