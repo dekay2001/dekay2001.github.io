@@ -47,3 +47,61 @@
 - **Priority:** P3
 - **Effort:** M
 - **Status:** Done
+
+### Proposed — Code Quality (May 2026 Audit)
+
+- **Title:** Security & Dead Code Cleanup
+- **Why:** IE conditional comments load html5shiv over HTTP from defunct Google Code URL (mixed content, dead code). External `target="_blank"` links lack `rel="noopener"` (reverse tabnabbing). Orphaned `playground.js` never referenced. Empty `books/` directory.
+- **Scope (in):** Remove IE conditional comments from all layouts and standalone pages. Add `rel="noopener noreferrer"` to all `target="_blank"` links (post.html, resume.html, mainpic.html). Delete `assets/js/playground.js`. Delete empty `books/` directory.
+- **Scope (out):** Template restructuring. Content changes.
+- **Priority:** P1
+- **Effort:** S
+- **Status:** Proposed
+
+- **Title:** Template Consolidation (Head Extraction + Layout Merge)
+- **Why:** Entire `<head>` section is copy-pasted across 6+ files. `post.html` and `resume.html` layouts are near-identical. Standalone pages (blog, yoga, playground) don't use layouts. Duplicate lyrical-learner page exists at two URLs.
+- **Scope (in):** Extract `_includes/head.html` partial with parameterized CSS. Merge post/resume layouts using front matter variable for responsive CSS. Convert standalone pages to use layouts. Delete duplicate `/playground/lyrical-learner/index.html`. Fix `<div>` inside `<h2>` in blog pagination.
+- **Scope (out):** Visual/styling changes. Content changes.
+- **Priority:** P1
+- **Effort:** M
+- **Status:** Proposed
+
+- **Title:** CSS DRY Refactoring
+- **Why:** Identical tablet/desktop responsive rules for nav, hamburger, header/footer width repeated in responsive-default.css, responsive-post.css, and responsive-resume.css.
+- **Scope (in):** Move shared nav/header responsive rules into `style.css` media queries. Remove duplicated rules from responsive-post and responsive-resume. Consolidate where possible.
+- **Scope (out):** New visual features. Color/spacing changes.
+- **Priority:** P2
+- **Effort:** S
+- **Status:** Proposed
+
+- **Title:** SEO & Accessibility Improvements
+- **Why:** Meta description hardcoded as "Blog" on all pages. No Open Graph tags. No canonical URLs. Footer uses invalid `<i><span><p>` nesting. Post dates only visible on hover (inaccessible). Header hardcodes "Think Clearly" instead of `{{ site.title }}`. Nav label "Learn-Ashtanga" inconsistent with URL `/yoga/`.
+- **Scope (in):** Implement dynamic `<title>` with fallback to site.title. Add page-level meta descriptions via front matter. Add Open Graph meta tags (`_includes/seo.html`). Fix footer semantic HTML. Make post dates visible by default. Use `{{ site.title }}` in navheader. Rename nav label to "Yoga".
+- **Scope (out):** Content rewrites. Layout restructuring.
+- **Priority:** P2
+- **Effort:** M
+- **Status:** Proposed
+
+- **Title:** JavaScript Module Consistency
+- **Why:** `blog-search.js` uses non-module pattern (no export, global DOMContentLoaded) while `blog-filter.js` uses ES module exports. Inconsistent script loading (`<script defer>` vs `<script type="module">`). `jest.setup.js` is a no-op placeholder.
+- **Scope (in):** Convert `blog-search.js` to ES module with exports. Align script loading to `type="module"`. Remove or repurpose `jest.setup.js`.
+- **Scope (out):** New features. Test additions (separate PR).
+- **Priority:** P3
+- **Effort:** S
+- **Status:** Proposed
+
+- **Title:** Test Organization & Coverage Gaps
+- **Why:** `displayables.js` has no tests. Life-money tests exist at wrong path (should be in `test/unit/assets/js/life-money/`). Empty test folder exists. No integration tests for blog-filter + blog-search interaction.
+- **Scope (in):** Move life-money tests into correct subfolder. Add unit tests for `displayables.js`. Remove empty `test/unit/assets/js/life-money/` folder or populate it.
+- **Scope (out):** Refactoring source modules. Integration test framework setup.
+- **Priority:** P3
+- **Effort:** S
+- **Status:** Proposed
+
+- **Title:** Config & Content Normalization
+- **Why:** `theme: jekyll-theme-cayman` declared but unused (fully custom CSS). `index.md` lacks title front matter and has minimal content. Blog posts have inconsistent front matter (some missing `date`, inconsistent tags/categories).
+- **Scope (in):** Evaluate and remove theme declaration (test build first). Add `title` to `index.md` front matter. Normalize post front matter across all 57 posts (explicit `date`, consistent tag strategy).
+- **Scope (out):** Content rewrites. New blog posts.
+- **Priority:** P3
+- **Effort:** M
+- **Status:** Proposed
