@@ -1,7 +1,17 @@
 <head>
+    {% assign resolved_responsive_css = page.responsive_css %}
+    {% if resolved_responsive_css == nil or resolved_responsive_css == "" %}
+    {% if page.layout == "post" %}
+    {% assign resolved_responsive_css = "responsive-post.css" %}
+    {% elsif page.layout == "resume" %}
+    {% assign resolved_responsive_css = "responsive-resume.css" %}
+    {% else %}
+    {% assign resolved_responsive_css = "responsive-default.css" %}
+    {% endif %}
+    {% endif %}
     <title>{{ page.title | default: site.title }}</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/{{ page.responsive_css | default: 'responsive-default.css' }}">
+    <link rel="stylesheet" type="text/css" href="/assets/css/{{ resolved_responsive_css }}">
     {% for css in page.extra_css %}
     <link rel="stylesheet" type="text/css" href="{{ css }}">
     {% endfor %}
