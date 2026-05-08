@@ -202,7 +202,6 @@ class BlogSearch {
 
     /**
      * Highlights matching text in search results
-     * @private
      * @param {string} text - The text to highlight
      * @param {string} query - The search query to highlight
      * @returns {string} HTML string with <mark> tags around matches
