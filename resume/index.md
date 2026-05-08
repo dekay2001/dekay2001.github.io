@@ -1,6 +1,7 @@
 ---
-layout: resume
+layout: post
 title:  "Resume"
+responsive_css: responsive-resume.css
 categories: [professional]
 tags: []
 ---

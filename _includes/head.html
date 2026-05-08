@@ -1,0 +1,21 @@
+<head>
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/{{ page.responsive_css | default: 'responsive-default.css' }}">
+    {% for css in page.extra_css %}
+    <link rel="stylesheet" type="text/css" href="{{ css }}">
+    {% endfor %}
+    {% for link in page.extra_head_links %}
+    {{ link }}
+    {% endfor %}
+
+    <meta charset="UTF-8">
+    <meta name="description" content="{{ page.description | default: site.title }}">
+    <meta name="keywords" content="{{ page.keywords | default: site.title }}">
+    <meta name="author" content="Dan Kimball">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% for script in page.head_scripts %}
+    {{ script }}
+    {% endfor %}
+</head>

@@ -1,21 +1,15 @@
 ---
+title: Blog
+description: Blog
+keywords: Blog
+head_scripts:
+  - <script src="/assets/js/blog-search.js" defer></script>
+  - <script type="module" src="/assets/js/blog-filter.js" defer></script>
 ---
 <!doctype html>
 <html lang="en">
 
-<head>
-    <title>{{ page.title }}</title>
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/responsive-default.css">
-
-    <meta charset="UTF-8">
-    <meta name="description" content="Blog">
-    <meta name="keywords" content="Blog">
-    <meta name="author" content="Dan Kimball">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/assets/js/blog-search.js" defer></script>
-    <script type="module" src="/assets/js/blog-filter.js" defer></script>
-</head>
+{% include head.html %}
 
 <body>
     {% include navheader.html %}
@@ -24,18 +18,16 @@
         {% include mainpic.html %}
         <!-- top -->
         <div class="post-list">
-            <h2>
-                <!-- Pagination links -->
-                <div class="pagination">
-                    {% if paginator.previous_page %}
-                    <a href="{{ paginator.previous_page_path }}" class="pagination-link">←</a>
-                    {% endif %}
-                    Posts
-                    {% if paginator.next_page %}
-                    <a href="{{ paginator.next_page_path }}" class="pagination-link">→</a>
-                    {% endif %}
-                </div>
-            </h2>
+            <h2>Posts</h2>
+            <!-- Pagination links -->
+            <div class="pagination">
+                {% if paginator.previous_page %}
+                <a href="{{ paginator.previous_page_path }}" class="pagination-link">←</a>
+                {% endif %}
+                {% if paginator.next_page %}
+                <a href="{{ paginator.next_page_path }}" class="pagination-link">→</a>
+                {% endif %}
+            </div>
             
             <!-- Category Filters -->
             <div class="category-filters">
