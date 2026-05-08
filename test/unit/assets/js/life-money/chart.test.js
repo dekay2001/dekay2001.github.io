@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { drawChart } = require('../../../../assets/js/life-money/chart.js');
+const { drawChart } = require('../../../../../assets/js/life-money/chart.js');
 
 function makeCanvas() {
   const canvas = document.createElement('canvas');

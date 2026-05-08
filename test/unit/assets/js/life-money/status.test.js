@@ -1,4 +1,4 @@
-const { generateStatusMessage } = require('../../../../assets/js/life-money/status.js');
+const { generateStatusMessage } = require('../../../../../assets/js/life-money/status.js');
 
 describe('generateStatusMessage', () => {
   const baseGood = {
