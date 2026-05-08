@@ -254,6 +254,25 @@ nav {
         display: flex !important;
         flex-direction: row;
     }
+
+    header, nav, footer {
+        width: 100%;
+    }
+
+    .hamburger {
+        display: none;
+    }
+
+    nav a {
+        display: inline-block;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 nav a {

@@ -49,31 +49,6 @@ main #right {
 
 /* Tablet and Above (451px+) */
 @media only screen and (min-width: 451px) {
-  header, nav, footer {
-    width: 100%;
-  }
-  
-  /* Hide hamburger menu on tablet and above */
-  .hamburger {
-    display: none;
-  }
-
-  /* Show nav links by default on tablet and above */
-  .nav-links {
-    flex-direction: row;
-  }
-  
-  nav a {
-    display: inline-block;
-  }
-  
-  nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  
   main {
     display: flex;
     flex-direction: column;
