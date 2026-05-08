@@ -1,4 +1,4 @@
-const { computeRunway } = require('../../../../assets/js/life-money/compute.js');
+const { computeRunway } = require('../../../../../assets/js/life-money/compute.js');
 
 describe('computeRunway', () => {
   const base = {

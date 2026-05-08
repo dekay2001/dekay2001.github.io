@@ -1,0 +1,41 @@
+<head>
+    {% assign resolved_responsive_css = page.responsive_css %}
+    {% if resolved_responsive_css == nil or resolved_responsive_css == "" %}
+    {% if page.layout == "post" %}
+    {% assign resolved_responsive_css = "responsive-post.css" %}
+    {% elsif page.layout == "resume" %}
+    {% assign resolved_responsive_css = "responsive-resume.css" %}
+    {% else %}
+    {% assign resolved_responsive_css = "responsive-default.css" %}
+    {% endif %}
+    {% endif %}
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/{{ resolved_responsive_css }}">
+    {% for css in page.extra_css %}
+    <link rel="stylesheet" type="text/css" href="{{ css }}">
+    {% endfor %}
+    {% for link in page.extra_head_links %}
+    {{ link }}
+    {% endfor %}
+
+    <meta charset="UTF-8">
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="keywords" content="{{ page.keywords | default: site.title }}">
+    <meta name="author" content="Dan Kimball">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:type" content="{{ page.og_type | default: 'website' }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    {% if page.og_image %}<meta property="og:image" content="{{ page.og_image | absolute_url }}">{% endif %}
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+    {% for script in page.head_scripts %}
+    {{ script }}
+    {% endfor %}
+</head>

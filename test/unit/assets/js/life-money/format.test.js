@@ -1,4 +1,4 @@
-const { formatCurrency, formatDailyRate } = require('../../../../assets/js/life-money/format.js');
+const { formatCurrency, formatDailyRate } = require('../../../../../assets/js/life-money/format.js');
 
 describe('formatCurrency', () => {
   it('formats a round number with dollar sign', () => {

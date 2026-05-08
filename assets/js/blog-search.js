@@ -98,7 +98,7 @@ class BlogSearch {
         if (results.length === 0) {
             this.searchResults.innerHTML = `
                 <div class="no-results">
-                    <p>No posts found matching "<strong>${this._escapeHtml(query)}</strong>"</p>
+                    <p>No posts found matching "<strong>${this.escapeHtml(query)}</strong>"</p>
                     ${this.allPostsLoaded ? '<p class="search-note">Searched across all blog posts</p>' : ''}
                 </div>
             `;
@@ -109,13 +109,13 @@ class BlogSearch {
 
         const resultsHtml = results.map(post => {
             const excerptHtml = post.excerptOriginal 
-                ? `<span class="post-excerpt">${this._highlightMatch(post.excerptOriginal, query)}</span>`
+                ? `<span class="post-excerpt">${this.highlightMatch(post.excerptOriginal, query)}</span>`
                 : '';
             
             return `
                 <li>
                     <a class="postlink" href="${post.url}">
-                        <span class="post-title">${this._highlightMatch(post.titleOriginal, query)}</span>
+                        <span class="post-title">${this.highlightMatch(post.titleOriginal, query)}</span>
                         <span class="post-date">${post.date}</span>
                         ${excerptHtml}
                     </a>
@@ -125,7 +125,7 @@ class BlogSearch {
 
         this.searchResults.innerHTML = `
             <div class="search-results-header">
-                <p>Found ${results.length} post${results.length !== 1 ? 's' : ''} matching "<strong>${this._escapeHtml(query)}</strong>"</p>
+                <p>Found ${results.length} post${results.length !== 1 ? 's' : ''} matching "<strong>${this.escapeHtml(query)}</strong>"</p>
                 ${this.allPostsLoaded ? '<p class="search-note">Searched across all blog posts</p>' : ''}
             </div>
             <ul>${resultsHtml}</ul>
@@ -202,25 +202,23 @@ class BlogSearch {
 
     /**
      * Highlights matching text in search results
-     * @private
      * @param {string} text - The text to highlight
      * @param {string} query - The search query to highlight
      * @returns {string} HTML string with <mark> tags around matches
      */
-    _highlightMatch(text, query) {
-        if (!query) return this._escapeHtml(text);
+    highlightMatch(text, query) {
+        if (!query) return this.escapeHtml(text);
         
-        const regex = new RegExp(`(${this._escapeRegex(query)})`, 'gi');
-        return this._escapeHtml(text).replace(regex, '<mark>$1</mark>');
+        const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
+        return this.escapeHtml(text).replace(regex, '<mark>$1</mark>');
     }
 
     /**
      * Escapes HTML to prevent XSS attacks
-     * @private
      * @param {string} text - The text to escape
      * @returns {string} Escaped HTML string
      */
-    _escapeHtml(text) {
+    escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
@@ -228,16 +226,22 @@ class BlogSearch {
 
     /**
      * Escapes special regex characters
-     * @private
      * @param {string} str - The string to escape
      * @returns {string} Escaped regex string
      */
-    _escapeRegex(str) {
+    escapeRegex(str) {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 }
 
 // Initialize search when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+function initBlogSearch() {
     new BlogSearch();
-});
+}
+
+export { BlogSearch, initBlogSearch };
+
+// Auto-initialize when loaded in browser
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', initBlogSearch);
+}

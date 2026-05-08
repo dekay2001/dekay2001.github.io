@@ -1,5 +1,6 @@
-theme: jekyll-theme-cayman
 title: "Think Clearly"
 description: "A work in progress, this page and myself."
+plugins:
+  - jekyll-paginate
 paginate: 10
 paginate_path: "/blog/page:num/"

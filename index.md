@@ -1,4 +1,6 @@
 ---
+layout: default
+title: "Think Clearly"
 content_class: "main-text"
 ---
 Welcome to my blog.  This is truly a work in progress.  
