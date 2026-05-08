@@ -50,8 +50,10 @@
 
 ### Proposed — Code Quality (May 2026 Audit)
 
+> **Note:** This section documents proposed work only. No implementation changes are included — each item will be delivered in a separate PR.
+
 - **Title:** Security & Dead Code Cleanup
-- **Why:** IE conditional comments load html5shiv over HTTP from defunct Google Code URL (mixed content, dead code). External `target="_blank"` links lack `rel="noopener"` (reverse tabnabbing). Orphaned `playground.js` never referenced. Empty `books/` directory.
+- **Why:** IE conditional comments load html5shiv over HTTP from defunct Google Code URL (mixed content, dead code). External `target="_blank"` links lack `rel="noopener"` (reverse tabnabbing). Orphaned `playground.js` never referenced. Empty `books/` directory (exists but contains no files).
 - **Scope (in):** Remove IE conditional comments from all layouts and standalone pages. Add `rel="noopener noreferrer"` to all `target="_blank"` links (post.html, resume.html, mainpic.html). Delete `assets/js/playground.js`. Delete empty `books/` directory.
 - **Scope (out):** Template restructuring. Content changes.
 - **Priority:** P1
@@ -75,7 +77,7 @@
 - **Status:** Proposed
 
 - **Title:** SEO & Accessibility Improvements
-- **Why:** Meta description hardcoded as "Blog" on all pages. No Open Graph tags. No canonical URLs. Footer uses invalid `<i><span><p>` nesting. Post dates only visible on hover (inaccessible). Header hardcodes "Think Clearly" instead of `{{ site.title }}`. Nav label "Learn-Ashtanga" inconsistent with URL `/yoga/`.
+- **Why:** Meta description hardcoded as "Blog" in layout files (`default.html`, `post.html`, `resume.html`) and `blog/index.html`. No Open Graph tags. No canonical URLs. Footer uses invalid `<i><span><p>` nesting. Post dates only visible on hover (inaccessible). Header hardcodes "Think Clearly" instead of `{{ site.title }}`. Nav label "Learn-Ashtanga" inconsistent with URL `/yoga/`.
 - **Scope (in):** Implement dynamic `<title>` with fallback to site.title. Add page-level meta descriptions via front matter. Add Open Graph meta tags (`_includes/seo.html`). Fix footer semantic HTML. Make post dates visible by default. Use `{{ site.title }}` in navheader. Rename nav label to "Yoga".
 - **Scope (out):** Content rewrites. Layout restructuring.
 - **Priority:** P2
@@ -91,8 +93,8 @@
 - **Status:** Proposed
 
 - **Title:** Test Organization & Coverage Gaps
-- **Why:** `displayables.js` has no tests. Life-money tests exist at wrong path (should be in `test/unit/assets/js/life-money/`). Empty test folder exists. No integration tests for blog-filter + blog-search interaction.
-- **Scope (in):** Move life-money tests into correct subfolder. Add unit tests for `displayables.js`. Remove empty `test/unit/assets/js/life-money/` folder or populate it.
+- **Why:** `displayables.js` has no tests. Life-money tests live at `test/unit/assets/js/` top level instead of under a `life-money/` subfolder (an empty `test/unit/assets/js/life-money/` directory exists but contains no test files). No integration tests for blog-filter + blog-search interaction.
+- **Scope (in):** Move life-money tests into `test/unit/assets/js/life-money/` subfolder. Add unit tests for `displayables.js`. Remove or populate the currently empty `test/unit/assets/js/life-money/` directory.
 - **Scope (out):** Refactoring source modules. Integration test framework setup.
 - **Priority:** P3
 - **Effort:** S
