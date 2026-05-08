@@ -1,4 +1,5 @@
 ---
+layout: default
 title: "Think Clearly"
 content_class: "main-text"
 ---
