@@ -134,20 +134,12 @@ a:visited {
     color: var(--color-accent);
 }
 
-/* Post Date Hover Effect */
+/* Post Date */
 .post-date {
     display: block;
     font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-top: var(--spacing-xs);
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity var(--transition-speed) ease;
-}
-
-.post-title:hover ~ .post-date {
-    visibility: visible;
-    opacity: 1;
 }
 
 /* Image Hover Effects */
