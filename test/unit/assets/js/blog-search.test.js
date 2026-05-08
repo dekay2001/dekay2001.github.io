@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 
+const { BlogSearch } = require('../../../../assets/js/blog-search');
+
 describe('BlogSearch', () => {
-    let BlogSearch;
     let mockDocument;
     
     beforeEach(() => {
@@ -33,10 +34,6 @@ describe('BlogSearch', () => {
                 </li>
             </ul>
         `;
-
-        // Load the BlogSearch class
-        delete window.BlogSearch;
-        jest.resetModules();
     });
 
     describe('Initialization', () => {
@@ -51,7 +48,10 @@ describe('BlogSearch', () => {
                 title: 'understanding javascript',
                 titleOriginal: 'Understanding JavaScript',
                 date: 'Mon. Nov 01, 23',
-                url: '/post1'
+                url: '/post1',
+                excerpt: '',
+                excerptOriginal: '',
+                categories: []
             });
         });
 
@@ -288,115 +288,7 @@ describe('BlogSearch', () => {
 
     // Helper function to create BlogSearch instance
     function createBlogSearch() {
-        // Inline the BlogSearch class for testing
-        class BlogSearch {
-            constructor() {
-                this.posts = [];
-                this.searchInput = document.getElementById('blog-search-input');
-                this.searchResults = document.getElementById('search-results');
-                this.postList = document.getElementById('post-list');
-                this.clearButton = document.getElementById('clear-search');
-                
-                if (this.searchInput) {
-                    this.loadPosts();
-                }
-            }
-
-            loadPosts() {
-                const postLinks = document.querySelectorAll('.postlink');
-                postLinks.forEach(link => {
-                    const title = link.querySelector('.post-title')?.textContent || '';
-                    const date = link.querySelector('.post-date')?.textContent || '';
-                    const url = link.getAttribute('href');
-                    
-                    this.posts.push({
-                        title: title.toLowerCase(),
-                        titleOriginal: title,
-                        date: date,
-                        url: url
-                    });
-                });
-            }
-
-            handleSearch(query) {
-                const searchQuery = query.toLowerCase().trim();
-                
-                if (searchQuery.length === 0) {
-                    this.showAllPosts();
-                    return;
-                }
-
-                if (searchQuery.length < 2) {
-                    return;
-                }
-
-                const results = this.posts.filter(post => 
-                    post.title.includes(searchQuery)
-                );
-
-                this.displayResults(results, searchQuery);
-            }
-
-            displayResults(results, query) {
-                if (results.length === 0) {
-                    this.searchResults.innerHTML = `
-                        <div class="no-results">
-                            <p>No posts found matching "<strong>${this.escapeHtml(query)}</strong>"</p>
-                        </div>
-                    `;
-                    this.searchResults.style.display = 'block';
-                    this.postList.style.display = 'none';
-                    return;
-                }
-
-                const resultsHtml = results.map(post => `
-                    <li>
-                        <a class="postlink" href="${post.url}">
-                            <span class="post-title">${this.highlightMatch(post.titleOriginal, query)}</span>
-                            <span class="post-date">${post.date}</span>
-                        </a>
-                    </li>
-                `).join('');
-
-                this.searchResults.innerHTML = `
-                    <div class="search-results-header">
-                        <p>Found ${results.length} post${results.length !== 1 ? 's' : ''} matching "<strong>${this.escapeHtml(query)}</strong>"</p>
-                    </div>
-                    <ul>${resultsHtml}</ul>
-                `;
-                
-                this.searchResults.style.display = 'block';
-                this.postList.style.display = 'none';
-            }
-
-            highlightMatch(text, query) {
-                if (!query) return this.escapeHtml(text);
-                
-                const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
-                return this.escapeHtml(text).replace(regex, '<mark>$1</mark>');
-            }
-
-            showAllPosts() {
-                this.searchResults.style.display = 'none';
-                this.postList.style.display = 'block';
-            }
-
-            clearSearch() {
-                this.searchInput.value = '';
-                this.showAllPosts();
-            }
-
-            escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-
-            escapeRegex(str) {
-                return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            }
-        }
-
-        return new BlogSearch();
+        const search = new BlogSearch();
+        return search;
     }
 });
