@@ -5,23 +5,23 @@ responsive_css: responsive-resume.css
 categories: [professional]
 tags: []
 ---
-Last updated: 2026-03-29
+Last updated: 2026-05-13
  
  
 # Professional Summary
-Innovative engineering leader with over twenty years of experience in software design, team leadership, and full-stack delivery. Specializes in object-oriented design, API architecture, database systems, and AI-augmented development workflows. Actively researches and applies prompt engineering, agentic AI systems, and AI collaboration patterns to achieve measurable velocity improvements. Combines deep technical expertise with a passion for mentorship, continuous learning, and building scalable, well-tested systems.
+Lead Software Engineer with over twenty years of experience building and supporting production web platforms in complex, real-world environments. Combines hands-on engineering with pragmatic technical leadership — owning critical services end-to-end, modernizing build and CI/CD workflows, and stabilizing release pipelines for customer-facing systems. Partners closely with product managers and cross-functional teams to translate business needs into reliable, shippable solutions. Passionate about mentorship, raising engineering standards, and applying AI-assisted development to improve quality and developer efficiency.
  
 ## Technical Skills
  
 | Skill                                | Estimated Years Experience | Skill Level 1-10 |
 |--------------------------------------|----------------------------|------------------|
-| PowerBuilder 9, 10.5, 12, 2019, 2022 | 2005-2026                  | 10               |
+| PowerBuilder 9, 10.5, 12, 2019, 2022, 2025 | 2005-2026                  | 10               |
 | SQL / Relational Database Designs    | 2005-2026                  | 9                |
 | Query Writing and Optimization       | 2005-2026                  | 9                |
 | AI Tools & Prompt Engineering        | 2024-2026                  | 9                |
 | GitHub Copilot                       | 2024-2026                  | 9                |
 | Agentic AI Workflows                 | 2025-2026                  | 8                |
-| Jekyll / GitHub Pages / Liquid       | 2019-2026                  | 7                |
+| Jekyll / GitHub Pages / Liquid       | 2019-2026                  | 6                |
 | Jest / JavaScript Testing            | 2025-2026                  | 6                |
 | Microsoft Graph API                  | 2025-2026                  | 5                |
 | Object Oriented Design               | 2005-2026                  | 8                |
@@ -70,9 +70,13 @@ _Also familiar with: Android Development, C/C++_
 
  ### Responsibilities, Projects, and Accomplishments  
 
-- 2026 Designed and developed a comprehensive prompt engineering research lab (Project Alpha) documenting reusable AI collaboration patterns, governance frameworks, and case studies. Created a validated catalog of 5+ prompt patterns applied across multiple projects, achieving 40-60x velocity multipliers on bounded technical tasks — including delivery of 3 major pull requests in 6 days (traditional estimate: 4 weeks). Built custom VS Code agent workflows for planning, implementation, and verification. Independently built and maintained two Jekyll-based GitHub Pages sites with production-grade engineering practices including Jest-tested JavaScript, data-driven content, responsive design, and TDD workflows.
+- 2026 Led cross-component development and release coordination for a production web platform, balancing feature delivery, reliability, and operational risk across interconnected services, web extensions, and installers. Owned CI/CD reliability — diagnosing and resolving release pipeline failures, environment inconsistencies, and automation issues impacting production deployments. Modernized Python build and dependency workflows to improve reproducibility and reduce release failures across multiple repositories. Partnered with product management to refine scope, assess release risk, and align technical constraints with business needs. Drove technical decision-making in refinement and pre-refinement sessions, shaping backlog quality and technical feasibility while maintaining delivery under real operational pressure.
 
-- 2025 As Lead Senior Software Engineer, mentored and guided engineering team members in software development best practices, code reviews, and professional growth. Led the critical migration of the Profit Tools application to use updated Sybase database components, ensuring compatibility and improved performance. Modernized the WinSCP functionality to support modern encryption algorithms, enhancing security for file transfers. Implemented Microsoft 365 secure email functionality through Microsoft Graph API, enabling seamless integration with modern authentication and security protocols.
+- 2026 Contributed to the design and development of a high-volume breadcrumbing service for ingesting and storing driver location data at scale. Led a database technology evaluation comparing seven storage options, authoring an Architecture Decision Record (ADR) recommending PostgreSQL with TimescaleDB for the storage service. The ADR was accepted and is informing the ongoing implementation of the data ingestion pipeline.
+
+- 2026 Designed and developed a comprehensive prompt engineering research lab (Project Alpha) documenting reusable AI collaboration patterns, governance frameworks, and case studies. Work in this project includes delivery of 3 major pull requests in 6 days (traditional estimate: 4 weeks). Built custom VS Code agent workflows for planning, implementation, and verification. Independently built and maintained two Jekyll-based GitHub Pages sites with production-grade engineering practices including Jest-tested JavaScript, data-driven content, responsive design, and TDD workflows. This work is on going.
+
+- 2025 As Lead Senior Software Engineer, mentored and guided engineering team members in software development best practices, code reviews, and professional growth — building on a track record of being sought out across the organization for knowledge sharing and onboarding. Led the critical migration of the Profit Tools application to use updated Sybase database components, ensuring compatibility and improved performance. Modernized the WinSCP functionality to support modern encryption algorithms, enhancing security for file transfers. Implemented Microsoft 365 secure email functionality through Microsoft Graph API, enabling seamless integration with modern authentication and security protocols.
 
 - 2025 Championed AI adoption and best practices within the team and organization. Studied "The AI-Driven Leader" and continuously researched emerging AI technologies to stay current with industry trends. Gained hands-on experience with cutting-edge AI tools including agentic AI systems, Ollama for local LLM deployment, GitHub Copilot for AI-assisted development, and Office 365 AI agents for research and analysis. Collaborated with team members to establish and promote best practices for responsible and effective AI usage in software development workflows, improving team productivity and code quality. Actively researched and evaluated various AI models to identify optimal solutions for specific development tasks.
 
@@ -84,9 +88,11 @@ _Also familiar with: Android Development, C/C++_
 
 - 2023 Delivered new installer technology for a pluggable application including UI/UX using [Flet](https://flet.dev/) (Python Library) and feature version management with [LaunchDarkly](https://launchdarkly.com/demo/?utm_source=google&utm_medium=cpc&utm_campaign=NA_Search_Brand&utm_adgroup=Brand_General&utm_term=launchdarkly&matchtype=b&creative=554491127903&device=c&_bt=554491127903&_bn=g&gad_source=1&gclid=Cj0KCQiAwbitBhDIARIsABfFYIL6EJXvHddJTzCrMJNFDKkNLaJDAY4IaA5pqSyfl1GxfRKL2KlJQY0aArj_EALw_wcB).  The application is self updateable and was is able to fully install and upgrade python on a Windows machine, create virtual envrironments, download and install requirements from Artifactory, a pluggable Flask application, and user selected plugins.  Each plugin is updateable.  The installed service and installer technology can be monitored in AWS Cloudwatch and AWS Xray.  Also the service can send notifications to Microsoft Teams.
 
-- 2023 Interviewed and trained software engineers and quality assurance candidates to join and contribute to our team by teaching them how to write feature tests in Python and use AWS EC2 instances and AMIs to test the installer technology and Core-API.
+- 2023 Took the front role during backlog refinement, ensuring every team member understood story scope and acceptance criteria. Drove process improvements through retrospectives, defining action items that increased team efficiency. Provided critical cross-team support to the Profit Tools EDI team, proactively monitoring discussions and jumping in to resolve integration issues — recognized in performance review as "an enormous contribution." Rated Exceeds Expectations in Achievements and Culture for leadership, mentoring, and integrity.
 
-- 2023 Maintained and supported the Core-API product.  This involved troubleshooting requests made from an internally developed mobile application and other 3rd party services including Order AI, and Geostamp.
+- 2023 Interviewed, hired, and onboarded software engineers and quality assurance candidates. Mentored developers and automation engineers in TDD, design principles, and Python feature testing using AWS EC2 instances and AMIs. Known for communicating effectively across technical and non-technical audiences, ensuring clarity across a culturally diverse, distributed team.
+
+- 2023 Maintained and supported the Core-API product, troubleshooting requests from an internally developed mobile application and third-party services including Order AI and Geostamp.
 
 - Improved the performance of the Profit Tools application by 67% for large customers by optimizing their permissions across their large number of users.
  
@@ -130,7 +136,7 @@ _Product Owner, 2017-2019_
  
 - Implemented solutions for a business intelligence application that could be used by large and small trucking companies.  Acted as the solo developer maintaining the product and working with the product owner to understand the application data to deliver a highly valued business data solution involving costing and revenue business models.
 
-> **Note:** Profit Tools Inc. was acquired by Valsoft (2017), rebranded as Envase Technologies (2020), then acquired by WiseTech Global (2023). The entries below reflect the same core product team under successive ownership.
+> **Note:** Profit Tools Inc. was acquired by Valsoft (2017), which was acquired by Envase Technologies (2020), then acquired by WiseTech Global (2023). The entries below reflect the same core product team under successive ownership.
 
 **Profit Tools Inc.** Lee, New Hampshire
 _Lead Software Developer 2010 - 2017_
@@ -156,7 +162,7 @@ Bachelor of Science in Computer Science, 2005
 - Methodical exploration of prompt engineering with documented patterns, case studies, and governance frameworks
 - Developed 5 reusable prompt pattern templates (System Role Framing, Iterative Refinement, Constraint-Driven Prompts, Evaluation Self-Check, Pivot Summary Compression) validated across 3+ projects
 - Created a three-tier documentation system (Versions → Moments → Chapters) for converting technical work into teachable content
-- Authored book chapters on AI prompting fundamentals, organizational drift recognition, and AI-assisted self-reflection
+- Worked on book chapters on AI prompting fundamentals, organizational drift recognition, and AI-assisted self-reflection
 - Established ethical boundaries, success metrics, model-fallback continuity strategies, and portfolio management frameworks for AI-driven workflows
 
 **dekay2001.github.io — Personal Blog & Portfolio** (2019-present)
