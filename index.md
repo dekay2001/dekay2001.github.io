@@ -19,4 +19,10 @@ Welcome to my blog.  This is truly a work in progress.
     <p class="project-card-description">Visualize your financial runway — project how long your savings last</p>
   </a>
 
+  <a href="/playground/daily-budget/" class="content-card project-card">
+    <div class="project-card-icon">📊</div>
+    <h3 class="project-card-heading">Daily Budget</h3>
+    <p class="project-card-description">Plan your daily spending — find the balance between frugal and fun</p>
+  </a>
+
 </div>

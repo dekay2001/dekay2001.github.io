@@ -1,0 +1,279 @@
+---
+title: Daily Budget — Playground
+description: Daily Budget Calculator - Plan your daily discretionary spending
+keywords: Budget, Daily spending, Finance, Calculator
+extra_css:
+  - /assets/css/responsive-daily-budget.css
+extra_head_links:
+  - <link rel="preconnect" href="https://fonts.googleapis.com">
+  - <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+---
+<!doctype html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+    {% include navheader.html %}
+    <main id="home_content" class="content">
+        <div class="db-container">
+
+            <h1>Daily budget planner</h1>
+            <p class="subtitle">Plan your discretionary spending — find the balance between frugal and fun</p>
+
+            <div class="status-bar" id="status-bar">—</div>
+
+            <div class="target-control">
+              <label for="daily-target">Daily budget target (discretionary)</label>
+              <div class="value-display" id="target-val">$30/day</div>
+              <input type="range" id="daily-target" min="15" max="60" value="30" step="1">
+            </div>
+
+            <div class="scenarios">
+              <button class="scenario-btn" data-scenario="frugal">Frugal</button>
+              <button class="scenario-btn" data-scenario="balanced">Balanced</button>
+              <button class="scenario-btn" data-scenario="flexible">Flexible</button>
+            </div>
+
+            <div class="categories-grid" id="categories-grid">
+              <!-- rendered by JS -->
+            </div>
+
+            <div class="metrics">
+              <div class="metric">
+                <div class="metric-label">Daily average</div>
+                <div class="metric-value neutral" id="m-daily">—</div>
+                <div class="metric-sub" id="m-daily-sub">discretionary</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Weekly total</div>
+                <div class="metric-value neutral" id="m-weekly">—</div>
+                <div class="metric-sub" id="m-weekly-sub">—</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Monthly total</div>
+                <div class="metric-value neutral" id="m-monthly">—</div>
+                <div class="metric-sub" id="m-monthly-sub">—</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Annual total</div>
+                <div class="metric-value neutral" id="m-annual">—</div>
+                <div class="metric-sub" id="m-annual-sub">—</div>
+              </div>
+            </div>
+
+            <details class="fixed-section">
+              <summary>Fixed Monthly Costs</summary>
+              <div class="fixed-items" id="fixed-items">
+                <!-- rendered by JS -->
+              </div>
+              <div class="fixed-total" id="fixed-total"></div>
+            </details>
+
+            <div class="runway-link" id="runway-link">
+              Your total monthly spend (discretionary + fixed) = <strong id="total-monthly-spend">$0</strong>.
+              <a href="/playground/">Check your runway →</a>
+            </div>
+
+        </div>
+    </main>
+    {% include footer.html %}
+
+    <script type="module">
+    import { computeTotals, computeStatus } from '/assets/js/daily-budget/compute.js';
+    import { CATEGORIES, DEFAULT_FIXED_COSTS, SCENARIOS } from '/assets/js/daily-budget/data.js';
+    import { loadSelections, saveSelections } from '/assets/js/daily-budget/storage.js';
+
+    // ── state ───────────────────────────────────────────────────────────────
+
+    let state = {
+      tiers: CATEGORIES.map(c => c.defaultTier),
+      days: CATEGORIES.map(c => c.defaultDays),
+      fixedCosts: DEFAULT_FIXED_COSTS.map(f => ({ ...f })),
+      target: 30,
+    };
+
+    const saved = loadSelections();
+    if (saved) {
+      state = { ...state, ...saved };
+    }
+
+    // ── DOM refs ────────────────────────────────────────────────────────────
+
+    const grid = document.getElementById('categories-grid');
+    const statusBar = document.getElementById('status-bar');
+    const targetSlider = document.getElementById('daily-target');
+    const targetVal = document.getElementById('target-val');
+    const fixedItemsEl = document.getElementById('fixed-items');
+    const fixedTotalEl = document.getElementById('fixed-total');
+    const totalMonthlySpend = document.getElementById('total-monthly-spend');
+
+    // ── render categories ───────────────────────────────────────────────────
+
+    function renderCategories() {
+      grid.innerHTML = '';
+      CATEGORIES.forEach((cat, ci) => {
+        const card = document.createElement('div');
+        card.className = 'category-card';
+        card.innerHTML = `
+          <h3>${cat.label}</h3>
+          <div class="tier-options">
+            ${cat.tiers.map((tier, ti) => `
+              <label class="tier-option">
+                <input type="radio" name="tier-${cat.id}" value="${ti}" ${state.tiers[ci] === ti ? 'checked' : ''}>
+                <span>${tier.label}</span>
+                <span class="tier-cost">$${tier.cost.toFixed(2)}</span>
+              </label>
+            `).join('')}
+          </div>
+          <div class="days-control">
+            <label>Days/wk</label>
+            <span class="days-value" id="days-val-${cat.id}">${state.days[ci]}</span>
+            <input type="range" min="0" max="7" value="${state.days[ci]}" data-cat="${ci}">
+          </div>
+        `;
+
+        card.querySelectorAll('input[type="radio"]').forEach(radio => {
+          radio.addEventListener('change', () => {
+            state.tiers[ci] = +radio.value;
+            update();
+          });
+        });
+
+        const daysSlider = card.querySelector('.days-control input[type="range"]');
+        const daysVal = card.querySelector('.days-value');
+        daysSlider.addEventListener('input', () => {
+          state.days[ci] = +daysSlider.value;
+          daysVal.textContent = daysSlider.value;
+          update();
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // ── render fixed costs ──────────────────────────────────────────────────
+
+    function renderFixedCosts() {
+      fixedItemsEl.innerHTML = '';
+      state.fixedCosts.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'fixed-item';
+        row.innerHTML = `
+          <input type="text" value="${item.label}" data-idx="${i}" data-field="label">
+          <input type="number" value="${item.amount}" data-idx="${i}" data-field="amount" min="0" step="5">
+        `;
+        row.querySelectorAll('input').forEach(input => {
+          input.addEventListener('change', () => {
+            const idx = +input.dataset.idx;
+            if (input.dataset.field === 'amount') {
+              state.fixedCosts[idx].amount = +input.value;
+            } else {
+              state.fixedCosts[idx].label = input.value;
+            }
+            update();
+          });
+        });
+        fixedItemsEl.appendChild(row);
+      });
+    }
+
+    // ── scenario buttons ────────────────────────────────────────────────────
+
+    document.querySelectorAll('.scenario-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const scenario = SCENARIOS[btn.dataset.scenario];
+        state.tiers = [...scenario.tiers];
+        state.days = [...scenario.days];
+        document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCategories();
+        update();
+      });
+    });
+
+    // ── target slider ───────────────────────────────────────────────────────
+
+    targetSlider.value = state.target;
+    targetVal.textContent = `$${state.target}/day`;
+    targetSlider.addEventListener('input', () => {
+      state.target = +targetSlider.value;
+      targetVal.textContent = `$${state.target}/day`;
+      update();
+    });
+
+    // ── update ──────────────────────────────────────────────────────────────
+
+    function update() {
+      const categories = CATEGORIES.map((cat, i) => ({
+        dailyCost: cat.tiers[state.tiers[i]].cost,
+        daysPerWeek: state.days[i],
+      }));
+
+      const fixedMonthly = state.fixedCosts.reduce((sum, item) => sum + item.amount, 0);
+      const totals = computeTotals(categories, fixedMonthly);
+      const status = computeStatus(totals.dailyAvg, state.target);
+
+      // Status bar
+      const diff = Math.abs(status.difference).toFixed(2);
+      if (status.status === 'under') {
+        statusBar.textContent = `$${totals.dailyAvg.toFixed(2)}/day — $${diff} under budget`;
+        statusBar.className = 'status-bar under';
+      } else if (status.status === 'over') {
+        statusBar.textContent = `$${totals.dailyAvg.toFixed(2)}/day — $${diff} over budget`;
+        statusBar.className = 'status-bar over';
+      } else {
+        statusBar.textContent = `$${totals.dailyAvg.toFixed(2)}/day — on target`;
+        statusBar.className = 'status-bar near';
+      }
+      // Near-target warning (within 10%)
+      if (status.status === 'under' && status.percent > 90) {
+        statusBar.className = 'status-bar near';
+      }
+
+      // Metrics
+      const colorClass = status.status === 'over' ? 'over' : (status.percent > 90 ? 'near' : 'under');
+      const mDaily = document.getElementById('m-daily');
+      mDaily.textContent = `$${totals.dailyAvg.toFixed(2)}`;
+      mDaily.className = `metric-value ${colorClass}`;
+      document.getElementById('m-daily-sub').textContent = `target: $${state.target}/day`;
+
+      const weeklyBudget = state.target * 7;
+      const mWeekly = document.getElementById('m-weekly');
+      mWeekly.textContent = `$${(totals.dailyAvg * 7).toFixed(0)}`;
+      mWeekly.className = `metric-value ${colorClass}`;
+      document.getElementById('m-weekly-sub').textContent = `budget: $${weeklyBudget.toFixed(0)}`;
+
+      const monthlyBudget = state.target * 30.44;
+      const mMonthly = document.getElementById('m-monthly');
+      mMonthly.textContent = `$${(totals.dailyAvg * 30.44).toFixed(0)}`;
+      mMonthly.className = `metric-value ${colorClass}`;
+      document.getElementById('m-monthly-sub').textContent = `budget: $${monthlyBudget.toFixed(0)}`;
+
+      const annualBudget = state.target * 30.44 * 12;
+      const mAnnual = document.getElementById('m-annual');
+      mAnnual.textContent = `$${(totals.dailyAvg * 30.44 * 12).toFixed(0)}`;
+      mAnnual.className = `metric-value ${colorClass}`;
+      document.getElementById('m-annual-sub').textContent = `budget: $${annualBudget.toFixed(0)}`;
+
+      // Fixed costs total
+      const dailyShare = totals.fixedDaily;
+      fixedTotalEl.innerHTML = `Total fixed: <strong>$${fixedMonthly.toFixed(0)}/mo</strong>
+        <span class="daily-share">≈ $${dailyShare.toFixed(2)}/day</span>`;
+
+      // Runway link
+      const totalMonthly = totals.monthly;
+      totalMonthlySpend.textContent = `$${totalMonthly.toFixed(0)}/mo`;
+
+      // Persist
+      saveSelections(state);
+    }
+
+    // ── init ────────────────────────────────────────────────────────────────
+
+    renderCategories();
+    renderFixedCosts();
+    update();
+    </script>
+</body>
+</html>

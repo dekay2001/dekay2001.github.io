@@ -1,0 +1,384 @@
+/* ==========================================================================
+   Daily Budget — Scoped Component Styles
+   All rules scoped to .db-container to avoid polluting site globals.
+   ========================================================================== */
+
+.db-container {
+  --db-bg:      var(--color-dark);
+  --db-surface: var(--color-secondary);
+  --db-border:  #222222;
+  --db-text:    var(--color-text-light);
+  --db-muted:   var(--color-text-muted);
+  --db-under:   #27ae60;
+  --db-near:    #f39c12;
+  --db-over:    #c0392b;
+  --db-accent:  var(--color-accent);
+
+  --mono:  'DM Mono', monospace;
+  --serif: 'Playfair Display', serif;
+
+  font-family: var(--mono);
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   Headings
+   -------------------------------------------------------------------------- */
+
+.db-container h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  text-shadow: none;
+  color: var(--db-text);
+  margin-bottom: 0.25rem;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.db-container .subtitle {
+  font-size: 0.72rem;
+  color: var(--db-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Status bar (top)
+   -------------------------------------------------------------------------- */
+
+.db-container .status-bar {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--db-border);
+  background: var(--db-surface);
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.db-container .status-bar.under { color: var(--db-under); }
+.db-container .status-bar.near  { color: var(--db-near); }
+.db-container .status-bar.over  { color: var(--db-over); }
+
+/* --------------------------------------------------------------------------
+   Target slider
+   -------------------------------------------------------------------------- */
+
+.db-container .target-control {
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--db-border);
+  background: var(--db-surface);
+}
+
+.db-container .target-control label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--db-muted);
+  margin-bottom: 0.4rem;
+}
+
+.db-container .target-control .value-display {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--db-text);
+  margin-bottom: 0.4rem;
+}
+
+.db-container input[type=range] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: var(--db-border);
+  outline: none;
+  cursor: pointer;
+}
+
+.db-container input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--db-accent);
+  cursor: pointer;
+}
+
+.db-container input[type=range]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--db-accent);
+  cursor: pointer;
+  border: none;
+}
+
+/* --------------------------------------------------------------------------
+   Scenario buttons
+   -------------------------------------------------------------------------- */
+
+.db-container .scenarios {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.db-container .scenario-btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--db-border);
+  background: var(--db-surface);
+  color: var(--db-muted);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.db-container .scenario-btn:hover,
+.db-container .scenario-btn.active {
+  border-color: var(--db-accent);
+  color: var(--db-text);
+}
+
+/* --------------------------------------------------------------------------
+   Category cards grid
+   -------------------------------------------------------------------------- */
+
+.db-container .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+  .db-container .categories-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.db-container .category-card {
+  border: 1px solid var(--db-border);
+  background: var(--db-surface);
+  padding: 1.25rem;
+}
+
+.db-container .category-card h3 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--db-muted);
+  margin: 0 0 0.75rem 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.db-container .tier-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.db-container .tier-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--db-text);
+  cursor: pointer;
+}
+
+.db-container .tier-option input[type="radio"] {
+  accent-color: var(--db-accent);
+  margin: 0;
+}
+
+.db-container .tier-option .tier-cost {
+  margin-left: auto;
+  color: var(--db-muted);
+  font-size: 0.72rem;
+}
+
+.db-container .days-control {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.db-container .days-control label {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--db-muted);
+  white-space: nowrap;
+}
+
+.db-container .days-control .days-value {
+  font-size: 0.85rem;
+  color: var(--db-text);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.db-container .days-control input[type=range] {
+  flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Metrics grid
+   -------------------------------------------------------------------------- */
+
+.db-container .metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--db-border);
+  margin-bottom: 2rem;
+}
+
+.db-container .metric {
+  background: var(--db-surface);
+  padding: 1.25rem;
+}
+
+.db-container .metric-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--db-muted);
+  margin-bottom: 0.5rem;
+}
+
+.db-container .metric-value {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.db-container .metric-value.under  { color: var(--db-under); }
+.db-container .metric-value.near   { color: var(--db-near); }
+.db-container .metric-value.over   { color: var(--db-over); }
+.db-container .metric-value.neutral { color: var(--db-text); }
+
+.db-container .metric-sub {
+  font-size: 0.65rem;
+  color: var(--db-muted);
+  margin-top: 0.35rem;
+}
+
+/* --------------------------------------------------------------------------
+   Fixed costs (collapsible)
+   -------------------------------------------------------------------------- */
+
+.db-container .fixed-section {
+  margin-bottom: 2rem;
+  border: 1px solid var(--db-border);
+  background: var(--db-surface);
+}
+
+.db-container .fixed-section summary {
+  padding: 0.75rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--db-muted);
+  cursor: pointer;
+  list-style: none;
+}
+
+.db-container .fixed-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.db-container .fixed-section summary::before {
+  content: '▸ ';
+  color: var(--db-accent);
+}
+
+.db-container .fixed-section[open] summary::before {
+  content: '▾ ';
+}
+
+.db-container .fixed-items {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--db-border);
+}
+
+.db-container .fixed-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.db-container .fixed-item input[type="text"] {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  background: transparent;
+  border: 1px solid var(--db-border);
+  color: var(--db-text);
+  padding: 0.3rem 0.5rem;
+  flex: 1;
+}
+
+.db-container .fixed-item input[type="number"] {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  background: transparent;
+  border: 1px solid var(--db-border);
+  color: var(--db-text);
+  padding: 0.3rem 0.5rem;
+  width: 80px;
+  text-align: right;
+}
+
+.db-container .fixed-total {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--db-border);
+  font-size: 0.78rem;
+  color: var(--db-text);
+}
+
+.db-container .fixed-total .daily-share {
+  color: var(--db-muted);
+  margin-left: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Runway link
+   -------------------------------------------------------------------------- */
+
+.db-container .runway-link {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--db-border);
+  background: var(--db-surface);
+  font-size: 0.78rem;
+  color: var(--db-muted);
+  line-height: 1.6;
+}
+
+.db-container .runway-link a {
+  color: var(--db-accent);
+  text-decoration: none;
+}
+
+.db-container .runway-link a:hover {
+  text-decoration: underline;
+}
