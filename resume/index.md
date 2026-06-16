@@ -5,22 +5,32 @@ responsive_css: responsive-resume.css
 categories: [professional]
 tags: []
 ---
-Last updated: 2026-05-13
+Last updated: 2026-05-28
  
  
 # Professional Summary
-Lead Software Engineer with over twenty years of experience building and supporting production web platforms in complex, real-world environments. Combines hands-on engineering with pragmatic technical leadership — owning critical services end-to-end, modernizing build and CI/CD workflows, and stabilizing release pipelines for customer-facing systems. Partners closely with product managers and cross-functional teams to translate business needs into reliable, shippable solutions. Passionate about mentorship, raising engineering standards, and applying AI-assisted development to improve quality and developer efficiency.
+Lead engineer and AI-driven engineering leader with over twenty years of production craft, now operating frontier models, custom agents, and agentic workflows as a force multiplier for delivery and decision-making. Combines deep hands-on engineering with pragmatic technical leadership — owning critical services end-to-end, modernizing build and CI/CD workflows, and stabilizing release pipelines for customer-facing systems. Partners closely with product managers and cross-functional teams to translate business needs into reliable, shippable solutions. Passionate about mentorship, raising engineering standards, and teaching others to collaborate effectively with AI.
  
+## Frontier Model & Agentic Workflow Experience
+
+- Hands-on with Claude (Opus, Sonnet), GPT-4/4o, Gemini, Llama, Mistral; local deployment via Ollama
+- Custom VS Code agent workflows: plan → implement → verify, with SOLID review gates and TDD enforcement
+- Multi-agent session orchestration: brain-dump → parallel work plan across repos
+- Instruction engineering, applyTo patterns, skill packaging, and prompt-as-code with provenance tracking
+- Three-tier documentation system (Versions / Moments / Chapters) for converting AI-collaboration work into teachable artifacts
+- 17+ documented leadership moments, 10 book chapters drafted, 6 custom agents, 3 packaged skills
+- Delivered 3 major PRs in 6 days (traditional estimate: 4 weeks) using agentic workflows
+
 ## Technical Skills
  
 | Skill                                | Estimated Years Experience | Skill Level 1-10 |
 |--------------------------------------|----------------------------|------------------|
-| PowerBuilder 9, 10.5, 12, 2019, 2022, 2025 | 2005-2026                  | 10               |
-| SQL / Relational Database Designs    | 2005-2026                  | 9                |
-| Query Writing and Optimization       | 2005-2026                  | 9                |
 | AI Tools & Prompt Engineering        | 2024-2026                  | 9                |
 | GitHub Copilot                       | 2024-2026                  | 9                |
 | Agentic AI Workflows                 | 2025-2026                  | 8                |
+| PowerBuilder 9, 10.5, 12, 2019, 2022, 2025 | 2005-2026                  | 10               |
+| SQL / Relational Database Designs    | 2005-2026                  | 9                |
+| Query Writing and Optimization       | 2005-2026                  | 9                |
 | Jekyll / GitHub Pages / Liquid       | 2019-2026                  | 6                |
 | Jest / JavaScript Testing            | 2025-2026                  | 6                |
 | Microsoft Graph API                  | 2025-2026                  | 5                |
@@ -70,6 +80,8 @@ _Also familiar with: Android Development, C/C++_
 
  ### Responsibilities, Projects, and Accomplishments  
 
+- 2025–2026 Championed AI adoption and engineering best practices within the team and organization. Operated frontier AI models (Claude, GPT-4, Gemini, Llama, Mistral) and agentic AI systems including GitHub Copilot, Ollama for local LLM deployment, and custom VS Code agent workflows. Established and taught best practices for responsible AI usage in software development — improving team productivity, code quality, and review velocity. Built original frameworks for prompt engineering, model evaluation, and multi-agent orchestration that became the basis for an independent research lab and book project.
+
 - 2026 Led cross-component development and release coordination for a production web platform, balancing feature delivery, reliability, and operational risk across interconnected services, web extensions, and installers. Owned CI/CD reliability — diagnosing and resolving release pipeline failures, environment inconsistencies, and automation issues impacting production deployments. Modernized Python build and dependency workflows to improve reproducibility and reduce release failures across multiple repositories. Partnered with product management to refine scope, assess release risk, and align technical constraints with business needs. Drove technical decision-making in refinement and pre-refinement sessions, shaping backlog quality and technical feasibility while maintaining delivery under real operational pressure.
 
 - 2026 Contributed to the design and development of a high-volume breadcrumbing service for ingesting and storing driver location data at scale. Led a database technology evaluation comparing seven storage options, authoring an Architecture Decision Record (ADR) recommending PostgreSQL with TimescaleDB for the storage service. The ADR was accepted and is informing the ongoing implementation of the data ingestion pipeline.
@@ -77,8 +89,6 @@ _Also familiar with: Android Development, C/C++_
 - 2026 Designed and developed a comprehensive prompt engineering research lab (Project Alpha) documenting reusable AI collaboration patterns, governance frameworks, and case studies. Work in this project includes delivery of 3 major pull requests in 6 days (traditional estimate: 4 weeks). Built custom VS Code agent workflows for planning, implementation, and verification. Independently built and maintained two Jekyll-based GitHub Pages sites with production-grade engineering practices including Jest-tested JavaScript, data-driven content, responsive design, and TDD workflows. This work is ongoing.
 
 - 2025 As Lead Senior Software Engineer, mentored and guided engineering team members in software development best practices, code reviews, and professional growth — building on a track record of being sought out across the organization for knowledge sharing and onboarding. Led the critical migration of the Profit Tools application to use updated Sybase database components, ensuring compatibility and improved performance. Modernized the WinSCP functionality to support modern encryption algorithms, enhancing security for file transfers. Implemented Microsoft 365 secure email functionality through Microsoft Graph API, enabling seamless integration with modern authentication and security protocols.
-
-- 2025 Championed AI adoption and best practices within the team and organization. Studied "The AI-Driven Leader" and continuously researched emerging AI technologies to stay current with industry trends. Gained hands-on experience with cutting-edge AI tools including agentic AI systems, Ollama for local LLM deployment, GitHub Copilot for AI-assisted development, and Office 365 AI agents for research and analysis. Collaborated with team members to establish and promote best practices for responsible and effective AI usage in software development workflows, improving team productivity and code quality. Actively researched and evaluated various AI models to identify optimal solutions for specific development tasks.
 
 - 2025 Collaborated extensively with cross-functional teams across WiseTech Global to design and develop a robust, scalable API for the transportation management system. Focused on creating generic, reusable API designs that meet diverse requirements across multiple product teams. Participated in architectural design discussions, requirements gathering sessions, and technical reviews to ensure API consistency, maintainability, and alignment with enterprise standards. Worked closely with stakeholders to balance specific team needs with broader organizational goals, fostering strong cross-team collaboration and knowledge sharing.
 
@@ -175,9 +185,11 @@ Bachelor of Science in Computer Science, 2005
 - Data-driven route display using YAML with responsive image optimization (3-size variants via PowerShell utility)
 - Four-agent development workflow (idea → plan → implement → verify) with canonical backlog tracking in design roadmap
 
-# Thought Leadership & Writing
+# Selected Writing & Thought Leadership
 
-- Authoring a book on AI-driven engineering leadership covering prompt engineering fundamentals, organizational drift recognition, and AI-assisted self-understanding (in progress, 3 chapters outlined with narrative drafts)
+- [Substack: AI-driven engineering leadership](https://substack.com/@dekay2001) — essays on prompt engineering, organizational drift, and building with AI
+- [Blog: dekay2001.github.io](https://dekay2001.github.io/) — technical writing, reflections, and project documentation
+- Authoring a book on AI-driven engineering leadership: 10 chapters drafted, covering prompt engineering, velocity traps, disposable mastery, organizational mandate response, and the future of mentorship in AI-augmented teams
 - Documented 17+ leadership moments and insights on AI collaboration, velocity multipliers, instruction engineering, and meta-learning
 - Developed original frameworks: Multi-Model Triangulation, Portfolio Intake Ledger, Lean Governance Model, Velocity Pattern Recognition, and Model Fallback Continuity
 
