@@ -38,7 +38,7 @@
 
 ## Roadmap
 
-> **Cross-roadmap status mapping** (see `roadmap-index.md` in the ai-prompts-library repo): items listed here use **Done** plus Priority/Effort. Done ≈ 📖 Published; un-started backlog items ≈ 📝 Idea; in-progress ≈ ✍️ Drafting.
+> **Cross-roadmap status mapping** (see `roadmap-index.md` in the ai-prompts-library repo): items listed here use **Done** plus Priority/Effort. Done ≈ 📖 Published; not started backlog items ≈ 📝 Idea; in-progress ≈ ✍️ Drafting.
 
 ### Done
 

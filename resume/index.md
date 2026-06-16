@@ -13,7 +13,7 @@ Lead engineer and AI-driven engineering leader with over twenty years of product
  
 ## Frontier Model & Agentic Workflow Experience
 
-- Hands-on with Claude (Opus, Sonnet), GPT-4/4o, Gemini, Llama, Mistral; local deployment via Ollama
+- Hands-on with Claude (Opus, Sonnet), GPT-4, GPT-4o, Gemini, Llama, Mistral; local deployment via Ollama
 - Custom VS Code agent workflows: plan → implement → verify, with SOLID review gates and TDD enforcement
 - Multi-agent session orchestration: brain-dump → parallel work plan across repos
 - Instruction engineering, applyTo patterns, skill packaging, and prompt-as-code with provenance tracking
