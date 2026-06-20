@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Weekend Woes"
+title: "Weekend Woes"
+date: 2020-05-25
 categories: [personal]
 tags: [emotions, mindfulness, music, friends, yoga, running, writing]
 ---

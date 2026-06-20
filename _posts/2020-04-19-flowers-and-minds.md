@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Flowers and Minds"
+title: "Flowers and Minds"
+date: 2020-04-19
 categories: [personal]
 tags: [flowers, joy, life, running, yoga]
 ---

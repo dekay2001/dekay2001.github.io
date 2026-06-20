@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Scales of Time"
+title: "Scales of Time"
+date: 2020-12-27
 categories: [personal]
 tags: [poem, zodiac, libra, hulk, pendulum]
 ---

@@ -106,4 +106,4 @@
 - **Scope (out):** Content rewrites. New blog posts.
 - **Priority:** P3
 - **Effort:** M
-- **Status:** Partial — theme removed and index.md title added; post front matter normalization deferred (bulk change across 57 files)
+- **Status:** Done

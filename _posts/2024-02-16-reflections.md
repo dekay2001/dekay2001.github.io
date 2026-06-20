@@ -1,8 +1,9 @@
 ---
 layout: post
 title: "Reflections, An Inspired Song"
+date: 2024-02-16
 categories: [creative, reflection]
-tags: [Song, Inspiration, Personal]
+tags: [song, inspiration, personal]
 ---
 
 {{ page.date | date: "%m/%d/%Y" }}

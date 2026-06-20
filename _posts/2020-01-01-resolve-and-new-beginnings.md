@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Resolve and New Beginnings"
+title: "Resolve and New Beginnings"
+date: 2020-01-01
 categories: [personal]
 tags: [growth, opportunity, sunrise, new year]
 ---

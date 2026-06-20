@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "snoopdog the wrapper"
+title: "snoopdog the wrapper"
+date: 2020-02-15
 categories: [tech]
 tags: [python, coding, wrapper functions, snoop dogg, rapper, humor]
 ---

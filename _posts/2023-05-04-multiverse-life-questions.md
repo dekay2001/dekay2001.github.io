@@ -1,8 +1,9 @@
 ---
 layout: post
-title:  "The Multiverse and Life Questions"
+title: "The Multiverse and Life Questions"
+date: 2023-05-04
 categories: [philosophy]
-tags: [multiverse, life, personal, quantum computing, string theory, God equation]
+tags: [multiverse, life, personal, quantum computing, string theory, god equation]
 ---
 {{ page.date | date: "%m/%d/%Y" }}
 

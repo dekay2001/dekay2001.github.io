@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "A Long Running Tradition"
+title: "A Long Running Tradition"
 date: 2026-03-15
 categories: [dover-run-club]
 tags: [community, running, personal-growth, leadership, reflection, resilience, decision-making, self-awareness]

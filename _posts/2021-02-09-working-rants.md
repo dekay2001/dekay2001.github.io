@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Working Rants"
+title: "Working Rants"
+date: 2021-02-09
 categories: [personal]
 tags: [poem, working, frustrations, distractions]
 ---

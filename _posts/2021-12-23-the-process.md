@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "'Life' The Process"
+title: "'Life' The Process"
+date: 2021-12-23
 categories: [personal, death, meditation, loss, mindfulness, family]
 tags: []
 ---
