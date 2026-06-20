@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Hello All"
+title: "Hello All"
+date: 2019-11-03
 categories: [personal]
 tags: [tech, personal]
 ---

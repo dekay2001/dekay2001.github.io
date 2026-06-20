@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Power Down"
+title: "Power Down"
+date: 2020-10-13
 categories: [personal]
 tags: [power outage, food, distractions, foreshadowing, fears, self defense mechanisms]
 ---

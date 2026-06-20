@@ -1,8 +1,9 @@
 ---
 layout: post
-title:  With My Eyes
+title: "With My Eyes"
+date: 2021-08-07
 categories: [personal]
-tags: [socialize, sadness, stress, running, eyes, phography, portsmouth]
+tags: [socialize, sadness, stress, running, eyes, photography, portsmouth]
 ---
 {{ page.date | date: "%m/%d/%Y" }}
  

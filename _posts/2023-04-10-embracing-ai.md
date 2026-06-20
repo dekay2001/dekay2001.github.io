@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Embracing the Power of AI: My Experience with Chat GPT"
+title: "Embracing the Power of AI: My Experience with Chat GPT"
+date: 2023-04-10
 categories: [tech]
 tags: []
 ---

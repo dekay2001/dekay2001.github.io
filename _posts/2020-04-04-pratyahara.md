@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Eight Limbs - Pratyahara"
+title: "Eight Limbs - Pratyahara"
+date: 2020-04-04
 categories: [yoga]
 tags: [yoga, ashtanga, pratyahara, covid-19, senses]
 ---

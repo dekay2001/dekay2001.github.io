@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Rapper's Delight"
+title: "Rapper's Delight"
+date: 2020-09-13
 categories: [personal, creative]
 tags: [open mic, rap, music, performance]
 ---

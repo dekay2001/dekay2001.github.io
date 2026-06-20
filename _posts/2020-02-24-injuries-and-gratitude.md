@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Injuries and Gratitude"
+title: "Injuries and Gratitude"
+date: 2020-02-24
 categories: [personal]
 tags: [injuries, gratitude, yoga, acl, depression]
 ---

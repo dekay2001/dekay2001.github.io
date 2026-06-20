@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Un-Pickled?"
+title: "Un-Pickled?"
+date: 2021-03-26
 categories: [personal]
 tags: [pickle, mood, reflection]
 ---

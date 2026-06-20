@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Reflections of Melancholy"
+title: "Reflections of Melancholy"
+date: 2019-12-22
 categories: [personal]
 tags: [anxiety, melancholy, change, yoga, growth, family, friends]
 ---

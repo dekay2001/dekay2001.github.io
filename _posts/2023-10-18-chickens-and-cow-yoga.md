@@ -1,8 +1,9 @@
 ---
 layout: post
 title: "Chickens and Cow Yoga: Unconventional Versioning Tales"
+date: 2023-10-18
 categories: [yoga, personal]
-tags: [Cows, Chickens, Yoga, Sofware, Versioning]
+tags: [cows, chickens, yoga, software, versioning]
 ---
 
 {{ page.date | date: "%m/%d/%Y" }}

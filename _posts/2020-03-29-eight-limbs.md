@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Eight Limbs"
+title: "Eight Limbs"
+date: 2020-03-29
 categories: [yoga, philosophy, personal]
 tags: [yoga, ashtanga, covid-19]
 ---

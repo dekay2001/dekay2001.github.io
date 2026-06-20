@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Music, Due With the New(Year)"
+title: "Music, Due With the New(Year)"
+date: 2023-01-02
 categories: [music, piano, fun city, reflection]
 tags: []
 ---
