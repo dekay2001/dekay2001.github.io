@@ -48,6 +48,11 @@ extra_head_links:
                 <input type="range" id="income" min="0" max="20000" value="3500" step="100">
               </div>
               <div class="control-group">
+                <label for="paycut-income">Post-pay-cut monthly income</label>
+                <div class="value-display" id="paycut-income-val">$2,000</div>
+                <input type="range" id="paycut-income" min="0" max="20000" value="2000" step="100">
+              </div>
+              <div class="control-group">
                 <label for="return">Annual investment return</label>
                 <div class="value-display" id="return-val">6.0%</div>
                 <input type="range" id="return" min="0" max="12" value="6" step="0.5">
@@ -138,6 +143,11 @@ extra_head_links:
                 <div class="metric-value accent" id="m-until">—</div>
                 <div class="metric-sub" id="m-until-sub">—</div>
               </div>
+              <div class="metric">
+                <div class="metric-label">Time until you can take a pay cut</div>
+                <div class="metric-value" id="m-paycut">—</div>
+                <div class="metric-sub" id="m-paycut-sub">—</div>
+              </div>
             </div>
 
             <div class="chart-wrap">
@@ -158,7 +168,7 @@ extra_head_links:
 
     <!-- Inline controller for the playground page. -->
     <script type="module">
-    import { computeRunway } from '/assets/js/life-money/compute.js';
+    import { computeRunway, computeCoastToPayCut } from '/assets/js/life-money/compute.js';
     import { drawChart } from '/assets/js/life-money/chart.js';
     import { formatCurrency, formatDailyRate } from '/assets/js/life-money/format.js';
     import { generateStatusMessage } from '/assets/js/life-money/status.js';
@@ -172,6 +182,7 @@ extra_head_links:
       const sliderSavings  = document.getElementById('savings');
       const sliderExpenses = document.getElementById('expenses');
       const sliderIncome   = document.getElementById('income');
+      const sliderPayCutIncome = document.getElementById('paycut-income');
       const sliderReturn   = document.getElementById('return');
       const sliderInflation = document.getElementById('inflation');
 
@@ -189,6 +200,7 @@ extra_head_links:
       const valSavings  = document.getElementById('savings-val');
       const valExpenses = document.getElementById('expenses-val');
       const valIncome   = document.getElementById('income-val');
+      const valPayCutIncome = document.getElementById('paycut-income-val');
       const valReturn   = document.getElementById('return-val');
       const valInflation = document.getElementById('inflation-val');
 
@@ -211,6 +223,8 @@ extra_head_links:
       const mGapSub    = document.getElementById('m-gap-sub');
       const mUntil     = document.getElementById('m-until');
       const mUntilSub  = document.getElementById('m-until-sub');
+      const mPayCut    = document.getElementById('m-paycut');
+      const mPayCutSub = document.getElementById('m-paycut-sub');
 
       const canvas    = document.getElementById('chart');
       const statusBar = document.getElementById('status-bar');
@@ -221,6 +235,7 @@ extra_head_links:
         const savings        = +sliderSavings.value;
         const monthlyExpenses = +sliderExpenses.value;
         const monthlyIncome  = +sliderIncome.value;
+        const payCutIncome   = +sliderPayCutIncome.value;
         const annualReturn   = +sliderReturn.value / 100;
         const annualInflation = +sliderInflation.value / 100;
 
@@ -242,6 +257,7 @@ extra_head_links:
         valSavings.textContent  = formatCurrency(savings);
         valExpenses.textContent = formatCurrency(monthlyExpenses);
         valIncome.textContent   = formatCurrency(monthlyIncome);
+        valPayCutIncome.textContent = formatCurrency(payCutIncome);
         valReturn.textContent   = parseFloat(sliderReturn.value).toFixed(1) + '%';
         valInflation.textContent = parseFloat(sliderInflation.value).toFixed(1) + '%';
 
@@ -306,6 +322,25 @@ extra_head_links:
           mUntilSub.textContent = 'remaining at age ' + life;
         }
 
+        // Coast-to-pay-cut
+        const coast = computeCoastToPayCut({ age, life, savings, monthlyExpenses, monthlyIncome, payCutIncome,
+                                             annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent });
+        if (!coast.achievable) {
+          mPayCut.textContent    = 'Not achievable';
+          mPayCut.className      = 'metric-value need';
+          mPayCutSub.textContent = 'even on full income, portfolio doesn\u2019t last to age ' + life;
+        } else if (coast.alreadyAchievable) {
+          mPayCut.textContent    = 'Now';
+          mPayCut.className      = 'metric-value have';
+          mPayCutSub.textContent = 'you can take this pay cut today';
+        } else {
+          const payCutYears  = Math.floor(coast.monthsUntilPayCut / 12);
+          const payCutMonths = coast.monthsUntilPayCut % 12;
+          mPayCut.textContent    = 'Age ' + Math.round(coast.ageAtPayCut);
+          mPayCut.className      = 'metric-value accent';
+          mPayCutSub.textContent = 'in ' + payCutYears + 'y ' + payCutMonths + 'm';
+        }
+
         // Status bar
         const { html } = generateStatusMessage({
           ...metrics,
@@ -333,7 +368,7 @@ extra_head_links:
         });
       }
 
-      ['age', 'life', 'savings', 'expenses', 'income', 'return', 'inflation',
+      ['age', 'life', 'savings', 'expenses', 'income', 'paycut-income', 'return', 'inflation',
        'ss-amount', 'ss-age', 'hc-cost', 'hc-until', 'lump-amount', 'lump-age'].forEach(id => {
         document.getElementById(id).addEventListener('input', update);
       });

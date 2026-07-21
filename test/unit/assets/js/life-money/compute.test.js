@@ -1,4 +1,4 @@
-const { computeRunway } = require('../../../../../assets/js/life-money/compute.js');
+const { computeRunway, computeCoastToPayCut } = require('../../../../../assets/js/life-money/compute.js');
 
 describe('computeRunway', () => {
   const base = {
@@ -289,5 +289,68 @@ describe('computeRunway — combined scenarios', () => {
     expect(result.balances[0]).toBe(400000);
     expect(result.finalBalance).toBeGreaterThanOrEqual(0);
     expect(result.finalMonthlyExpenses).toBeGreaterThan(5000); // inflation grew it
+  });
+});
+
+describe('computeCoastToPayCut', () => {
+  const base = {
+    age: 40,
+    life: 90,
+    savings: 500000,
+    monthlyExpenses: 4000,
+    monthlyIncome: 6000,
+    payCutIncome: 2000,
+    annualReturn: 0.06,
+    annualInflation: 0,
+  };
+
+  it('reports alreadyAchievable when the pay-cut income alone already sustains to life', () => {
+    const result = computeCoastToPayCut({ ...base, savings: 3000000 });
+    expect(result.achievable).toBe(true);
+    expect(result.alreadyAchievable).toBe(true);
+    expect(result.monthsUntilPayCut).toBe(0);
+    expect(result.ageAtPayCut).toBe(base.age);
+  });
+
+  it('reports a future monthsUntilPayCut/ageAtPayCut when not immediately achievable', () => {
+    const result = computeCoastToPayCut({ ...base, savings: 200000 });
+    expect(result.achievable).toBe(true);
+    expect(result.alreadyAchievable).toBe(false);
+    expect(result.monthsUntilPayCut).toBeGreaterThan(0);
+    expect(result.ageAtPayCut).toBeCloseTo(base.age + result.monthsUntilPayCut / 12, 4);
+  });
+
+  it('reports achievable=false when even full income until life cannot sustain the pay cut', () => {
+    const result = computeCoastToPayCut({ ...base, savings: 0, payCutIncome: 0, monthlyExpenses: 20000 });
+    expect(result.achievable).toBe(false);
+    expect(result.alreadyAchievable).toBe(false);
+    expect(result.monthsUntilPayCut).toBeNull();
+    expect(result.ageAtPayCut).toBeNull();
+  });
+
+  it('treats payCutIncome >= monthlyIncome as already achievable (guard, no search)', () => {
+    const result = computeCoastToPayCut({ ...base, payCutIncome: base.monthlyIncome, savings: 1500000 });
+    expect(result.alreadyAchievable).toBe(true);
+    expect(result.monthsUntilPayCut).toBe(0);
+  });
+
+  it('a lower payCutIncome requires waiting longer (monotonic behavior)', () => {
+    const lowCut = computeCoastToPayCut({ ...base, savings: 300000, payCutIncome: 3500 });
+    const deepCut = computeCoastToPayCut({ ...base, savings: 300000, payCutIncome: 1000 });
+    expect(deepCut.monthsUntilPayCut).toBeGreaterThanOrEqual(lowCut.monthsUntilPayCut);
+  });
+
+  it('accounts for social security, healthcare gap, and lump events like computeRunway', () => {
+    const withSS = computeCoastToPayCut({
+      ...base,
+      savings: 250000,
+      socialSecurity: { monthlyAmount: 2000, startsAtAge: 67 },
+    });
+    const withoutSS = computeCoastToPayCut({ ...base, savings: 250000 });
+    expect(withSS.achievable).toBe(true);
+    // Social Security should never require *more* waiting than without it.
+    if (withoutSS.achievable) {
+      expect(withSS.monthsUntilPayCut).toBeLessThanOrEqual(withoutSS.monthsUntilPayCut);
+    }
   });
 });
