@@ -45,7 +45,7 @@ _Also familiar with: Android Development, C/C++_
 
  ### Responsibilities, Projects, and Accomplishments  
 
-- Architected and Prototyped a Profit Tools MCP server and demonstrated the potential of integrating AI into legacy products.
+- Architected and prototyped a Profit Tools MCP server and demonstrated the potential of integrating AI into legacy products.
 
 - Championed AI adoption across the team and org — operating Claude, GPT, Gemini, Llama, and custom VS Code agent workflows; established best practices that improved productivity, code quality, and review velocity, and seeded an independent research lab and book project.
 
