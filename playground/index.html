@@ -365,7 +365,15 @@ extra_head_links:
           const payCutMonths = coast.monthsUntilPayCut % 12;
           mPayCut.textContent    = 'Age ' + Math.floor(coast.ageAtPayCut);
           mPayCut.className      = 'metric-value accent';
-          mPayCutSub.textContent = 'in ' + payCutYears + 'y ' + payCutMonths + 'm';
+          // Clarify *why* waiting is required: show what would happen if the
+          // cut were taken today instead of waiting until ageAtPayCut.
+          const cutToday = computeRunway({ age, life, savings, retirementSavings, monthlyExpenses,
+                                            monthlyIncome: payCutIncome, annualReturn, annualInflation,
+                                            socialSecurity, healthcareGap, lumpEvent });
+          const cutTodayNote = cutToday.depleted
+            ? ' \u2014 cutting today would deplete at age ' + Math.round(cutToday.depletedAge)
+            : '';
+          mPayCutSub.textContent = 'in ' + payCutYears + 'y ' + payCutMonths + 'm' + cutTodayNote;
         }
 
         // Status bar
