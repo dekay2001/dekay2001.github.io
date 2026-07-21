@@ -19,7 +19,8 @@
  * @param {Object|null} [params.socialSecurity=null]  { monthlyAmount, startsAtAge }
  * @param {Object|null} [params.healthcareGap=null]   { monthlyCost, coveredUntilAge }
  * @param {Object|null} [params.lumpEvent=null]       { amount, atAge }
- * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income
+ * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income.
+ *   monthIndex is 1-based (the first simulated month is 1, matching the internal loop counter).
  * @returns {Object} balances, needs, depleted, depletedAge, finalBalance, finalMonthlyExpenses
  */
 function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
@@ -140,7 +141,9 @@ function computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, ann
 function computeCoastToPayCut({ age, life, savings, monthlyExpenses, monthlyIncome, payCutIncome, annualReturn,
                                 annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null }) {
   const yearsLeft = Math.max(life - age, 0);
-  const totalMonths = Math.round(yearsLeft * 12);
+  // Match runSimulation's loop bound (`m <= yearsLeft * 12`), which behaves like Math.floor
+  // for fractional yearsLeft, so monthsUntilPayCut/ageAtPayCut stay consistent with it.
+  const totalMonths = Math.floor(yearsLeft * 12);
   const simParams = { age, yearsLeft, savings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent };
 
   const survives = (transitionMonth) => {

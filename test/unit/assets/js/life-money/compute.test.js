@@ -340,7 +340,7 @@ describe('computeCoastToPayCut', () => {
     expect(deepCut.monthsUntilPayCut).toBeGreaterThanOrEqual(lowCut.monthsUntilPayCut);
   });
 
-  it('accounts for social security, healthcare gap, and lump events like computeRunway', () => {
+  it('accounts for Social Security like computeRunway', () => {
     const withSS = computeCoastToPayCut({
       ...base,
       savings: 250000,
