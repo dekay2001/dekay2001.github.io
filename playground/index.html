@@ -359,7 +359,7 @@ extra_head_links:
         } else {
           const payCutYears  = Math.floor(coast.monthsUntilPayCut / 12);
           const payCutMonths = coast.monthsUntilPayCut % 12;
-          mPayCut.textContent    = 'Age ' + Math.round(coast.ageAtPayCut);
+          mPayCut.textContent    = 'Age ' + Math.floor(coast.ageAtPayCut);
           mPayCut.className      = 'metric-value accent';
           mPayCutSub.textContent = 'in ' + payCutYears + 'y ' + payCutMonths + 'm';
         }
@@ -388,6 +388,7 @@ extra_head_links:
           needs:     metrics.needs,
           savings:   savings + retirementSavings,
           depleted:  metrics.depleted,
+          accessibleBalances: metrics.accessibleBalances,
         });
       }
 

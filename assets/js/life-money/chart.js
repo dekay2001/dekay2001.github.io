@@ -3,7 +3,7 @@
  * Accepts a canvas element and data, draws the portfolio chart.
  */
 
-function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, depleted }) {
+function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, depleted, accessibleBalances }) {
   const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
   const W = canvas.parentElement ? canvas.parentElement.clientWidth - 48 : 600;
   const H = 280;
@@ -101,9 +101,14 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
   ctx.fill();
 
   // Depletion marker
+  // Uses accessibleBalances (brokerage + retirement only once accessible) when
+  // provided, since that's what the `depleted` flag is actually based on — the
+  // combined `balances` series can stay positive (locked retirement still
+  // counts toward it) even when accessible funds have hit 0.
+  const depletionSeries = accessibleBalances || balances;
   if (depleted) {
     for (let i = 1; i < points; i++) {
-      if (balances[i] <= 0) {
+      if (depletionSeries[i] <= 0) {
         const x = xScale(i);
         ctx.beginPath();
         ctx.strokeStyle = 'rgba(243,156,18,0.6)';

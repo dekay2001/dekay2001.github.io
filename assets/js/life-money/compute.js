@@ -34,9 +34,12 @@ const RETIREMENT_ACCESS_AGE = 59.5;
  * @param {Object|null} [params.lumpEvent=null]       { amount, atAge }
  * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income.
  *   monthIndex is 1-based (the first simulated month is 1, matching the internal loop counter).
- * @returns {Object} balances, brokerageBalances, retirementBalances, needs, depleted,
- *   depletedAge, brokerageDepletedAge, finalBalance, finalBrokerageBalance,
- *   finalRetirementBalance, finalMonthlyExpenses
+ * @returns {Object} balances, brokerageBalances, retirementBalances, accessibleBalances,
+ *   needs, depleted, depletedAge, brokerageDepletedAge, finalBalance,
+ *   finalBrokerageBalance, finalRetirementBalance, finalMonthlyExpenses.
+ *   accessibleBalances is the series `depleted`/`depletedAge` are derived from
+ *   (brokerage + retirement only once accessible); it can be 0 while the
+ *   combined `balances` value is still positive if retirement is locked.
  */
 function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthlyExpenses, annualReturn,
                         annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null },
@@ -54,6 +57,7 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
   const balances = [brokerageBalance + retirementBalance];
   const brokerageBalances = [brokerageBalance];
   const retirementBalances = [retirementBalance];
+  const accessibleBalances = [brokerageBalance + retirementBalance];
   const needs = [0];
   let cumNeed = 0;
   let finalMonthlyExpenses = currentExpenses;
@@ -101,12 +105,13 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
 
     cumNeed += effectiveExpenses;
     finalMonthlyExpenses = currentExpenses;
+    const accessibleBalance = brokerageBalance + (canAccessRetirement ? retirementBalance : 0);
     balances.push(brokerageBalance + retirementBalance);
     brokerageBalances.push(brokerageBalance);
     retirementBalances.push(retirementBalance);
+    accessibleBalances.push(accessibleBalance);
     needs.push(cumNeed);
 
-    const accessibleBalance = brokerageBalance + (canAccessRetirement ? retirementBalance : 0);
     if (accessibleBalance <= 0 && !depleted) {
       depleted = true;
       depletedAge = currentAge;
@@ -126,6 +131,7 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     balances,
     brokerageBalances,
     retirementBalances,
+    accessibleBalances,
     needs,
     depleted,
     depletedAge,
@@ -180,6 +186,7 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
     balances: sim.balances,
     brokerageBalances: sim.brokerageBalances,
     retirementBalances: sim.retirementBalances,
+    accessibleBalances: sim.accessibleBalances,
     needs: sim.needs,
     finalBalance: sim.finalBalance,
     finalBrokerageBalance: sim.finalBrokerageBalance,
@@ -192,7 +199,9 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
  * Determines how many months of continued full income are needed before
  * switching to a reduced ("pay-cut") income while still not depleting the
  * portfolio before age `life`. Reuses the same scenario rules as
- * computeRunway (inflation, Social Security, healthcare gap, lump event).
+ * computeRunway (inflation, Social Security, healthcare gap, lump event,
+ * and the retirement-savings hard block: 401k/IRA funds cannot be drawn on
+ * before RETIREMENT_ACCESS_AGE, regardless of balance).
  *
  * @param {Object} params  Same shape as computeRunway, plus:
  * @param {number} params.payCutIncome  Reduced monthly income after the cut

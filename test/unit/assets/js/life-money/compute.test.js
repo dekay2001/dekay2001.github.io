@@ -447,4 +447,17 @@ describe('computeRunway — retirement savings (401k hard block)', () => {
     });
     expect(result.brokerageDepletedAge).toBeNull();
   });
+
+  it('exposes an accessibleBalances series that reflects the retirement hard block (unlike the combined balances series)', () => {
+    // Entire horizon stays below the 59.5 access age, so retirement is locked.
+    const result = computeRunway({
+      age: 55, life: 57, savings: 1000, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    // Combined balance never hits 0 (locked retirement still counts toward it),
+    // but the accessible balance does -- this is what "depleted" is based on.
+    expect(result.balances[1]).toBe(100000);
+    expect(result.accessibleBalances[1]).toBe(0);
+    expect(result.depleted).toBe(true);
+  });
 });
