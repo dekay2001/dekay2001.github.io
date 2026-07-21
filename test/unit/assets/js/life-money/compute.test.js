@@ -426,4 +426,25 @@ describe('computeRunway — retirement savings (401k hard block)', () => {
     expect(result.finalBrokerageBalance).toBe(0);
     expect(result.finalBalance).toBeCloseTo(62000, 6);
   });
+
+  it('exposes brokerageDepletedAge for when the liquid balance first hits 0, even if the combined portfolio never depletes', () => {
+    // Age is already past the retirement-access age, so the large retirement
+    // balance keeps the combined portfolio from ever "depleting", even though
+    // the brokerage/liquid balance alone runs out right away.
+    const result = computeRunway({
+      age: 60, life: 90, savings: 1000, retirementSavings: 5000000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0.07,
+    });
+    expect(result.depleted).toBe(false);
+    expect(result.finalBrokerageBalance).toBe(0);
+    expect(result.brokerageDepletedAge).toBeCloseTo(60 + 1 / 12, 6);
+  });
+
+  it('leaves brokerageDepletedAge null when the liquid balance never runs out', () => {
+    const result = computeRunway({
+      age: 40, life: 41, savings: 1000000, retirementSavings: 0,
+      monthlyExpenses: 2000, monthlyIncome: 2000, annualReturn: 0,
+    });
+    expect(result.brokerageDepletedAge).toBeNull();
+  });
 });

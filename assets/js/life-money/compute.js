@@ -35,7 +35,8 @@ const RETIREMENT_ACCESS_AGE = 59.5;
  * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income.
  *   monthIndex is 1-based (the first simulated month is 1, matching the internal loop counter).
  * @returns {Object} balances, brokerageBalances, retirementBalances, needs, depleted,
- *   depletedAge, finalBalance, finalBrokerageBalance, finalRetirementBalance, finalMonthlyExpenses
+ *   depletedAge, brokerageDepletedAge, finalBalance, finalBrokerageBalance,
+ *   finalRetirementBalance, finalMonthlyExpenses
  */
 function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthlyExpenses, annualReturn,
                         annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null },
@@ -48,6 +49,8 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
   let retirementBalance = retirementSavings;
   let depleted = false;
   let depletedAge = null;
+  let brokerageDepleted = false;
+  let brokerageDepletedAge = null;
   const balances = [brokerageBalance + retirementBalance];
   const brokerageBalances = [brokerageBalance];
   const retirementBalances = [retirementBalance];
@@ -108,6 +111,14 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
       depleted = true;
       depletedAge = currentAge;
     }
+    // Tracks the liquid/brokerage balance alone, independent of whether the
+    // combined (accessible) portfolio is considered depleted. A large
+    // retirement balance can keep the overall portfolio healthy even after
+    // brokerage/other savings run out.
+    if (brokerageBalance <= 0 && !brokerageDepleted) {
+      brokerageDepleted = true;
+      brokerageDepletedAge = currentAge;
+    }
     currentExpenses *= (1 + monthlyInflation);
   }
 
@@ -118,6 +129,7 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     needs,
     depleted,
     depletedAge,
+    brokerageDepletedAge,
     finalBalance: balances[balances.length - 1],
     finalBrokerageBalance: brokerageBalances[brokerageBalances.length - 1],
     finalRetirementBalance: retirementBalances[retirementBalances.length - 1],
@@ -164,6 +176,7 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
     savingsPerDay,
     depleted: sim.depleted,
     depletedAge: sim.depletedAge,
+    brokerageDepletedAge: sim.brokerageDepletedAge,
     balances: sim.balances,
     brokerageBalances: sim.brokerageBalances,
     retirementBalances: sim.retirementBalances,

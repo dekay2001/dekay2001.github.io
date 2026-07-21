@@ -340,7 +340,10 @@ extra_head_links:
 
         // Brokerage vs. retirement breakdown
         mBreakdown.textContent = formatCurrency(metrics.finalBrokerageBalance) + ' / ' + formatCurrency(metrics.finalRetirementBalance);
-        mBreakdown.className   = metrics.depleted ? 'metric-value need' : 'metric-value have';
+        mBreakdown.className   = metrics.finalBrokerageBalance <= 0 ? 'metric-value need' : 'metric-value have';
+        mBreakdownSub.textContent = metrics.brokerageDepletedAge !== null
+          ? 'Brokerage runs out at age ' + Math.round(metrics.brokerageDepletedAge) + ' \u00b7 401k/IRA locked until age 59\u00bd'
+          : '401k/IRA locked until age 59\u00bd';
 
         // Coast-to-pay-cut
         const coast = computeCoastToPayCut({ age, life, savings, retirementSavings, monthlyExpenses, monthlyIncome, payCutIncome,
