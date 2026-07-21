@@ -310,6 +310,7 @@ describe('computeCoastToPayCut', () => {
     expect(result.alreadyAchievable).toBe(true);
     expect(result.monthsUntilPayCut).toBe(0);
     expect(result.ageAtPayCut).toBe(base.age);
+    expect(result.isPayCut).toBe(true);
   });
 
   it('reports a future monthsUntilPayCut/ageAtPayCut when not immediately achievable', () => {
@@ -332,6 +333,17 @@ describe('computeCoastToPayCut', () => {
     const result = computeCoastToPayCut({ ...base, payCutIncome: base.monthlyIncome, savings: 1500000 });
     expect(result.alreadyAchievable).toBe(true);
     expect(result.monthsUntilPayCut).toBe(0);
+    expect(result.isPayCut).toBe(false);
+  });
+
+  it('flags isPayCut=false when payCutIncome exceeds monthlyIncome even while the current-income scenario is already depleted', () => {
+    // Reproduces the confusing case where the current (lower) income already depletes
+    // the portfolio, but payCutIncome is set higher than monthlyIncome (not a real cut).
+    const currentIncomeDepletes = computeRunway({ ...base, monthlyIncome: 1000, savings: 50000 });
+    expect(currentIncomeDepletes.depleted).toBe(true);
+
+    const result = computeCoastToPayCut({ ...base, monthlyIncome: 1000, payCutIncome: 3000, savings: 50000 });
+    expect(result.isPayCut).toBe(false);
   });
 
   it('a lower payCutIncome requires waiting longer (monotonic behavior)', () => {
