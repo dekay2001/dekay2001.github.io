@@ -1,6 +1,6 @@
 ---
 description: "[dekay2001.github.io] Verify implemented changes against the plan, tests, and repository standards."
-tools: ['search', 'usages', 'problems', 'todos', 'runSubagent', 'runCommands']
+tools: ['search', 'usages', 'problems', 'todos', 'runCommands']
 ---
 
 # Verification Agent — dekay2001.github.io
