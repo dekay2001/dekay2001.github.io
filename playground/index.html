@@ -348,7 +348,11 @@ extra_head_links:
         // Coast-to-pay-cut
         const coast = computeCoastToPayCut({ age, life, savings, retirementSavings, monthlyExpenses, monthlyIncome, payCutIncome,
                                              annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent });
-        if (!coast.achievable) {
+        if (!coast.isPayCut) {
+          mPayCut.textContent    = 'N/A';
+          mPayCut.className      = 'metric-value neutral';
+          mPayCutSub.textContent = 'post-cut income must be lower than current income';
+        } else if (!coast.achievable) {
           mPayCut.textContent    = 'Not achievable';
           mPayCut.className      = 'metric-value need';
           mPayCutSub.textContent = 'even on full income, portfolio doesn\u2019t last to age ' + life;

@@ -205,7 +205,10 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
  *
  * @param {Object} params  Same shape as computeRunway, plus:
  * @param {number} params.payCutIncome  Reduced monthly income after the cut
- * @returns {{achievable: boolean, alreadyAchievable: boolean, monthsUntilPayCut: number|null, ageAtPayCut: number|null}}
+ * @returns {{achievable: boolean, alreadyAchievable: boolean, monthsUntilPayCut: number|null, ageAtPayCut: number|null, isPayCut: boolean}}
+ *   isPayCut is false when payCutIncome >= monthlyIncome (not actually a reduction); in that
+ *   case achievable/alreadyAchievable are computed from payCutIncome alone and are independent
+ *   of whether the CURRENT monthlyIncome scenario (as reported by computeRunway) is sustainable.
  */
 function computeCoastToPayCut({ age, life, savings, retirementSavings = 0, monthlyExpenses, monthlyIncome, payCutIncome, annualReturn,
                                 annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null }) {
@@ -220,25 +223,28 @@ function computeCoastToPayCut({ age, life, savings, retirementSavings = 0, month
     return !sim.depleted;
   };
 
+  const isPayCut = payCutIncome < monthlyIncome;
+
   // Not actually a cut — nothing to coast toward.
-  if (payCutIncome >= monthlyIncome) {
+  if (!isPayCut) {
     const achievable = survives(0);
     return {
       achievable,
       alreadyAchievable: achievable,
       monthsUntilPayCut: achievable ? 0 : null,
       ageAtPayCut: achievable ? age : null,
+      isPayCut,
     };
   }
 
   // Even working full income the entire remaining span can't sustain it.
   if (!survives(totalMonths)) {
-    return { achievable: false, alreadyAchievable: false, monthsUntilPayCut: null, ageAtPayCut: null };
+    return { achievable: false, alreadyAchievable: false, monthsUntilPayCut: null, ageAtPayCut: null, isPayCut };
   }
 
   // The pay-cut income alone already sustains to life expectancy.
   if (survives(0)) {
-    return { achievable: true, alreadyAchievable: true, monthsUntilPayCut: 0, ageAtPayCut: age };
+    return { achievable: true, alreadyAchievable: true, monthsUntilPayCut: 0, ageAtPayCut: age, isPayCut };
   }
 
   // Binary search for the minimal transition month (monotonic since payCutIncome < monthlyIncome).
@@ -253,7 +259,7 @@ function computeCoastToPayCut({ age, life, savings, retirementSavings = 0, month
     }
   }
 
-  return { achievable: true, alreadyAchievable: false, monthsUntilPayCut: lo, ageAtPayCut: age + lo / 12 };
+  return { achievable: true, alreadyAchievable: false, monthsUntilPayCut: lo, ageAtPayCut: age + lo / 12, isPayCut };
 }
 
 export { computeRunway, computeCoastToPayCut };
