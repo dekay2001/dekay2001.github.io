@@ -101,6 +101,20 @@ describe('drawChart', () => {
     expect(fillTextCalls).toContain('depleted');
   });
 
+  it('draws depletion marker based on accessibleBalances when the combined balances series never hits 0 (locked retirement funds)', () => {
+    const { canvas, ctx } = makeCanvas();
+    const yearsLeft = 2;
+    const months = yearsLeft * 12;
+    // Combined balances stay positive throughout (locked retirement still counts),
+    // but the accessible balance (what `depleted` is actually based on) hits 0 right away.
+    const balances = Array.from({ length: months + 1 }, () => 100000);
+    const accessibleBalances = Array.from({ length: months + 1 }, (_, i) => (i === 0 ? 1000 : 0));
+    const needs = Array.from({ length: months + 1 }, (_, i) => i * 2000);
+    drawChart(canvas, makeData({ depleted: true, yearsLeft, balances, accessibleBalances, needs }));
+    const fillTextCalls = ctx.fillText.mock.calls.map(c => c[0]);
+    expect(fillTextCalls).toContain('depleted');
+  });
+
   it('creates a linear gradient for the fill', () => {
     const { canvas, ctx } = makeCanvas();
     drawChart(canvas, makeData());

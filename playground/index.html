@@ -33,9 +33,14 @@ extra_head_links:
                 <input type="range" id="life" min="70" max="100" value="90" step="1">
               </div>
               <div class="control-group">
-                <label for="savings">Current savings / investments</label>
+                <label for="savings">Brokerage / other savings</label>
                 <div class="value-display" id="savings-val">$250,000</div>
                 <input type="range" id="savings" min="0" max="2000000" value="250000" step="5000">
+              </div>
+              <div class="control-group">
+                <label for="retirement-savings">Retirement savings (401k/IRA)</label>
+                <div class="value-display" id="retirement-savings-val">$0</div>
+                <input type="range" id="retirement-savings" min="0" max="2000000" value="0" step="5000">
               </div>
               <div class="control-group">
                 <label for="expenses">Monthly expenses needed</label>
@@ -46,6 +51,11 @@ extra_head_links:
                 <label for="income">Monthly income (job / consulting)</label>
                 <div class="value-display" id="income-val">$3,500</div>
                 <input type="range" id="income" min="0" max="20000" value="3500" step="100">
+              </div>
+              <div class="control-group">
+                <label for="paycut-income">Post-pay-cut monthly income</label>
+                <div class="value-display" id="paycut-income-val">$2,000</div>
+                <input type="range" id="paycut-income" min="0" max="20000" value="2000" step="100">
               </div>
               <div class="control-group">
                 <label for="return">Annual investment return</label>
@@ -138,6 +148,16 @@ extra_head_links:
                 <div class="metric-value accent" id="m-until">—</div>
                 <div class="metric-sub" id="m-until-sub">—</div>
               </div>
+              <div class="metric">
+                <div class="metric-label">Brokerage vs. retirement remaining</div>
+                <div class="metric-value" id="m-breakdown">—</div>
+                <div class="metric-sub" id="m-breakdown-sub">401k/IRA locked until age 59½</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Time until you can take a pay cut</div>
+                <div class="metric-value" id="m-paycut">—</div>
+                <div class="metric-sub" id="m-paycut-sub">—</div>
+              </div>
             </div>
 
             <div class="chart-wrap">
@@ -158,7 +178,7 @@ extra_head_links:
 
     <!-- Inline controller for the playground page. -->
     <script type="module">
-    import { computeRunway } from '/assets/js/life-money/compute.js';
+    import { computeRunway, computeCoastToPayCut } from '/assets/js/life-money/compute.js';
     import { drawChart } from '/assets/js/life-money/chart.js';
     import { formatCurrency, formatDailyRate } from '/assets/js/life-money/format.js';
     import { generateStatusMessage } from '/assets/js/life-money/status.js';
@@ -170,8 +190,10 @@ extra_head_links:
       const sliderAge      = document.getElementById('age');
       const sliderLife     = document.getElementById('life');
       const sliderSavings  = document.getElementById('savings');
+      const sliderRetirementSavings = document.getElementById('retirement-savings');
       const sliderExpenses = document.getElementById('expenses');
       const sliderIncome   = document.getElementById('income');
+      const sliderPayCutIncome = document.getElementById('paycut-income');
       const sliderReturn   = document.getElementById('return');
       const sliderInflation = document.getElementById('inflation');
 
@@ -187,8 +209,10 @@ extra_head_links:
       const valAge      = document.getElementById('age-val');
       const valLife     = document.getElementById('life-val');
       const valSavings  = document.getElementById('savings-val');
+      const valRetirementSavings = document.getElementById('retirement-savings-val');
       const valExpenses = document.getElementById('expenses-val');
       const valIncome   = document.getElementById('income-val');
+      const valPayCutIncome = document.getElementById('paycut-income-val');
       const valReturn   = document.getElementById('return-val');
       const valInflation = document.getElementById('inflation-val');
 
@@ -211,6 +235,10 @@ extra_head_links:
       const mGapSub    = document.getElementById('m-gap-sub');
       const mUntil     = document.getElementById('m-until');
       const mUntilSub  = document.getElementById('m-until-sub');
+      const mBreakdown    = document.getElementById('m-breakdown');
+      const mBreakdownSub = document.getElementById('m-breakdown-sub');
+      const mPayCut    = document.getElementById('m-paycut');
+      const mPayCutSub = document.getElementById('m-paycut-sub');
 
       const canvas    = document.getElementById('chart');
       const statusBar = document.getElementById('status-bar');
@@ -219,8 +247,10 @@ extra_head_links:
         const age            = +sliderAge.value;
         const life           = +sliderLife.value;
         const savings        = +sliderSavings.value;
+        const retirementSavings = +sliderRetirementSavings.value;
         const monthlyExpenses = +sliderExpenses.value;
         const monthlyIncome  = +sliderIncome.value;
+        const payCutIncome   = +sliderPayCutIncome.value;
         const annualReturn   = +sliderReturn.value / 100;
         const annualInflation = +sliderInflation.value / 100;
 
@@ -240,8 +270,10 @@ extra_head_links:
         valAge.textContent      = age;
         valLife.textContent     = life;
         valSavings.textContent  = formatCurrency(savings);
+        valRetirementSavings.textContent = formatCurrency(retirementSavings);
         valExpenses.textContent = formatCurrency(monthlyExpenses);
         valIncome.textContent   = formatCurrency(monthlyIncome);
+        valPayCutIncome.textContent = formatCurrency(payCutIncome);
         valReturn.textContent   = parseFloat(sliderReturn.value).toFixed(1) + '%';
         valInflation.textContent = parseFloat(sliderInflation.value).toFixed(1) + '%';
 
@@ -254,7 +286,7 @@ extra_head_links:
         valLumpAmt.textContent   = lumpAmtSign + formatCurrency(Math.abs(lumpAmt));
         valLumpAge.textContent   = lumpAge;
 
-        const metrics = computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation,
+        const metrics = computeRunway({ age, life, savings, retirementSavings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation,
                                         socialSecurity, healthcareGap, lumpEvent });
 
         // Metrics panel
@@ -306,6 +338,32 @@ extra_head_links:
           mUntilSub.textContent = 'remaining at age ' + life;
         }
 
+        // Brokerage vs. retirement breakdown
+        mBreakdown.textContent = formatCurrency(metrics.finalBrokerageBalance) + ' / ' + formatCurrency(metrics.finalRetirementBalance);
+        mBreakdown.className   = metrics.finalBrokerageBalance <= 0 ? 'metric-value need' : 'metric-value have';
+        mBreakdownSub.textContent = metrics.brokerageDepletedAge !== null
+          ? 'Brokerage runs out at age ' + Math.round(metrics.brokerageDepletedAge) + ' \u00b7 401k/IRA locked until age 59\u00bd'
+          : '401k/IRA locked until age 59\u00bd';
+
+        // Coast-to-pay-cut
+        const coast = computeCoastToPayCut({ age, life, savings, retirementSavings, monthlyExpenses, monthlyIncome, payCutIncome,
+                                             annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent });
+        if (!coast.achievable) {
+          mPayCut.textContent    = 'Not achievable';
+          mPayCut.className      = 'metric-value need';
+          mPayCutSub.textContent = 'even on full income, portfolio doesn\u2019t last to age ' + life;
+        } else if (coast.alreadyAchievable) {
+          mPayCut.textContent    = 'Now';
+          mPayCut.className      = 'metric-value have';
+          mPayCutSub.textContent = 'you can take this pay cut today';
+        } else {
+          const payCutYears  = Math.floor(coast.monthsUntilPayCut / 12);
+          const payCutMonths = coast.monthsUntilPayCut % 12;
+          mPayCut.textContent    = 'Age ' + Math.floor(coast.ageAtPayCut);
+          mPayCut.className      = 'metric-value accent';
+          mPayCutSub.textContent = 'in ' + payCutYears + 'y ' + payCutMonths + 'm';
+        }
+
         // Status bar
         const { html } = generateStatusMessage({
           ...metrics,
@@ -315,7 +373,7 @@ extra_head_links:
           monthlyReturn: annualReturn / 12,
           annualInflation,
           life,
-          savings,
+          savings: savings + retirementSavings,
           socialSecurity,
           healthcareGap,
           lumpEvent,
@@ -328,12 +386,13 @@ extra_head_links:
           yearsLeft: metrics.yearsLeft,
           balances:  metrics.balances,
           needs:     metrics.needs,
-          savings,
+          savings:   savings + retirementSavings,
           depleted:  metrics.depleted,
+          accessibleBalances: metrics.accessibleBalances,
         });
       }
 
-      ['age', 'life', 'savings', 'expenses', 'income', 'return', 'inflation',
+      ['age', 'life', 'savings', 'retirement-savings', 'expenses', 'income', 'paycut-income', 'return', 'inflation',
        'ss-amount', 'ss-age', 'hc-cost', 'hc-until', 'lump-amount', 'lump-age'].forEach(id => {
         document.getElementById(id).addEventListener('input', update);
       });

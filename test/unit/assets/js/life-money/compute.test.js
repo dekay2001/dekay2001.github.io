@@ -1,4 +1,4 @@
-const { computeRunway } = require('../../../../../assets/js/life-money/compute.js');
+const { computeRunway, computeCoastToPayCut } = require('../../../../../assets/js/life-money/compute.js');
 
 describe('computeRunway', () => {
   const base = {
@@ -289,5 +289,175 @@ describe('computeRunway — combined scenarios', () => {
     expect(result.balances[0]).toBe(400000);
     expect(result.finalBalance).toBeGreaterThanOrEqual(0);
     expect(result.finalMonthlyExpenses).toBeGreaterThan(5000); // inflation grew it
+  });
+});
+
+describe('computeCoastToPayCut', () => {
+  const base = {
+    age: 40,
+    life: 90,
+    savings: 500000,
+    monthlyExpenses: 4000,
+    monthlyIncome: 6000,
+    payCutIncome: 2000,
+    annualReturn: 0.06,
+    annualInflation: 0,
+  };
+
+  it('reports alreadyAchievable when the pay-cut income alone already sustains to life', () => {
+    const result = computeCoastToPayCut({ ...base, savings: 3000000 });
+    expect(result.achievable).toBe(true);
+    expect(result.alreadyAchievable).toBe(true);
+    expect(result.monthsUntilPayCut).toBe(0);
+    expect(result.ageAtPayCut).toBe(base.age);
+  });
+
+  it('reports a future monthsUntilPayCut/ageAtPayCut when not immediately achievable', () => {
+    const result = computeCoastToPayCut({ ...base, savings: 200000 });
+    expect(result.achievable).toBe(true);
+    expect(result.alreadyAchievable).toBe(false);
+    expect(result.monthsUntilPayCut).toBeGreaterThan(0);
+    expect(result.ageAtPayCut).toBeCloseTo(base.age + result.monthsUntilPayCut / 12, 4);
+  });
+
+  it('reports achievable=false when even full income until life cannot sustain the pay cut', () => {
+    const result = computeCoastToPayCut({ ...base, savings: 0, payCutIncome: 0, monthlyExpenses: 20000 });
+    expect(result.achievable).toBe(false);
+    expect(result.alreadyAchievable).toBe(false);
+    expect(result.monthsUntilPayCut).toBeNull();
+    expect(result.ageAtPayCut).toBeNull();
+  });
+
+  it('treats payCutIncome >= monthlyIncome as already achievable (guard, no search)', () => {
+    const result = computeCoastToPayCut({ ...base, payCutIncome: base.monthlyIncome, savings: 1500000 });
+    expect(result.alreadyAchievable).toBe(true);
+    expect(result.monthsUntilPayCut).toBe(0);
+  });
+
+  it('a lower payCutIncome requires waiting longer (monotonic behavior)', () => {
+    const lowCut = computeCoastToPayCut({ ...base, savings: 300000, payCutIncome: 3500 });
+    const deepCut = computeCoastToPayCut({ ...base, savings: 300000, payCutIncome: 1000 });
+    expect(deepCut.monthsUntilPayCut).toBeGreaterThanOrEqual(lowCut.monthsUntilPayCut);
+  });
+
+  it('accounts for Social Security like computeRunway', () => {
+    const withSS = computeCoastToPayCut({
+      ...base,
+      savings: 250000,
+      socialSecurity: { monthlyAmount: 2000, startsAtAge: 67 },
+    });
+    const withoutSS = computeCoastToPayCut({ ...base, savings: 250000 });
+    expect(withSS.achievable).toBe(true);
+    // Social Security should never require *more* waiting than without it.
+    if (withoutSS.achievable) {
+      expect(withSS.monthsUntilPayCut).toBeLessThanOrEqual(withoutSS.monthsUntilPayCut);
+    }
+  });
+
+  it('a larger retirementSavings shortens (or does not lengthen) monthsUntilPayCut once accessible', () => {
+    const noRetirement = computeCoastToPayCut({ ...base, savings: 200000, retirementSavings: 0 });
+    const withRetirement = computeCoastToPayCut({ ...base, savings: 200000, retirementSavings: 500000 });
+    expect(withRetirement.monthsUntilPayCut).toBeLessThanOrEqual(noRetirement.monthsUntilPayCut);
+  });
+
+  it('retirement savings are hard-blocked before the access age even when coasting', () => {
+    // Life ends at 57, entirely before the 59.5 access age, so the $1M
+    // retirement fund is never reachable — coasting can only "succeed"
+    // by never actually cutting income (waiting the entire horizon).
+    // A tiny brokerage balance (not $0) avoids the unrelated "balance
+    // starts at exactly $0" depletion edge case; income == expenses keeps
+    // the full-income phase perfectly flat (no surplus buffer to mask the cut).
+    const result = computeCoastToPayCut({
+      age: 55, life: 57, savings: 1, retirementSavings: 1000000,
+      monthlyExpenses: 2000, monthlyIncome: 2000, payCutIncome: 0,
+      annualReturn: 0,
+    });
+    expect(result.monthsUntilPayCut).toBe(24);
+  });
+});
+
+describe('computeRunway — retirement savings (401k hard block)', () => {
+  const base = {
+    age: 40,
+    life: 90,
+    savings: 500000,
+    monthlyExpenses: 4000,
+    monthlyIncome: 0,
+    annualReturn: 0.07,
+  };
+
+  it('retirementSavings defaults to 0 for backward compatibility', () => {
+    const withDefault = computeRunway(base);
+    const explicitZero = computeRunway({ ...base, retirementSavings: 0 });
+    expect(withDefault.balances).toEqual(explicitZero.balances);
+    expect(withDefault.finalBalance).toBe(explicitZero.finalBalance);
+  });
+
+  it('includes retirementSavings in the initial combined balance', () => {
+    const result = computeRunway({ ...base, savings: 200000, retirementSavings: 300000 });
+    expect(result.balances[0]).toBe(500000);
+  });
+
+  it('exposes separate brokerage and retirement balance breakdowns that sum to the total', () => {
+    const result = computeRunway({ ...base, savings: 200000, retirementSavings: 300000 });
+    expect(result.finalBrokerageBalance + result.finalRetirementBalance).toBeCloseTo(result.finalBalance, 6);
+  });
+
+  it('does not draw on retirement savings before the access age (hard block)', () => {
+    // Entire horizon (age 55 -> 57) stays below the 59.5 access age.
+    const result = computeRunway({
+      age: 55, life: 57, savings: 1000, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    expect(result.finalRetirementBalance).toBe(100000);
+    expect(result.finalBrokerageBalance).toBe(0);
+    expect(result.finalBalance).toBe(100000);
+    expect(result.depleted).toBe(true);
+  });
+
+  it('draws on retirement savings once the access age (59.5) is reached', () => {
+    // yearsLeft=2 (24 months); access age 59.5 falls at month 6.
+    const result = computeRunway({
+      age: 59, life: 61, savings: 0, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    // 5 unmet months pre-access, then 19 months drawn from retirement (2000 each).
+    expect(result.finalRetirementBalance).toBeCloseTo(100000 - 19 * 2000, 6);
+    expect(result.finalBrokerageBalance).toBe(0);
+    expect(result.finalBalance).toBeCloseTo(62000, 6);
+  });
+
+  it('exposes brokerageDepletedAge for when the liquid balance first hits 0, even if the combined portfolio never depletes', () => {
+    // Age is already past the retirement-access age, so the large retirement
+    // balance keeps the combined portfolio from ever "depleting", even though
+    // the brokerage/liquid balance alone runs out right away.
+    const result = computeRunway({
+      age: 60, life: 90, savings: 1000, retirementSavings: 5000000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0.07,
+    });
+    expect(result.depleted).toBe(false);
+    expect(result.finalBrokerageBalance).toBe(0);
+    expect(result.brokerageDepletedAge).toBeCloseTo(60 + 1 / 12, 6);
+  });
+
+  it('leaves brokerageDepletedAge null when the liquid balance never runs out', () => {
+    const result = computeRunway({
+      age: 40, life: 41, savings: 1000000, retirementSavings: 0,
+      monthlyExpenses: 2000, monthlyIncome: 2000, annualReturn: 0,
+    });
+    expect(result.brokerageDepletedAge).toBeNull();
+  });
+
+  it('exposes an accessibleBalances series that reflects the retirement hard block (unlike the combined balances series)', () => {
+    // Entire horizon stays below the 59.5 access age, so retirement is locked.
+    const result = computeRunway({
+      age: 55, life: 57, savings: 1000, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    // Combined balance never hits 0 (locked retirement still counts toward it),
+    // but the accessible balance does -- this is what "depleted" is based on.
+    expect(result.balances[1]).toBe(100000);
+    expect(result.accessibleBalances[1]).toBe(0);
+    expect(result.depleted).toBe(true);
   });
 });
