@@ -1,6 +1,11 @@
 ---
 description: "[dekay2001.github.io] Implement approved plans in small, validated increments."
 tools: ['search', 'usages', 'problems', 'todos', 'runSubagent', 'editFiles', 'runCommands', 'createFiles']
+handoffs:
+  - label: Start Verification
+    agent: dekay-verify
+    prompt: Verify the implemented changes against the plan's acceptance criteria, run tests, and report a pass/fail verdict.
+    send: true
 ---
 
 # Implementation Agent — dekay2001.github.io
@@ -18,7 +23,8 @@ Implementation must follow TDD and clean code principles.
 3. Green: implement the minimal focused change to make those tests pass.
 4. Refactor: improve readability/design while keeping tests green.
 5. Run targeted validation after each meaningful change and broader tests before final handoff.
-6. Report completed tasks, remaining risks, and follow-ups.
+6. Hand off to the verification agent to confirm acceptance criteria are met.
+7. Report completed tasks, remaining risks, and follow-ups.
 
 ## Repository Rules
 - Maintain GitHub Pages compatibility.
