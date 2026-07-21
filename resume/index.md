@@ -19,7 +19,7 @@ Lead engineer and AI-driven engineering leader with over twenty years of product
 - Instruction engineering, applyTo patterns, skill packaging, and prompt-as-code with provenance tracking
 - Three-tier documentation system (Versions / Moments / Chapters) for converting AI-collaboration work into teachable artifacts
 - 17+ documented leadership moments, 10 book chapters drafted, 6 custom agents, 3 packaged skills
-- Created an MCP server for a legacy product leveraging existing models and services as sources for tool creation, allowing a customer to bring their own LLM  to work with the system.
+- Created an MCP server for a legacy product leveraging existing models and services as sources for tool creation, allowing a customer to bring their own LLM to work with the system
 
 ## Technical Skills
 
