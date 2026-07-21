@@ -12,11 +12,13 @@ Use these files as the primary source of truth for this repository:
 - Planning agent: [dekay-plan.agent.md](agents/dekay-plan.agent.md)
 - Planning prompt: [plan-qna.prompt.md](prompts/plan-qna.prompt.md)
 - Implementation agent: [dekay-implement.agent.md](agents/dekay-implement.agent.md)
+- Verification agent: [dekay-verify.agent.md](agents/dekay-verify.agent.md)
 
 Use planning-first workflow for non-trivial work:
 1. Create or refine a plan with the planning agent.
 2. Review and resolve open questions.
 3. Handoff to implementation agent for execution.
+4. Handoff to verification agent to confirm acceptance criteria are met.
 
 ## Repository Quick Facts
 
