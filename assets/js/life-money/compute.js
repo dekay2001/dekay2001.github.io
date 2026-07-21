@@ -4,15 +4,28 @@
  */
 
 /**
+ * Age at which retirement savings (401k/IRA) become accessible without an
+ * early-withdrawal penalty. Modeled as a hard block: retirement savings
+ * cannot fund a shortfall before this age, no matter the balance.
+ */
+const RETIREMENT_ACCESS_AGE = 59.5;
+
+/**
  * Simulates a monthly balance trajectory given an income schedule.
  * Shared by computeRunway (constant income) and computeCoastToPayCut
  * (phased income), so scenario rules (inflation, Social Security,
- * healthcare gap, lump-sum event) live in exactly one place.
+ * healthcare gap, lump-sum event, retirement-savings hard block) live in
+ * exactly one place.
+ *
+ * Two balances are tracked: brokerage/other (liquid, always accessible) and
+ * retirement (401k/IRA, only usable to cover a shortfall once the simulated
+ * age reaches RETIREMENT_ACCESS_AGE). Both grow at the same annualReturn.
  *
  * @param {Object} params
  * @param {number} params.age              Current age
  * @param {number} params.yearsLeft        Years remaining until life expectancy
- * @param {number} params.savings          Current savings / investments
+ * @param {number} params.savings          Current brokerage/other (liquid) savings
+ * @param {number} [params.retirementSavings=0] Current 401k/IRA savings (locked until RETIREMENT_ACCESS_AGE)
  * @param {number} params.monthlyExpenses  Monthly expenses needed
  * @param {number} params.annualReturn     Annual investment return (decimal, e.g. 0.07)
  * @param {number} [params.annualInflation=0] Annual inflation rate (decimal, e.g. 0.03)
@@ -21,19 +34,23 @@
  * @param {Object|null} [params.lumpEvent=null]       { amount, atAge }
  * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income.
  *   monthIndex is 1-based (the first simulated month is 1, matching the internal loop counter).
- * @returns {Object} balances, needs, depleted, depletedAge, finalBalance, finalMonthlyExpenses
+ * @returns {Object} balances, brokerageBalances, retirementBalances, needs, depleted,
+ *   depletedAge, finalBalance, finalBrokerageBalance, finalRetirementBalance, finalMonthlyExpenses
  */
-function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
+function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthlyExpenses, annualReturn,
                         annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null },
                         incomeForMonth) {
   const monthlyReturn = annualReturn / 12;
   const monthlyInflation = Math.pow(1 + annualInflation, 1 / 12) - 1;
   let currentExpenses = monthlyExpenses;
 
-  let balance = savings;
+  let brokerageBalance = savings;
+  let retirementBalance = retirementSavings;
   let depleted = false;
   let depletedAge = null;
-  const balances = [balance];
+  const balances = [brokerageBalance + retirementBalance];
+  const brokerageBalances = [brokerageBalance];
+  const retirementBalances = [retirementBalance];
   const needs = [0];
   let cumNeed = 0;
   let finalMonthlyExpenses = currentExpenses;
@@ -41,10 +58,11 @@ function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
 
   for (let m = 1; m <= yearsLeft * 12; m++) {
     const currentAge = age + m / 12;
+    const canAccessRetirement = currentAge >= RETIREMENT_ACCESS_AGE;
 
-    // One-time lump-sum event
+    // One-time lump-sum event (applied to the liquid/brokerage balance)
     if (lumpEvent && lumpEvent.amount !== 0 && !lumpApplied && currentAge >= lumpEvent.atAge) {
-      balance += lumpEvent.amount;
+      brokerageBalance += lumpEvent.amount;
       lumpApplied = true;
     }
 
@@ -60,14 +78,33 @@ function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
       effectiveExpenses += healthcareGap.monthlyCost;
     }
 
-    // Only apply investment returns when portfolio has a positive balance
-    const returnRate = balance > 0 ? monthlyReturn : 0;
-    balance = Math.max(0, balance * (1 + returnRate) - (effectiveExpenses - effectiveIncome));
+    const netNeed = effectiveExpenses - effectiveIncome;
+
+    // Grow each balance independently, only when it's currently positive.
+    const brokerageReturnRate = brokerageBalance > 0 ? monthlyReturn : 0;
+    const retirementReturnRate = retirementBalance > 0 ? monthlyReturn : 0;
+    brokerageBalance = brokerageBalance * (1 + brokerageReturnRate) - netNeed;
+    retirementBalance = retirementBalance * (1 + retirementReturnRate);
+
+    // Hard block: only once retirement savings are accessible can they
+    // absorb a brokerage shortfall. Before that age, any deficit is simply
+    // unmet (matches the original floor-at-0 depletion behavior).
+    if (brokerageBalance < 0 && canAccessRetirement) {
+      retirementBalance += brokerageBalance;
+      brokerageBalance = 0;
+    }
+    brokerageBalance = Math.max(0, brokerageBalance);
+    retirementBalance = Math.max(0, retirementBalance);
+
     cumNeed += effectiveExpenses;
     finalMonthlyExpenses = currentExpenses;
-    balances.push(balance);
+    balances.push(brokerageBalance + retirementBalance);
+    brokerageBalances.push(brokerageBalance);
+    retirementBalances.push(retirementBalance);
     needs.push(cumNeed);
-    if (balance <= 0 && !depleted) {
+
+    const accessibleBalance = brokerageBalance + (canAccessRetirement ? retirementBalance : 0);
+    if (accessibleBalance <= 0 && !depleted) {
       depleted = true;
       depletedAge = currentAge;
     }
@@ -76,10 +113,14 @@ function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
 
   return {
     balances,
+    brokerageBalances,
+    retirementBalances,
     needs,
     depleted,
     depletedAge,
     finalBalance: balances[balances.length - 1],
+    finalBrokerageBalance: brokerageBalances[brokerageBalances.length - 1],
+    finalRetirementBalance: retirementBalances[retirementBalances.length - 1],
     finalMonthlyExpenses,
   };
 }
@@ -88,7 +129,8 @@ function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
  * @param {Object} params
  * @param {number} params.age              Current age
  * @param {number} params.life             Expected age at death
- * @param {number} params.savings          Current savings / investments
+ * @param {number} params.savings          Current brokerage/other (liquid) savings
+ * @param {number} [params.retirementSavings=0] Current 401k/IRA savings (locked until RETIREMENT_ACCESS_AGE)
  * @param {number} params.monthlyExpenses  Monthly expenses needed
  * @param {number} params.monthlyIncome    Monthly income
  * @param {number} params.annualReturn     Annual investment return (decimal, e.g. 0.07)
@@ -98,17 +140,18 @@ function runSimulation({ age, yearsLeft, savings, monthlyExpenses, annualReturn,
  * @param {Object|null} [params.lumpEvent=null]       { amount, atAge }
  * @returns {Object} Computed runway data
  */
-function computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, annualReturn,
+function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpenses, monthlyIncome, annualReturn,
                          annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null }) {
   const yearsLeft = Math.max(life - age, 0);
   const daysLeft = Math.round(yearsLeft * 365.25);
   const monthlyNet = monthlyExpenses - monthlyIncome;
   const dailyCost = monthlyExpenses / 30.44;
-  const dailyGen = (savings * annualReturn) / 365;
-  const savingsPerDay = daysLeft > 0 ? savings / daysLeft : 0;
+  const totalSavings = savings + retirementSavings;
+  const dailyGen = (totalSavings * annualReturn) / 365;
+  const savingsPerDay = daysLeft > 0 ? totalSavings / daysLeft : 0;
 
   const sim = runSimulation(
-    { age, yearsLeft, savings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent },
+    { age, yearsLeft, savings, retirementSavings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent },
     () => monthlyIncome
   );
 
@@ -122,8 +165,12 @@ function computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, ann
     depleted: sim.depleted,
     depletedAge: sim.depletedAge,
     balances: sim.balances,
+    brokerageBalances: sim.brokerageBalances,
+    retirementBalances: sim.retirementBalances,
     needs: sim.needs,
     finalBalance: sim.finalBalance,
+    finalBrokerageBalance: sim.finalBrokerageBalance,
+    finalRetirementBalance: sim.finalRetirementBalance,
     finalMonthlyExpenses: sim.finalMonthlyExpenses,
   };
 }
@@ -138,13 +185,13 @@ function computeRunway({ age, life, savings, monthlyExpenses, monthlyIncome, ann
  * @param {number} params.payCutIncome  Reduced monthly income after the cut
  * @returns {{achievable: boolean, alreadyAchievable: boolean, monthsUntilPayCut: number|null, ageAtPayCut: number|null}}
  */
-function computeCoastToPayCut({ age, life, savings, monthlyExpenses, monthlyIncome, payCutIncome, annualReturn,
+function computeCoastToPayCut({ age, life, savings, retirementSavings = 0, monthlyExpenses, monthlyIncome, payCutIncome, annualReturn,
                                 annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null }) {
   const yearsLeft = Math.max(life - age, 0);
   // Match runSimulation's loop bound (`m <= yearsLeft * 12`), which behaves like Math.floor
   // for fractional yearsLeft, so monthsUntilPayCut/ageAtPayCut stay consistent with it.
   const totalMonths = Math.floor(yearsLeft * 12);
-  const simParams = { age, yearsLeft, savings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent };
+  const simParams = { age, yearsLeft, savings, retirementSavings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent };
 
   const survives = (transitionMonth) => {
     const sim = runSimulation(simParams, (m) => (m <= transitionMonth ? monthlyIncome : payCutIncome));

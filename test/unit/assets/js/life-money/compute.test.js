@@ -353,4 +353,77 @@ describe('computeCoastToPayCut', () => {
       expect(withSS.monthsUntilPayCut).toBeLessThanOrEqual(withoutSS.monthsUntilPayCut);
     }
   });
+
+  it('a larger retirementSavings shortens (or does not lengthen) monthsUntilPayCut once accessible', () => {
+    const noRetirement = computeCoastToPayCut({ ...base, savings: 200000, retirementSavings: 0 });
+    const withRetirement = computeCoastToPayCut({ ...base, savings: 200000, retirementSavings: 500000 });
+    expect(withRetirement.monthsUntilPayCut).toBeLessThanOrEqual(noRetirement.monthsUntilPayCut);
+  });
+
+  it('retirement savings are hard-blocked before the access age even when coasting', () => {
+    // Life ends at 57, entirely before the 59.5 access age, so the $1M
+    // retirement fund is never reachable — coasting can only "succeed"
+    // by never actually cutting income (waiting the entire horizon).
+    // A tiny brokerage balance (not $0) avoids the unrelated "balance
+    // starts at exactly $0" depletion edge case; income == expenses keeps
+    // the full-income phase perfectly flat (no surplus buffer to mask the cut).
+    const result = computeCoastToPayCut({
+      age: 55, life: 57, savings: 1, retirementSavings: 1000000,
+      monthlyExpenses: 2000, monthlyIncome: 2000, payCutIncome: 0,
+      annualReturn: 0,
+    });
+    expect(result.monthsUntilPayCut).toBe(24);
+  });
+});
+
+describe('computeRunway — retirement savings (401k hard block)', () => {
+  const base = {
+    age: 40,
+    life: 90,
+    savings: 500000,
+    monthlyExpenses: 4000,
+    monthlyIncome: 0,
+    annualReturn: 0.07,
+  };
+
+  it('retirementSavings defaults to 0 for backward compatibility', () => {
+    const withDefault = computeRunway(base);
+    const explicitZero = computeRunway({ ...base, retirementSavings: 0 });
+    expect(withDefault.balances).toEqual(explicitZero.balances);
+    expect(withDefault.finalBalance).toBe(explicitZero.finalBalance);
+  });
+
+  it('includes retirementSavings in the initial combined balance', () => {
+    const result = computeRunway({ ...base, savings: 200000, retirementSavings: 300000 });
+    expect(result.balances[0]).toBe(500000);
+  });
+
+  it('exposes separate brokerage and retirement balance breakdowns that sum to the total', () => {
+    const result = computeRunway({ ...base, savings: 200000, retirementSavings: 300000 });
+    expect(result.finalBrokerageBalance + result.finalRetirementBalance).toBeCloseTo(result.finalBalance, 6);
+  });
+
+  it('does not draw on retirement savings before the access age (hard block)', () => {
+    // Entire horizon (age 55 -> 57) stays below the 59.5 access age.
+    const result = computeRunway({
+      age: 55, life: 57, savings: 1000, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    expect(result.finalRetirementBalance).toBe(100000);
+    expect(result.finalBrokerageBalance).toBe(0);
+    expect(result.finalBalance).toBe(100000);
+    expect(result.depleted).toBe(true);
+  });
+
+  it('draws on retirement savings once the access age (59.5) is reached', () => {
+    // yearsLeft=2 (24 months); access age 59.5 falls at month 6.
+    const result = computeRunway({
+      age: 59, life: 61, savings: 0, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    // 5 unmet months pre-access, then 19 months drawn from retirement (2000 each).
+    expect(result.finalRetirementBalance).toBeCloseTo(100000 - 19 * 2000, 6);
+    expect(result.finalBrokerageBalance).toBe(0);
+    expect(result.finalBalance).toBeCloseTo(62000, 6);
+  });
 });
