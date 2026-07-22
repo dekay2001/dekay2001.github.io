@@ -40,10 +40,9 @@ _Also familiar with: Android Development, C/C++_
 # Professional Experience
 
 **WiseTech Global** Remote,  
- _Lead Senior Software Engineer 2023-current_
+_Lead Senior Software Engineer 2023-current_
 
-
- ### Responsibilities, Projects, and Accomplishments  
+### Responsibilities, Projects, and Accomplishments
 
 - Architected and prototyped a Profit Tools MCP server and demonstrated the potential of integrating AI into legacy products.
 
@@ -148,7 +147,7 @@ Bachelor of Science in Computer Science, 2005
 - Custom VS Code agent workflows (plan → implement) with SOLID review gates and TDD expectations
 
 **Dover Run Club Website** (2025-present)
-- Community website built from scratch using Jekyll + GitHub Pages for a local running club
+- [Community website](https://www.doverrunclub.com) built from scratch using Jekyll + GitHub Pages for a local running club
 - Data-driven route display using YAML with responsive image optimization (3-size variants via PowerShell utility)
 - Four-agent development workflow (idea → plan → implement → verify) with canonical backlog tracking in design roadmap
 
