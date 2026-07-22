@@ -93,6 +93,7 @@ def convert(md_path: Path, pdf_path: Path) -> None:
     title = extract_title(raw)
     body_md = strip_front_matter(raw)
 
+    pdf_path.parent.mkdir(parents=True, exist_ok=True)
     body_html = markdown.markdown(
         body_md,
         extensions=["extra", "tables", "sane_lists"],
@@ -109,15 +110,17 @@ def convert(md_path: Path, pdf_path: Path) -> None:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            page = browser.new_page()
-            page.goto(tmp_path.as_uri())
-            page.pdf(
-                path=str(pdf_path),
-                format="Letter",
-                print_background=True,
-                margin={"top": "0in", "bottom": "0in", "left": "0in", "right": "0in"},
-            )
-            browser.close()
+            try:
+                page = browser.new_page()
+                page.goto(tmp_path.as_uri())
+                page.pdf(
+                    path=str(pdf_path),
+                    format="Letter",
+                    print_background=True,
+                    margin={"top": "0in", "bottom": "0in", "left": "0in", "right": "0in"},
+                )
+            finally:
+                browser.close()
     finally:
         tmp_path.unlink(missing_ok=True)
 
