@@ -15,8 +15,8 @@
   --lm-border:  #222222;
   --lm-text:    var(--color-text-light);     /* #e5e7eb ≈ original #e8e4dc  */
   --lm-muted:   var(--color-text-muted);     /* #9ca3af ≈ original #666     */
-  --lm-need:    #c0392b;
-  --lm-have:    #27ae60;
+  --lm-need:    #ff6b6b;  /* coral-red, ~6.8:1 contrast on --lm-bg, distinct hue from --lm-accent */
+  --lm-have:    #38bdf8;  /* blue, ~8.8:1 contrast on --lm-bg, safe for red/green color blindness */
   --lm-accent:  var(--color-accent);         /* #f97316 ≈ original #f39c12  */
 
   /* Typography tokens */
@@ -342,8 +342,23 @@
   outline-offset: -1px;
 }
 
-.lm-container #monthly-table td.amount-negative { color: var(--lm-need); }
-.lm-container #monthly-table td.amount-positive { color: var(--lm-have); }
+/* Net change values get a rounded badge in the same red/blue used everywhere
+   else on this page (metric tiles, chart lines) — consistent, not a one-off
+   light rectangle, and colorblind-safe since it relies on hue, not red/green. */
+.lm-container #monthly-table .net-chip {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+}
+
+.lm-container #monthly-table td.amount-negative .net-chip {
+  background: #dc2626;
+  color: #fff;
+}
+
+.lm-container #monthly-table td.amount-positive .net-chip {
+  color: var(--lm-have);
+}
 
 
 /* --------------------------------------------------------------------------

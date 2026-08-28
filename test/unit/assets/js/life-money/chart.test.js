@@ -12,6 +12,7 @@ function makeCanvas() {
   const ctx = {
     scale: jest.fn(),
     clearRect: jest.fn(),
+    fillRect: jest.fn(),
     beginPath: jest.fn(),
     moveTo: jest.fn(),
     lineTo: jest.fn(),
