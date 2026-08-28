@@ -6,8 +6,9 @@
 import { formatCurrency } from './format.js';
 
 function formatSignedCurrency(value) {
-  const sign = value > 0 ? '+' : (value < 0 ? '-' : '');
-  return sign + formatCurrency(Math.abs(value));
+  const rounded = Math.round(value);
+  const sign = rounded > 0 ? '+' : (rounded < 0 ? '-' : '');
+  return sign + formatCurrency(Math.abs(rounded));
 }
 
 function renderMonthlyTable(tbodyEl, {
