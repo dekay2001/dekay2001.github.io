@@ -35,11 +35,14 @@ const RETIREMENT_ACCESS_AGE = 59.5;
  * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income.
  *   monthIndex is 1-based (the first simulated month is 1, matching the internal loop counter).
  * @returns {Object} balances, brokerageBalances, retirementBalances, accessibleBalances,
- *   needs, depleted, depletedAge, brokerageDepletedAge, finalBalance,
+ *   needs, monthlyIncome, monthlyExpensesApplied, monthlyGrowth, monthlyNetChange,
+ *   lumpEventMonth, depleted, depletedAge, brokerageDepletedAge, finalBalance,
  *   finalBrokerageBalance, finalRetirementBalance, finalMonthlyExpenses.
  *   accessibleBalances is the series `depleted`/`depletedAge` are derived from
  *   (brokerage + retirement only once accessible); it can be 0 while the
  *   combined `balances` value is still positive if retirement is locked.
+ *   The monthly* arrays are per-month (not cumulative), one entry per simulated
+ *   month, unlike `needs` which is a cumulative running total.
  */
 function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthlyExpenses, annualReturn,
                         annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null },
@@ -59,6 +62,12 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
   const retirementBalances = [retirementBalance];
   const accessibleBalances = [brokerageBalance + retirementBalance];
   const needs = [0];
+  // Per-month (not cumulative) detail, one entry per simulated month — feeds the month-by-month table view.
+  const monthlyIncome = [];
+  const monthlyExpensesApplied = [];
+  const monthlyGrowth = [];
+  const monthlyNetChange = [];
+  let lumpEventMonth = null;
   let cumNeed = 0;
   let finalMonthlyExpenses = currentExpenses;
   let lumpApplied = false;
@@ -66,11 +75,13 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
   for (let m = 1; m <= yearsLeft * 12; m++) {
     const currentAge = age + m / 12;
     const canAccessRetirement = currentAge >= RETIREMENT_ACCESS_AGE;
+    const balanceBeforeMonth = brokerageBalance + retirementBalance;
 
     // One-time lump-sum event (applied to the liquid/brokerage balance)
     if (lumpEvent && lumpEvent.amount !== 0 && !lumpApplied && currentAge >= lumpEvent.atAge) {
       brokerageBalance += lumpEvent.amount;
       lumpApplied = true;
+      lumpEventMonth = m;
     }
 
     // Effective income: base (from schedule) + Social Security if eligible
@@ -90,6 +101,7 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     // Grow each balance independently, only when it's currently positive.
     const brokerageReturnRate = brokerageBalance > 0 ? monthlyReturn : 0;
     const retirementReturnRate = retirementBalance > 0 ? monthlyReturn : 0;
+    const growthThisMonth = brokerageBalance * brokerageReturnRate + retirementBalance * retirementReturnRate;
     brokerageBalance = brokerageBalance * (1 + brokerageReturnRate) - netNeed;
     retirementBalance = retirementBalance * (1 + retirementReturnRate);
 
@@ -111,6 +123,10 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     retirementBalances.push(retirementBalance);
     accessibleBalances.push(accessibleBalance);
     needs.push(cumNeed);
+    monthlyIncome.push(effectiveIncome);
+    monthlyExpensesApplied.push(effectiveExpenses);
+    monthlyGrowth.push(growthThisMonth);
+    monthlyNetChange.push(brokerageBalance + retirementBalance - balanceBeforeMonth);
 
     if (accessibleBalance <= 0 && !depleted) {
       depleted = true;
@@ -133,6 +149,11 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     retirementBalances,
     accessibleBalances,
     needs,
+    monthlyIncome,
+    monthlyExpensesApplied,
+    monthlyGrowth,
+    monthlyNetChange,
+    lumpEventMonth,
     depleted,
     depletedAge,
     brokerageDepletedAge,
@@ -188,6 +209,11 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
     retirementBalances: sim.retirementBalances,
     accessibleBalances: sim.accessibleBalances,
     needs: sim.needs,
+    monthlyIncome: sim.monthlyIncome,
+    monthlyExpensesApplied: sim.monthlyExpensesApplied,
+    monthlyGrowth: sim.monthlyGrowth,
+    monthlyNetChange: sim.monthlyNetChange,
+    lumpEventMonth: sim.lumpEventMonth,
     finalBalance: sim.finalBalance,
     finalBrokerageBalance: sim.finalBrokerageBalance,
     finalRetirementBalance: sim.finalRetirementBalance,

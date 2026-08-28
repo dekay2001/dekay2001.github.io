@@ -265,6 +265,88 @@
 
 
 /* --------------------------------------------------------------------------
+   Month-by-month detail table
+   -------------------------------------------------------------------------- */
+
+.lm-container .table-section {
+  margin-bottom: 1rem;
+  border: 1px solid var(--lm-border);
+  background: var(--lm-surface);
+}
+
+.lm-container .table-section summary {
+  padding: 0.75rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lm-muted);
+  cursor: pointer;
+  list-style: none;
+}
+
+.lm-container .table-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.lm-container .table-section summary::before {
+  content: '▸ ';
+  color: var(--lm-accent);
+}
+
+.lm-container .table-section[open] summary::before {
+  content: '▾ ';
+}
+
+.lm-container .table-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  border-top: 1px solid var(--lm-border);
+}
+
+.lm-container #monthly-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.68rem;
+}
+
+.lm-container #monthly-table th,
+.lm-container #monthly-table td {
+  padding: 0.4rem 0.75rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.lm-container #monthly-table th:first-child,
+.lm-container #monthly-table td:first-child {
+  text-align: left;
+}
+
+.lm-container #monthly-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--lm-surface);
+  color: var(--lm-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-bottom: 1px solid var(--lm-border);
+}
+
+.lm-container #monthly-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.lm-container #monthly-table tbody tr.lump-event-row {
+  outline: 1px solid var(--lm-accent);
+  outline-offset: -1px;
+}
+
+.lm-container #monthly-table td.amount-negative { color: var(--lm-need); }
+.lm-container #monthly-table td.amount-positive { color: var(--lm-have); }
+
+
+/* --------------------------------------------------------------------------
    Status bar
    -------------------------------------------------------------------------- */
 

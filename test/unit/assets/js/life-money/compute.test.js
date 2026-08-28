@@ -120,6 +120,60 @@ describe('computeRunway', () => {
   });
 });
 
+describe('computeRunway — monthly detail', () => {
+  const flat = {
+    age: 40,
+    life: 45,
+    savings: 500000,
+    monthlyExpenses: 4000,
+    monthlyIncome: 2000,
+    annualReturn: 0,
+    annualInflation: 0,
+  };
+
+  it('monthly detail arrays have one entry per simulated month', () => {
+    const result = computeRunway(flat);
+    const months = 5 * 12;
+    expect(result.monthlyIncome).toHaveLength(months);
+    expect(result.monthlyExpensesApplied).toHaveLength(months);
+    expect(result.monthlyGrowth).toHaveLength(months);
+    expect(result.monthlyNetChange).toHaveLength(months);
+  });
+
+  it('reports income and expenses applied each month with no scenario add-ons', () => {
+    const result = computeRunway(flat);
+    expect(result.monthlyIncome.every(v => v === 2000)).toBe(true);
+    expect(result.monthlyExpensesApplied.every(v => v === 4000)).toBe(true);
+  });
+
+  it('reports zero growth when annualReturn is 0', () => {
+    const result = computeRunway(flat);
+    expect(result.monthlyGrowth.every(v => v === 0)).toBe(true);
+  });
+
+  it('net change equals income minus expenses when growth is 0', () => {
+    const result = computeRunway(flat);
+    expect(result.monthlyNetChange.every(v => v === 2000 - 4000)).toBe(true);
+  });
+
+  it('net change reflects positive growth when annualReturn > 0', () => {
+    const result = computeRunway({ ...flat, annualReturn: 0.12 });
+    expect(result.monthlyGrowth[0]).toBeCloseTo(500000 * (0.12 / 12), 6);
+    expect(result.monthlyNetChange[0]).toBeCloseTo(result.monthlyGrowth[0] + 2000 - 4000, 6);
+  });
+
+  it('lumpEventMonth is null when there is no lump event', () => {
+    const result = computeRunway(flat);
+    expect(result.lumpEventMonth).toBeNull();
+  });
+
+  it('lumpEventMonth reports the month the lump sum was applied', () => {
+    const result = computeRunway({ ...flat, lumpEvent: { amount: 10000, atAge: 42 } });
+    expect(result.lumpEventMonth).toBe(24);
+    expect(result.monthlyNetChange[23]).toBeGreaterThan(result.monthlyNetChange[0] + 9000);
+  });
+});
+
 describe('computeRunway — inflation', () => {
   const base = {
     age: 40,
