@@ -26,7 +26,7 @@ function renderMonthlyTable(tbodyEl, {
       `<td>${formatCurrency(income)}</td>` +
       `<td>${formatCurrency(monthlyExpensesApplied[idx])}</td>` +
       `<td>${formatSignedCurrency(monthlyGrowth[idx])}</td>` +
-      `<td class="${netChangeClass}"><span class="net-chip">${formatSignedCurrency(netChange)}</span></td>` +
+      `<td class="${netChangeClass}">${netChangeClass ? `<span class="net-chip">${formatSignedCurrency(netChange)}</span>` : formatSignedCurrency(netChange)}</td>` +
       `<td>${formatCurrency(brokerageBalances[month])}</td>` +
       `<td>${formatCurrency(retirementBalances[month])}</td>` +
     `</tr>`;
