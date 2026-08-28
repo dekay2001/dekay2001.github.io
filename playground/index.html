@@ -170,6 +170,21 @@ extra_head_links:
               </div>
             </div>
 
+            <details class="table-section" id="monthly-table-details">
+              <summary>Month-by-month detail</summary>
+              <div class="table-scroll">
+                <table id="monthly-table">
+                  <thead>
+                    <tr>
+                      <th>Month</th><th>Age</th><th>Income</th><th>Expenses</th>
+                      <th>Growth</th><th>Net change</th><th>Brokerage</th><th>Retirement</th>
+                    </tr>
+                  </thead>
+                  <tbody id="monthly-table-body"></tbody>
+                </table>
+              </div>
+            </details>
+
             <div class="status-bar" id="status-bar">—</div>
 
         </div><!-- /.lm-container -->
@@ -180,6 +195,7 @@ extra_head_links:
     <script type="module">
     import { computeRunway, computeCoastToPayCut } from '/assets/js/life-money/compute.js';
     import { drawChart } from '/assets/js/life-money/chart.js';
+    import { renderMonthlyTable } from '/assets/js/life-money/table.js';
     import { formatCurrency, formatDailyRate } from '/assets/js/life-money/format.js';
     import { generateStatusMessage } from '/assets/js/life-money/status.js';
 
@@ -242,6 +258,8 @@ extra_head_links:
 
       const canvas    = document.getElementById('chart');
       const statusBar = document.getElementById('status-bar');
+      const monthlyTableDetails = document.getElementById('monthly-table-details');
+      const monthlyTableBody    = document.getElementById('monthly-table-body');
 
       function update() {
         const age            = +sliderAge.value;
@@ -402,6 +420,22 @@ extra_head_links:
           depleted:  metrics.depleted,
           accessibleBalances: metrics.accessibleBalances,
         });
+
+        // Month-by-month table (skipped while collapsed to avoid rebuilding
+        // hundreds of rows on every slider drag; rendered on open via the
+        // 'toggle' listener below).
+        if (monthlyTableDetails.open) {
+          renderMonthlyTable(monthlyTableBody, {
+            age,
+            monthlyIncome: metrics.monthlyIncome,
+            monthlyExpensesApplied: metrics.monthlyExpensesApplied,
+            monthlyGrowth: metrics.monthlyGrowth,
+            monthlyNetChange: metrics.monthlyNetChange,
+            brokerageBalances: metrics.brokerageBalances,
+            retirementBalances: metrics.retirementBalances,
+            lumpEventMonth: metrics.lumpEventMonth,
+          });
+        }
       }
 
       ['age', 'life', 'savings', 'retirement-savings', 'expenses', 'income', 'paycut-income', 'return', 'inflation',
@@ -409,6 +443,7 @@ extra_head_links:
         document.getElementById(id).addEventListener('input', update);
       });
       window.addEventListener('resize', update);
+      monthlyTableDetails.addEventListener('toggle', update);
       update();
     }
 
