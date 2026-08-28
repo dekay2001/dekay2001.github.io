@@ -28,8 +28,8 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
   const xScale = i => pad.left + (i / xDivisor) * w;
   const yScale = v => pad.top + h - (Math.max(v, 0) / yDivisor) * h;
 
-  // Grid
-  ctx.strokeStyle = '#1a1a1a';
+  // Grid — subtle light-on-dark, consistent with the surrounding surface
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i++) {
     const y = pad.top + (i / 4) * h;
@@ -38,14 +38,14 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
     ctx.lineTo(pad.left + w, y);
     ctx.stroke();
     const val = maxVal * (1 - i / 4);
-    ctx.fillStyle = '#444';
+    ctx.fillStyle = '#9ca3af';
     ctx.font = '10px DM Mono, monospace';
     ctx.textAlign = 'right';
     ctx.fillText('$' + Math.round(val / 1000) + 'k', pad.left - 8, y + 4);
   }
 
-  // X axis labels
-  ctx.fillStyle = '#444';
+  // X axis labels — same muted tone used for labels elsewhere on the page
+  ctx.fillStyle = '#9ca3af';
   ctx.font = '10px DM Mono, monospace';
   ctx.textAlign = 'center';
   if (yearsLeft === 0 || points <= 1) {
@@ -62,7 +62,7 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
 
   // Cumulative need line
   ctx.beginPath();
-  ctx.strokeStyle = '#c0392b';
+  ctx.strokeStyle = '#ff6b6b';
   ctx.lineWidth = 1.5;
   ctx.setLineDash([4, 4]);
   for (let i = 0; i < points; i++) {
@@ -80,7 +80,7 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
     const y = yScale(balances[i]);
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   }
-  ctx.strokeStyle = '#27ae60';
+  ctx.strokeStyle = '#38bdf8';
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
@@ -95,8 +95,8 @@ function drawChart(canvas, { age, life, yearsLeft, balances, needs, savings, dep
   ctx.lineTo(xScale(0), pad.top + h);
   ctx.closePath();
   const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + h);
-  grad.addColorStop(0, 'rgba(39,174,96,0.15)');
-  grad.addColorStop(1, 'rgba(39,174,96,0)');
+  grad.addColorStop(0, 'rgba(56,189,248,0.15)');
+  grad.addColorStop(1, 'rgba(56,189,248,0)');
   ctx.fillStyle = grad;
   ctx.fill();
 
