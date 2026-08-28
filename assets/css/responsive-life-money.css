@@ -349,15 +349,17 @@
   display: inline-block;
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
+  border: 1px solid currentColor;
 }
 
 .lm-container #monthly-table td.amount-negative .net-chip {
-  background: #dc2626;
-  color: #fff;
+  color: var(--lm-need);
+  background: rgba(255, 107, 107, 0.12);
 }
 
 .lm-container #monthly-table td.amount-positive .net-chip {
   color: var(--lm-have);
+  background: rgba(56, 189, 248, 0.12);
 }
 
 
