@@ -21,7 +21,8 @@ function renderMonthlyTable(tbodyEl, {
     const netChange = monthlyNetChange[idx];
     const netChangeClass = netChange < 0 ? 'amount-negative' : (netChange > 0 ? 'amount-positive' : '');
     const penalty = monthlyPenalty ? monthlyPenalty[idx] : 0;
-    const hasPenalty = penalty > 0;
+    const displayedPenalty = Math.round(penalty);
+    const hasPenalty = displayedPenalty > 0;
     const rowClasses = [
       lumpEventMonth === month ? 'lump-event-row' : '',
       hasPenalty ? 'penalty-row' : '',
@@ -33,7 +34,7 @@ function renderMonthlyTable(tbodyEl, {
       `<td>${formatCurrency(monthlyExpensesApplied[idx])}</td>` +
       `<td>${formatSignedCurrency(monthlyGrowth[idx])}</td>` +
       `<td class="${netChangeClass}">${netChangeClass ? `<span class="net-chip">${formatSignedCurrency(netChange)}</span>` : formatSignedCurrency(netChange)}</td>` +
-      `<td class="${hasPenalty ? 'amount-negative' : ''}">${hasPenalty ? `<span class="net-chip">-${formatCurrency(penalty)}</span>` : '\u2014'}</td>` +
+      `<td class="${hasPenalty ? 'amount-negative' : ''}">${hasPenalty ? `<span class="net-chip">-${formatCurrency(displayedPenalty)}</span>` : '\u2014'}</td>` +
       `<td>${formatCurrency(brokerageBalances[month])}</td>` +
       `<td>${formatCurrency(retirementBalances[month])}</td>` +
     `</tr>`;

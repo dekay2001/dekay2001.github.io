@@ -543,6 +543,7 @@ describe('computeRunway — early withdrawal with penalty (default allowEarlyWit
     const expectedGross = 1000 / (1 - EARLY_WITHDRAWAL_PENALTY_RATE);
     expect(result.monthlyEarlyWithdrawal[0]).toBeCloseTo(expectedGross, 6);
     expect(result.monthlyPenalty[0]).toBeCloseTo(expectedGross * EARLY_WITHDRAWAL_PENALTY_RATE, 6);
+    expect(result.accessibleBalances[1]).toBeCloseTo((100000 - expectedGross) * (1 - EARLY_WITHDRAWAL_PENALTY_RATE), 6);
     expect(result.finalBrokerageBalance).toBe(0);
     // Portfolio survives (100000 in retirement is plenty for 2 years of $2000/mo, even with penalties).
     expect(result.depleted).toBe(false);

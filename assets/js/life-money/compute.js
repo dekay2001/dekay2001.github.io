@@ -150,11 +150,12 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
 
     cumNeed += effectiveExpenses;
     finalMonthlyExpenses = currentExpenses;
-    // Retirement counts as "accessible" once its access age is reached, or
-    // earlier when allowEarlyWithdrawal lets it be tapped (at the cost of
-    // the penalty already applied above) — either way it's money the
-    // depleted/depletedAge series can draw on.
-    const accessibleBalance = brokerageBalance + ((canAccessRetirement || allowEarlyWithdrawal) ? retirementBalance : 0);
+    // Before 59.5, accessible retirement value is reduced by the modeled
+    // penalty; after 59.5 the full remaining retirement balance is available.
+    const accessibleRetirementBalance = canAccessRetirement
+      ? retirementBalance
+      : (allowEarlyWithdrawal ? retirementBalance * (1 - EARLY_WITHDRAWAL_PENALTY_RATE) : 0);
+    const accessibleBalance = brokerageBalance + accessibleRetirementBalance;
     balances.push(brokerageBalance + retirementBalance);
     brokerageBalances.push(brokerageBalance);
     retirementBalances.push(retirementBalance);

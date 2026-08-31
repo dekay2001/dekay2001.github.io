@@ -99,4 +99,11 @@ describe('renderMonthlyTable', () => {
     expect(firstRow.className).toContain('penalty-row');
     expect(tbody.children[1].className).not.toContain('penalty-row');
   });
+
+  it('does not render or flag penalties that round to zero dollars', () => {
+    const tbody = makeTbody();
+    renderMonthlyTable(tbody, makeData({ monthlyPenalty: [0.4, 0, 0] }));
+    expect(tbody.children[0].children[6].textContent).toBe('\u2014');
+    expect(tbody.children[0].className).not.toContain('penalty-row');
+  });
 });
