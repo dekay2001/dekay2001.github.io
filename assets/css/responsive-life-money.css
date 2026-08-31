@@ -74,6 +74,55 @@
 }
 
 /* --------------------------------------------------------------------------
+   Checkbox control (e.g. "allow early withdrawal") — sits alongside the
+   range-input control-groups but toggles a boolean instead of a value.
+   -------------------------------------------------------------------------- */
+
+.lm-container .control-group--checkbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.lm-container .lm-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--lm-text);
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+}
+
+.lm-container .lm-checkbox input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--lm-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Info box — explanatory callouts (e.g. penalty methodology) that sit
+   between the metrics grid and the chart.
+   -------------------------------------------------------------------------- */
+
+.lm-container .info-box {
+  border: 1px solid var(--lm-border);
+  border-left: 3px solid var(--lm-accent);
+  background: var(--lm-surface);
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--lm-muted);
+}
+
+.lm-container .info-box strong {
+  color: var(--lm-text);
+}
+
+/* --------------------------------------------------------------------------
    Advanced scenario sections (collapsible)
    -------------------------------------------------------------------------- */
 
@@ -340,6 +389,13 @@
 .lm-container #monthly-table tbody tr.lump-event-row {
   outline: 1px solid var(--lm-accent);
   outline-offset: -1px;
+}
+
+/* Months where a retirement early-withdrawal penalty was paid — a subtle
+   red-tinted row so the cost of tapping retirement before 59½ is visible
+   at a glance while scrolling the table. */
+.lm-container #monthly-table tbody tr.penalty-row {
+  background: rgba(255, 107, 107, 0.06);
 }
 
 /* Net change values get a rounded badge in the same red/blue used everywhere

@@ -13,21 +13,27 @@ function formatSignedCurrency(value) {
 
 function renderMonthlyTable(tbodyEl, {
   age, monthlyIncome, monthlyExpensesApplied, monthlyGrowth, monthlyNetChange,
-  brokerageBalances, retirementBalances, lumpEventMonth,
+  monthlyPenalty, brokerageBalances, retirementBalances, lumpEventMonth,
 }) {
   tbodyEl.innerHTML = monthlyIncome.map((income, idx) => {
     const month = idx + 1;
     const currentAge = age + month / 12;
     const netChange = monthlyNetChange[idx];
     const netChangeClass = netChange < 0 ? 'amount-negative' : (netChange > 0 ? 'amount-positive' : '');
-    const rowClass = lumpEventMonth === month ? 'lump-event-row' : '';
-    return `<tr class="${rowClass}">` +
+    const penalty = monthlyPenalty ? monthlyPenalty[idx] : 0;
+    const hasPenalty = penalty > 0;
+    const rowClasses = [
+      lumpEventMonth === month ? 'lump-event-row' : '',
+      hasPenalty ? 'penalty-row' : '',
+    ].filter(Boolean).join(' ');
+    return `<tr class="${rowClasses}">` +
       `<td>${month}</td>` +
       `<td>${currentAge.toFixed(1)}</td>` +
       `<td>${formatCurrency(income)}</td>` +
       `<td>${formatCurrency(monthlyExpensesApplied[idx])}</td>` +
       `<td>${formatSignedCurrency(monthlyGrowth[idx])}</td>` +
       `<td class="${netChangeClass}">${netChangeClass ? `<span class="net-chip">${formatSignedCurrency(netChange)}</span>` : formatSignedCurrency(netChange)}</td>` +
+      `<td class="${hasPenalty ? 'amount-negative' : ''}">${hasPenalty ? `<span class="net-chip">-${formatCurrency(penalty)}</span>` : '\u2014'}</td>` +
       `<td>${formatCurrency(brokerageBalances[month])}</td>` +
       `<td>${formatCurrency(retirementBalances[month])}</td>` +
     `</tr>`;

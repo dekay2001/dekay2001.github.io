@@ -18,6 +18,7 @@ function makeData(overrides = {}) {
     monthlyExpensesApplied: [4000, 4000, 4000],
     monthlyGrowth: [100, 100, 100],
     monthlyNetChange: [-1900, -1900, 8100],
+    monthlyPenalty: [0, 0, 0],
     brokerageBalances: [500000, 498100, 496200, 504300],
     retirementBalances: [0, 0, 0, 0],
     lumpEventMonth: null,
@@ -46,8 +47,8 @@ describe('renderMonthlyTable', () => {
     const firstRow = tbody.children[0];
     expect(firstRow.children[2].textContent).toBe('$2,000');
     expect(firstRow.children[3].textContent).toBe('$4,000');
-    expect(firstRow.children[6].textContent).toBe('$498,100');
-    expect(firstRow.children[7].textContent).toBe('$0');
+    expect(firstRow.children[7].textContent).toBe('$498,100');
+    expect(firstRow.children[8].textContent).toBe('$0');
   });
 
   it('marks negative net-change cells with the negative class and a minus sign', () => {
@@ -79,5 +80,23 @@ describe('renderMonthlyTable', () => {
     renderMonthlyTable(tbody, makeData());
     renderMonthlyTable(tbody, makeData());
     expect(tbody.children.length).toBe(3);
+  });
+
+  it('renders an em dash in the penalty cell when no penalty was paid', () => {
+    const tbody = makeTbody();
+    renderMonthlyTable(tbody, makeData());
+    const penaltyCell = tbody.children[0].children[6];
+    expect(penaltyCell.textContent).toBe('—');
+    expect(penaltyCell.className).not.toContain('amount-negative');
+  });
+
+  it('renders the penalty amount and flags the row when a penalty was paid', () => {
+    const tbody = makeTbody();
+    renderMonthlyTable(tbody, makeData({ monthlyPenalty: [222, 0, 0] }));
+    const firstRow = tbody.children[0];
+    expect(firstRow.children[6].textContent).toBe('-$222');
+    expect(firstRow.children[6].className).toContain('amount-negative');
+    expect(firstRow.className).toContain('penalty-row');
+    expect(tbody.children[1].className).not.toContain('penalty-row');
   });
 });

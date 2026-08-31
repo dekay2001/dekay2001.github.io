@@ -8,7 +8,7 @@ import { formatCurrency, formatDailyRate } from './format.js';
 function generateStatusMessage({ depleted, depletedAge, finalBalance, dailyGen,
                                  dailyCost, gap, monthlyIncome, monthlyReturn, annualInflation,
                                  finalMonthlyExpenses, monthlyExpenses, life, savings,
-                                 socialSecurity, healthcareGap, lumpEvent }) {
+                                 socialSecurity, healthcareGap, lumpEvent, totalEarlyWithdrawalPenalty }) {
   let html = '';
   if (!depleted) {
     html  = `Your portfolio <span class="good">outlasts you</span> — ending at <span>${formatCurrency(finalBalance)}</span> at age ${life}. `;
@@ -43,6 +43,9 @@ function generateStatusMessage({ depleted, depletedAge, finalBalance, dailyGen,
   if (lumpEvent && lumpEvent.amount !== 0) {
     const label = lumpEvent.amount > 0 ? 'windfall' : 'expense';
     html += ` One-time ${label} of ${formatCurrency(Math.abs(lumpEvent.amount))} at age ${lumpEvent.atAge}.`;
+  }
+  if (totalEarlyWithdrawalPenalty > 0) {
+    html += ` <span class="bad">${formatCurrency(totalEarlyWithdrawalPenalty)}</span> is lost to the 10% early-withdrawal penalty on retirement funds drawn before age 59\u00bd.`;
   }
   return { html };
 }

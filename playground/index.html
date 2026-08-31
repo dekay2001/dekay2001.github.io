@@ -42,6 +42,13 @@ extra_head_links:
                 <div class="value-display" id="retirement-savings-val">$0</div>
                 <input type="range" id="retirement-savings" min="0" max="2000000" value="0" step="5000">
               </div>
+              <div class="control-group control-group--checkbox">
+                <label for="allow-early-withdrawal">Retirement access before 59½</label>
+                <label class="lm-checkbox">
+                  <input type="checkbox" id="allow-early-withdrawal" checked>
+                  <span>Allow early withdrawals (10% penalty)</span>
+                </label>
+              </div>
               <div class="control-group">
                 <label for="expenses">Monthly expenses needed</label>
                 <div class="value-display" id="expenses-val">$5,000</div>
@@ -154,10 +161,25 @@ extra_head_links:
                 <div class="metric-sub" id="m-breakdown-sub">401k/IRA locked until age 59½</div>
               </div>
               <div class="metric">
+                <div class="metric-label">Early-withdrawal penalties paid</div>
+                <div class="metric-value" id="m-penalty">—</div>
+                <div class="metric-sub" id="m-penalty-sub">—</div>
+              </div>
+              <div class="metric">
                 <div class="metric-label">Time until you can take a pay cut</div>
                 <div class="metric-value" id="m-paycut">—</div>
                 <div class="metric-sub" id="m-paycut-sub">—</div>
               </div>
+            </div>
+
+            <div class="info-box" id="penalty-note">
+              <strong>How the early-withdrawal penalty works:</strong> once brokerage/other savings run
+              out, this model can cover the shortfall from your 401k/IRA even before age 59½ — but the
+              withdrawal is grossed up so a flat <strong>10% IRS early-withdrawal penalty</strong> comes out
+              of it. For example, a $2,000/mo shortfall requires withdrawing ≈$2,222, of which $222 is lost
+              to the penalty. Ordinary income tax on the withdrawal is <em>not</em> modeled. Uncheck
+              “Allow early withdrawals” above to see the alternative: retirement funds locked entirely until
+              59½, with any pre-59½ shortfall simply going unmet.
             </div>
 
             <div class="chart-wrap">
@@ -177,7 +199,7 @@ extra_head_links:
                   <thead>
                     <tr>
                       <th>Month</th><th>Age</th><th>Income</th><th>Expenses</th>
-                      <th>Growth</th><th>Net change</th><th>Brokerage</th><th>Retirement</th>
+                      <th>Growth</th><th>Net change</th><th>Penalty</th><th>Brokerage</th><th>Retirement</th>
                     </tr>
                   </thead>
                   <tbody id="monthly-table-body"></tbody>
@@ -207,6 +229,7 @@ extra_head_links:
       const sliderLife     = document.getElementById('life');
       const sliderSavings  = document.getElementById('savings');
       const sliderRetirementSavings = document.getElementById('retirement-savings');
+      const checkboxAllowEarlyWithdrawal = document.getElementById('allow-early-withdrawal');
       const sliderExpenses = document.getElementById('expenses');
       const sliderIncome   = document.getElementById('income');
       const sliderPayCutIncome = document.getElementById('paycut-income');
@@ -253,6 +276,8 @@ extra_head_links:
       const mUntilSub  = document.getElementById('m-until-sub');
       const mBreakdown    = document.getElementById('m-breakdown');
       const mBreakdownSub = document.getElementById('m-breakdown-sub');
+      const mPenalty       = document.getElementById('m-penalty');
+      const mPenaltySub    = document.getElementById('m-penalty-sub');
       const mPayCut    = document.getElementById('m-paycut');
       const mPayCutSub = document.getElementById('m-paycut-sub');
 
@@ -266,6 +291,7 @@ extra_head_links:
         const life           = +sliderLife.value;
         const savings        = +sliderSavings.value;
         const retirementSavings = +sliderRetirementSavings.value;
+        const allowEarlyWithdrawal = checkboxAllowEarlyWithdrawal.checked;
         const monthlyExpenses = +sliderExpenses.value;
         const monthlyIncome  = +sliderIncome.value;
         const payCutIncome   = +sliderPayCutIncome.value;
@@ -305,7 +331,7 @@ extra_head_links:
         valLumpAge.textContent   = lumpAge;
 
         const metrics = computeRunway({ age, life, savings, retirementSavings, monthlyExpenses, monthlyIncome, annualReturn, annualInflation,
-                                        socialSecurity, healthcareGap, lumpEvent });
+                                        socialSecurity, healthcareGap, lumpEvent, allowEarlyWithdrawal });
 
         // Metrics panel
         mDays.textContent      = metrics.daysLeft.toLocaleString();
@@ -359,13 +385,32 @@ extra_head_links:
         // Brokerage vs. retirement breakdown
         mBreakdown.textContent = formatCurrency(metrics.finalBrokerageBalance) + ' / ' + formatCurrency(metrics.finalRetirementBalance);
         mBreakdown.className   = metrics.finalBrokerageBalance <= 0 ? 'metric-value need' : 'metric-value have';
-        mBreakdownSub.textContent = metrics.brokerageDepletedAge !== null
-          ? 'Brokerage runs out at age ' + Math.round(metrics.brokerageDepletedAge) + ' \u00b7 401k/IRA locked until age 59\u00bd'
-          : '401k/IRA locked until age 59\u00bd';
+        if (metrics.brokerageDepletedAge === null) {
+          mBreakdownSub.textContent = '401k/IRA locked until age 59½';
+        } else if (allowEarlyWithdrawal) {
+          mBreakdownSub.textContent = 'Brokerage runs out at age ' + Math.round(metrics.brokerageDepletedAge) + ' · 401k/IRA then drawn early (10% penalty) until 59½';
+        } else {
+          mBreakdownSub.textContent = 'Brokerage runs out at age ' + Math.round(metrics.brokerageDepletedAge) + ' · 401k/IRA locked until age 59½';
+        }
+
+        // Early-withdrawal penalty paid
+        if (metrics.totalEarlyWithdrawalPenalty > 0) {
+          mPenalty.textContent    = formatCurrency(metrics.totalEarlyWithdrawalPenalty);
+          mPenalty.className      = 'metric-value need';
+          mPenaltySub.textContent = 'lost to the 10% early-withdrawal penalty before 59½';
+        } else if (allowEarlyWithdrawal) {
+          mPenalty.textContent    = formatCurrency(0);
+          mPenalty.className      = 'metric-value have';
+          mPenaltySub.textContent = 'no early withdrawals needed';
+        } else {
+          mPenalty.textContent    = 'N/A';
+          mPenalty.className      = 'metric-value neutral';
+          mPenaltySub.textContent = 'early withdrawals disabled';
+        }
 
         // Coast-to-pay-cut
         const coast = computeCoastToPayCut({ age, life, savings, retirementSavings, monthlyExpenses, monthlyIncome, payCutIncome,
-                                             annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent });
+                                             annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent, allowEarlyWithdrawal });
         if (!coast.isPayCut) {
           mPayCut.textContent    = 'N/A';
           mPayCut.className      = 'metric-value neutral';
@@ -387,7 +432,7 @@ extra_head_links:
           // cut were taken today instead of waiting until ageAtPayCut.
           const cutToday = computeRunway({ age, life, savings, retirementSavings, monthlyExpenses,
                                             monthlyIncome: payCutIncome, annualReturn, annualInflation,
-                                            socialSecurity, healthcareGap, lumpEvent });
+                                            socialSecurity, healthcareGap, lumpEvent, allowEarlyWithdrawal });
           const cutTodayNote = cutToday.depleted
             ? ' \u2014 cutting today would deplete at age ' + Math.round(cutToday.depletedAge)
             : '';
@@ -431,6 +476,7 @@ extra_head_links:
             monthlyExpensesApplied: metrics.monthlyExpensesApplied,
             monthlyGrowth: metrics.monthlyGrowth,
             monthlyNetChange: metrics.monthlyNetChange,
+            monthlyPenalty: metrics.monthlyPenalty,
             brokerageBalances: metrics.brokerageBalances,
             retirementBalances: metrics.retirementBalances,
             lumpEventMonth: metrics.lumpEventMonth,
@@ -442,6 +488,7 @@ extra_head_links:
        'ss-amount', 'ss-age', 'hc-cost', 'hc-until', 'lump-amount', 'lump-age'].forEach(id => {
         document.getElementById(id).addEventListener('input', update);
       });
+      checkboxAllowEarlyWithdrawal.addEventListener('change', update);
       window.addEventListener('resize', update);
       monthlyTableDetails.addEventListener('toggle', update);
       update();
