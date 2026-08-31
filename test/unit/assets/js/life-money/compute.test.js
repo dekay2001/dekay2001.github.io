@@ -1,4 +1,4 @@
-const { computeRunway, computeCoastToPayCut } = require('../../../../../assets/js/life-money/compute.js');
+const { computeRunway, computeCoastToPayCut, EARLY_WITHDRAWAL_PENALTY_RATE } = require('../../../../../assets/js/life-money/compute.js');
 
 describe('computeRunway', () => {
   const base = {
@@ -426,7 +426,7 @@ describe('computeCoastToPayCut', () => {
     expect(withRetirement.monthsUntilPayCut).toBeLessThanOrEqual(noRetirement.monthsUntilPayCut);
   });
 
-  it('retirement savings are hard-blocked before the access age even when coasting', () => {
+  it('retirement savings are hard-blocked before the access age when allowEarlyWithdrawal is off, even when coasting', () => {
     // Life ends at 57, entirely before the 59.5 access age, so the $1M
     // retirement fund is never reachable — coasting can only "succeed"
     // by never actually cutting income (waiting the entire horizon).
@@ -436,7 +436,7 @@ describe('computeCoastToPayCut', () => {
     const result = computeCoastToPayCut({
       age: 55, life: 57, savings: 1, retirementSavings: 1000000,
       monthlyExpenses: 2000, monthlyIncome: 2000, payCutIncome: 0,
-      annualReturn: 0,
+      annualReturn: 0, allowEarlyWithdrawal: false,
     });
     expect(result.monthsUntilPayCut).toBe(24);
   });
@@ -469,11 +469,12 @@ describe('computeRunway — retirement savings (401k hard block)', () => {
     expect(result.finalBrokerageBalance + result.finalRetirementBalance).toBeCloseTo(result.finalBalance, 6);
   });
 
-  it('does not draw on retirement savings before the access age (hard block)', () => {
+  it('does not draw on retirement savings before the access age when allowEarlyWithdrawal is off (hard block)', () => {
     // Entire horizon (age 55 -> 57) stays below the 59.5 access age.
     const result = computeRunway({
       age: 55, life: 57, savings: 1000, retirementSavings: 100000,
       monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+      allowEarlyWithdrawal: false,
     });
     expect(result.finalRetirementBalance).toBe(100000);
     expect(result.finalBrokerageBalance).toBe(0);
@@ -481,13 +482,14 @@ describe('computeRunway — retirement savings (401k hard block)', () => {
     expect(result.depleted).toBe(true);
   });
 
-  it('draws on retirement savings once the access age (59.5) is reached', () => {
+  it('draws on retirement savings once the access age (59.5) is reached, with allowEarlyWithdrawal off beforehand', () => {
     // yearsLeft=2 (24 months); access age 59.5 falls at month 6.
     const result = computeRunway({
       age: 59, life: 61, savings: 0, retirementSavings: 100000,
       monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+      allowEarlyWithdrawal: false,
     });
-    // 5 unmet months pre-access, then 19 months drawn from retirement (2000 each).
+    // 5 unmet months pre-access, then 19 months drawn from retirement (2000 each, no penalty post-access).
     expect(result.finalRetirementBalance).toBeCloseTo(100000 - 19 * 2000, 6);
     expect(result.finalBrokerageBalance).toBe(0);
     expect(result.finalBalance).toBeCloseTo(62000, 6);
@@ -519,11 +521,49 @@ describe('computeRunway — retirement savings (401k hard block)', () => {
     const result = computeRunway({
       age: 55, life: 57, savings: 1000, retirementSavings: 100000,
       monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+      allowEarlyWithdrawal: false,
     });
     // Combined balance never hits 0 (locked retirement still counts toward it),
     // but the accessible balance does -- this is what "depleted" is based on.
     expect(result.balances[1]).toBe(100000);
     expect(result.accessibleBalances[1]).toBe(0);
     expect(result.depleted).toBe(true);
+  });
+});
+
+describe('computeRunway — early withdrawal with penalty (default allowEarlyWithdrawal=true)', () => {
+  it('draws on retirement savings before 59½ by default, grossed up for the 10% penalty', () => {
+    // Entire horizon (age 55 -> 57) stays below the 59.5 access age.
+    const result = computeRunway({
+      age: 55, life: 57, savings: 1000, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    // Month 1: brokerage covers the first $1000, leaving a $1000 shortfall.
+    // Gross withdrawal = 1000 / (1 - 0.10) = 1111.11..., penalty = 111.11...
+    const expectedGross = 1000 / (1 - EARLY_WITHDRAWAL_PENALTY_RATE);
+    expect(result.monthlyEarlyWithdrawal[0]).toBeCloseTo(expectedGross, 6);
+    expect(result.monthlyPenalty[0]).toBeCloseTo(expectedGross * EARLY_WITHDRAWAL_PENALTY_RATE, 6);
+    expect(result.accessibleBalances[1]).toBeCloseTo((100000 - expectedGross) * (1 - EARLY_WITHDRAWAL_PENALTY_RATE), 6);
+    expect(result.finalBrokerageBalance).toBe(0);
+    // Portfolio survives (100000 in retirement is plenty for 2 years of $2000/mo, even with penalties).
+    expect(result.depleted).toBe(false);
+    expect(result.totalEarlyWithdrawalPenalty).toBeGreaterThan(0);
+  });
+
+  it('does not apply a penalty once retirement is directly drawn on after the access age', () => {
+    const result = computeRunway({
+      age: 60, life: 62, savings: 0, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    expect(result.totalEarlyWithdrawalPenalty).toBe(0);
+    expect(result.monthlyPenalty.every((p) => p === 0)).toBe(true);
+  });
+
+  it('reports zero early-withdrawal penalty when the brokerage balance never runs dry', () => {
+    const result = computeRunway({
+      age: 55, life: 57, savings: 1000000, retirementSavings: 100000,
+      monthlyExpenses: 2000, monthlyIncome: 0, annualReturn: 0,
+    });
+    expect(result.totalEarlyWithdrawalPenalty).toBe(0);
   });
 });

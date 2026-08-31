@@ -5,10 +5,17 @@
 
 /**
  * Age at which retirement savings (401k/IRA) become accessible without an
- * early-withdrawal penalty. Modeled as a hard block: retirement savings
- * cannot fund a shortfall before this age, no matter the balance.
+ * early-withdrawal penalty.
  */
 const RETIREMENT_ACCESS_AGE = 59.5;
+
+/**
+ * Flat IRS early-withdrawal penalty applied to retirement funds drawn on
+ * before RETIREMENT_ACCESS_AGE, when allowEarlyWithdrawal is enabled.
+ * Models the 10% federal penalty only — ordinary income tax on the
+ * withdrawal is not modeled.
+ */
+const EARLY_WITHDRAWAL_PENALTY_RATE = 0.10;
 
 /**
  * Simulates a monthly balance trajectory given an income schedule.
@@ -32,20 +39,27 @@ const RETIREMENT_ACCESS_AGE = 59.5;
  * @param {Object|null} [params.socialSecurity=null]  { monthlyAmount, startsAtAge }
  * @param {Object|null} [params.healthcareGap=null]   { monthlyCost, coveredUntilAge }
  * @param {Object|null} [params.lumpEvent=null]       { amount, atAge }
+ * @param {boolean} [params.allowEarlyWithdrawal=true] When true, a brokerage shortfall before
+ *   RETIREMENT_ACCESS_AGE is covered by drawing on retirement savings anyway, grossed up so
+ *   EARLY_WITHDRAWAL_PENALTY_RATE is paid out of the withdrawal. When false, retirement funds
+ *   are a hard lock before that age and any deficit simply goes unmet.
  * @param {function(number, number): number} incomeForMonth  (monthIndex, currentAge) => base monthly income.
  *   monthIndex is 1-based (the first simulated month is 1, matching the internal loop counter).
  * @returns {Object} balances, brokerageBalances, retirementBalances, accessibleBalances,
  *   needs, monthlyIncome, monthlyExpensesApplied, monthlyGrowth, monthlyNetChange,
+ *   monthlyEarlyWithdrawal, monthlyPenalty, totalEarlyWithdrawalPenalty,
  *   lumpEventMonth, depleted, depletedAge, brokerageDepletedAge, finalBalance,
  *   finalBrokerageBalance, finalRetirementBalance, finalMonthlyExpenses.
  *   accessibleBalances is the series `depleted`/`depletedAge` are derived from
- *   (brokerage + retirement only once accessible); it can be 0 while the
- *   combined `balances` value is still positive if retirement is locked.
+ *   (brokerage + retirement, once accessible either by age or via allowEarlyWithdrawal);
+ *   it can be 0 while the combined `balances` value is still positive if
+ *   retirement is locked (allowEarlyWithdrawal: false, before the access age).
  *   The monthly* arrays are per-month (not cumulative), one entry per simulated
  *   month, unlike `needs` which is a cumulative running total.
  */
 function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthlyExpenses, annualReturn,
-                        annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null },
+                        annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null,
+                        allowEarlyWithdrawal = true },
                         incomeForMonth) {
   const monthlyReturn = annualReturn / 12;
   const monthlyInflation = Math.pow(1 + annualInflation, 1 / 12) - 1;
@@ -67,8 +81,11 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
   const monthlyExpensesApplied = [];
   const monthlyGrowth = [];
   const monthlyNetChange = [];
+  const monthlyEarlyWithdrawal = [];
+  const monthlyPenalty = [];
   let lumpEventMonth = null;
   let cumNeed = 0;
+  let cumEarlyWithdrawalPenalty = 0;
   let finalMonthlyExpenses = currentExpenses;
   let lumpApplied = false;
 
@@ -105,19 +122,40 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     brokerageBalance = brokerageBalance * (1 + brokerageReturnRate) - netNeed;
     retirementBalance = retirementBalance * (1 + retirementReturnRate);
 
-    // Hard block: only once retirement savings are accessible can they
-    // absorb a brokerage shortfall. Before that age, any deficit is simply
-    // unmet (matches the original floor-at-0 depletion behavior).
-    if (brokerageBalance < 0 && canAccessRetirement) {
-      retirementBalance += brokerageBalance;
-      brokerageBalance = 0;
+    // Retirement savings absorbing a brokerage shortfall: penalty-free once
+    // accessible. Before that age, it only happens when allowEarlyWithdrawal
+    // is on, and the withdrawal is grossed up so the 10% early-withdrawal
+    // penalty comes out of the retirement balance rather than on top of it.
+    // When allowEarlyWithdrawal is off, the deficit is simply unmet (matches
+    // the original floor-at-0 depletion behavior).
+    let earlyWithdrawalGross = 0;
+    let earlyWithdrawalPenalty = 0;
+    if (brokerageBalance < 0) {
+      if (canAccessRetirement) {
+        retirementBalance += brokerageBalance;
+        brokerageBalance = 0;
+      } else if (allowEarlyWithdrawal && retirementBalance > 0) {
+        const shortfall = -brokerageBalance;
+        const grossNeeded = shortfall / (1 - EARLY_WITHDRAWAL_PENALTY_RATE);
+        const grossWithdrawal = Math.min(grossNeeded, retirementBalance);
+        const netCovered = grossWithdrawal * (1 - EARLY_WITHDRAWAL_PENALTY_RATE);
+        retirementBalance -= grossWithdrawal;
+        brokerageBalance += netCovered;
+        earlyWithdrawalGross = grossWithdrawal;
+        earlyWithdrawalPenalty = grossWithdrawal - netCovered;
+      }
     }
     brokerageBalance = Math.max(0, brokerageBalance);
     retirementBalance = Math.max(0, retirementBalance);
 
     cumNeed += effectiveExpenses;
     finalMonthlyExpenses = currentExpenses;
-    const accessibleBalance = brokerageBalance + (canAccessRetirement ? retirementBalance : 0);
+    // Before 59.5, accessible retirement value is reduced by the modeled
+    // penalty; after 59.5 the full remaining retirement balance is available.
+    const accessibleRetirementBalance = canAccessRetirement
+      ? retirementBalance
+      : (allowEarlyWithdrawal ? retirementBalance * (1 - EARLY_WITHDRAWAL_PENALTY_RATE) : 0);
+    const accessibleBalance = brokerageBalance + accessibleRetirementBalance;
     balances.push(brokerageBalance + retirementBalance);
     brokerageBalances.push(brokerageBalance);
     retirementBalances.push(retirementBalance);
@@ -127,6 +165,9 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     monthlyExpensesApplied.push(effectiveExpenses);
     monthlyGrowth.push(growthThisMonth);
     monthlyNetChange.push(brokerageBalance + retirementBalance - balanceBeforeMonth);
+    monthlyEarlyWithdrawal.push(earlyWithdrawalGross);
+    monthlyPenalty.push(earlyWithdrawalPenalty);
+    cumEarlyWithdrawalPenalty += earlyWithdrawalPenalty;
 
     if (accessibleBalance <= 0 && !depleted) {
       depleted = true;
@@ -153,6 +194,9 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
     monthlyExpensesApplied,
     monthlyGrowth,
     monthlyNetChange,
+    monthlyEarlyWithdrawal,
+    monthlyPenalty,
+    totalEarlyWithdrawalPenalty: cumEarlyWithdrawalPenalty,
     lumpEventMonth,
     depleted,
     depletedAge,
@@ -177,10 +221,12 @@ function runSimulation({ age, yearsLeft, savings, retirementSavings = 0, monthly
  * @param {Object|null} [params.socialSecurity=null]  { monthlyAmount, startsAtAge }
  * @param {Object|null} [params.healthcareGap=null]   { monthlyCost, coveredUntilAge }
  * @param {Object|null} [params.lumpEvent=null]       { amount, atAge }
+ * @param {boolean} [params.allowEarlyWithdrawal=true] See runSimulation.
  * @returns {Object} Computed runway data
  */
 function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpenses, monthlyIncome, annualReturn,
-                         annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null }) {
+                         annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null,
+                         allowEarlyWithdrawal = true }) {
   const yearsLeft = Math.max(life - age, 0);
   const daysLeft = Math.round(yearsLeft * 365.25);
   const monthlyNet = monthlyExpenses - monthlyIncome;
@@ -190,7 +236,7 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
   const savingsPerDay = daysLeft > 0 ? totalSavings / daysLeft : 0;
 
   const sim = runSimulation(
-    { age, yearsLeft, savings, retirementSavings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent },
+    { age, yearsLeft, savings, retirementSavings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent, allowEarlyWithdrawal },
     () => monthlyIncome
   );
 
@@ -213,6 +259,9 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
     monthlyExpensesApplied: sim.monthlyExpensesApplied,
     monthlyGrowth: sim.monthlyGrowth,
     monthlyNetChange: sim.monthlyNetChange,
+    monthlyEarlyWithdrawal: sim.monthlyEarlyWithdrawal,
+    monthlyPenalty: sim.monthlyPenalty,
+    totalEarlyWithdrawalPenalty: sim.totalEarlyWithdrawalPenalty,
     lumpEventMonth: sim.lumpEventMonth,
     finalBalance: sim.finalBalance,
     finalBrokerageBalance: sim.finalBrokerageBalance,
@@ -226,8 +275,7 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
  * switching to a reduced ("pay-cut") income while still not depleting the
  * portfolio before age `life`. Reuses the same scenario rules as
  * computeRunway (inflation, Social Security, healthcare gap, lump event,
- * and the retirement-savings hard block: 401k/IRA funds cannot be drawn on
- * before RETIREMENT_ACCESS_AGE, regardless of balance).
+ * and the retirement-savings access rules around RETIREMENT_ACCESS_AGE).
  *
  * @param {Object} params  Same shape as computeRunway, plus:
  * @param {number} params.payCutIncome  Reduced monthly income after the cut
@@ -237,12 +285,13 @@ function computeRunway({ age, life, savings, retirementSavings = 0, monthlyExpen
  *   of whether the CURRENT monthlyIncome scenario (as reported by computeRunway) is sustainable.
  */
 function computeCoastToPayCut({ age, life, savings, retirementSavings = 0, monthlyExpenses, monthlyIncome, payCutIncome, annualReturn,
-                                annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null }) {
+                                annualInflation = 0, socialSecurity = null, healthcareGap = null, lumpEvent = null,
+                                allowEarlyWithdrawal = true }) {
   const yearsLeft = Math.max(life - age, 0);
   // Match runSimulation's loop bound (`m <= yearsLeft * 12`), which behaves like Math.floor
   // for fractional yearsLeft, so monthsUntilPayCut/ageAtPayCut stay consistent with it.
   const totalMonths = Math.floor(yearsLeft * 12);
-  const simParams = { age, yearsLeft, savings, retirementSavings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent };
+  const simParams = { age, yearsLeft, savings, retirementSavings, monthlyExpenses, annualReturn, annualInflation, socialSecurity, healthcareGap, lumpEvent, allowEarlyWithdrawal };
 
   const survives = (transitionMonth) => {
     const sim = runSimulation(simParams, (m) => (m <= transitionMonth ? monthlyIncome : payCutIncome));
@@ -288,8 +337,8 @@ function computeCoastToPayCut({ age, life, savings, retirementSavings = 0, month
   return { achievable: true, alreadyAchievable: false, monthsUntilPayCut: lo, ageAtPayCut: age + lo / 12, isPayCut };
 }
 
-export { computeRunway, computeCoastToPayCut };
+export { computeRunway, computeCoastToPayCut, RETIREMENT_ACCESS_AGE, EARLY_WITHDRAWAL_PENALTY_RATE };
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { computeRunway, computeCoastToPayCut };
+  module.exports = { computeRunway, computeCoastToPayCut, RETIREMENT_ACCESS_AGE, EARLY_WITHDRAWAL_PENALTY_RATE };
 }
